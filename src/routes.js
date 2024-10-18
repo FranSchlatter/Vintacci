@@ -1,15 +1,13 @@
-// src/App.js
+// src/routes.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar'; // Importar el Navbar
-import HomePage from './pages/HomePage'; 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import UsersPage from './pages/UsersPage';
 
-const App = () => {
+const RoutesConfig = () => {
     return (
         <Router>
-            <Navbar /> {/* Agregar el Navbar aquí */}
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<ProductsPage />} />
@@ -19,4 +17,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default RoutesConfig;
