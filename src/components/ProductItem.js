@@ -14,3 +14,5 @@ const ProductItem = ({ product }) => {
 };
 
 export default ProductItem;
+
+// Recibe product de su componente padre. ProductList linea 9.
