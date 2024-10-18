@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     return (
-        <nav>
-            <h2>Tienda Vintage</h2>
-            <ul>
-                <li><Link to="/">Inicio</Link></li>
-                <li><Link to="/products">Productos</Link></li>
-                <li><Link to="/users">Usuarios</Link></li>
+        <nav className="bg-gray-800 p-4">
+            <h2 className="text-white text-2xl">Tienda Vintage</h2>
+            <ul className="flex space-x-4">
+                <li><Link to="/" className="text-white hover:text-gray-300">Inicio</Link></li>
+                <li><Link to="/products" className="text-white hover:text-gray-300">Productos</Link></li>
+                <li><Link to="/users" className="text-white hover:text-gray-300">Usuarios</Link></li>
             </ul>
         </nav>
     );

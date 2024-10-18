@@ -1,4 +1,5 @@
 // src/index.js o src/App.js
+import './index.css'; // Asegúrate de que la ruta sea correcta
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
