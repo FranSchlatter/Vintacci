@@ -9,14 +9,34 @@ const productReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'FETCH_PRODUCTS_SUCCESS':
             return { ...state, products: action.payload, loading: false };
+        case 'ADD_PRODUCT_SUCCESS':
+            return { ...state, products: [...state.products, action.payload], loading: false };
+        case 'UPDATE_PRODUCT_SUCCESS':
+            return {
+                ...state,
+                products: state.products.map((product) =>
+                    product.id === action.payload.id ? action.payload : product
+                ),
+                loading: false,
+            };
+        case 'DELETE_PRODUCT_SUCCESS':
+            return {
+                ...state,
+                products: state.products.filter((product) => product.id !== action.payload),  // Filtrar el producto eliminado
+            };
+        case 'DELETE_PRODUCT_FAILURE':
+            return { ...state, error: action.payload };
         case 'FETCH_PRODUCTS_FAILURE':
-            return { ...state, error: action.payload, loading: false };
+            return { ...state, error: action.payload };
+        case 'ADD_PRODUCT_FAILURE':
+            return { ...state, error: action.payload };
         default:
             return state;
     }
 };
 
 export default productReducer;
+
 
 // Explicación Detallada
 // Estado Inicial:

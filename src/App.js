@@ -2,18 +2,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage'; 
+import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
-import UsersPage from './pages/UsersPage';
+import AdminPage from './pages/AdminPage'; 
 
 const App = () => {
     return (
         <Router>
-            <Navbar /> {/* Agregar el Navbar aquí */}
+            <Navbar />
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<ProductsPage />} />
-                <Route path="/users" element={<UsersPage />} />
+                <Route path="/admin" element={<AdminPage />} />
             </Routes>
         </Router>
     );

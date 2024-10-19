@@ -1,9 +1,11 @@
 // src/redux/reducers/rootReducer.js
 import { combineReducers } from 'redux';
-import productReducer from './productReducer'; // Asegúrate de que la ruta es correcta
+import productReducer from './productReducer';
+import userReducer from './userReducer';
 
 const rootReducer = combineReducers({
     products: productReducer, // Cambia aquí si tienes un nombre diferente
+    users: userReducer, // Cambia aquí si tienes un nombre diferente
 });
 
 export default rootReducer;
