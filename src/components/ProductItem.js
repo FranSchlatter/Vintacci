@@ -1,10 +1,16 @@
 // src/components/ProductItem.js
 import React from 'react';
 import { HeartIcon, ShoppingCartIcon } from '@heroicons/react/outline';
+import { useNavigate } from 'react-router-dom';
 
 const ProductItem = ({ product }) => {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(`/products/${product.id}`); // Redirigir al detalle del producto
+    };
+
     return (
-        <div className="max-w-xs rounded overflow-hidden shadow-lg bg-white relative">
+        <div className="max-w-xs rounded overflow-hidden shadow-lg bg-white relative" onClick={handleClick}>
             <div className="relative">
                 {/* Imagen del producto ajustada para no quedar recortada */}
                 <img className="w-full h-48 object-contain" src={product.image_url} alt={product.name} />
