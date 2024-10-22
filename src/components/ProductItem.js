@@ -1,19 +1,26 @@
-// src/components/ProductItem.js
 import React from 'react';
 import { HeartIcon, ShoppingCartIcon } from '@heroicons/react/outline';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../redux/actions/cartActions';
 
 const ProductItem = ({ product }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const handleClick = () => {
         navigate(`/products/${product.id}`); // Redirigir al detalle del producto
     };
 
+    const handleAddToCart = () => {
+        dispatch(addToCart(product)); // Agregar el producto al carrito
+    };
+
     return (
-        <div className="max-w-xs rounded overflow-hidden shadow-lg bg-white relative" onClick={handleClick}>
+        <div className="max-w-xs rounded overflow-hidden shadow-lg bg-white relative">
             <div className="relative">
                 {/* Imagen del producto ajustada para no quedar recortada */}
-                <img className="w-full h-48 object-contain" src={product.image_url} alt={product.name} />
+                <img className="w-full h-48 object-contain" src={product.image_url} alt={product.name} onClick={handleClick}/>
 
                 {/* Ícono de favorito movido a la parte superior derecha */}
                 <button className="absolute top-2 right-2 text-gray-500 hover:text-red-500">
@@ -33,7 +40,10 @@ const ProductItem = ({ product }) => {
                     <p className="text-lg font-semibold">${product.price}</p>
 
                     {/* Botón para agregar al carrito */}
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                    <button
+                        onClick={handleAddToCart} // Agregar manejador de clic
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+                    >
                         <ShoppingCartIcon className="h-5 w-5 mr-2" />
                         <span>Agregar</span>
                     </button>
@@ -44,6 +54,7 @@ const ProductItem = ({ product }) => {
 };
 
 export default ProductItem;
+
 
 
 // Recibe product de su componente padre. ProductList linea 9.

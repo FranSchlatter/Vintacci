@@ -2,10 +2,12 @@
 import { combineReducers } from 'redux';
 import productReducer from './productReducer';
 import userReducer from './userReducer';
+import cartReducer from './cartReducer';
 
 const rootReducer = combineReducers({
     products: productReducer, // Cambia aquí si tienes un nombre diferente
     users: userReducer, // Cambia aquí si tienes un nombre diferente
+    cart: cartReducer
 });
 
 export default rootReducer;
