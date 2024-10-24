@@ -1,139 +1,142 @@
-// src/components/AdminProductPanel.js
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, deleteProduct, updateProduct } from '../redux/actions/productActions';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const AdminProductPanel = () => {
-    const dispatch = useDispatch();
-    const products = useSelector((state) => state.products.products);
-
-    // Estado local para los campos del formulario
+    const [products, setProducts] = useState([]);
     const [newProduct, setNewProduct] = useState({
         name: '',
         description: '',
         price: '',
         image_url: ''
     });
+    const [editProduct, setEditProduct] = useState(null);
 
-    const [editMode, setEditMode] = useState(false);
-    const [productToEdit, setProductToEdit] = useState(null);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/products');
+                setProducts(response.data);
+            } catch (error) {
+                console.error('Error al obtener productos:', error);
+            }
+        };
+        fetchProducts();
+    }, []);
 
-    // Manejar cambios en el formulario
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setNewProduct({ ...newProduct, [name]: value });
+        setNewProduct((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
-    // Agregar producto
-    const handleAddProduct = () => {
-        dispatch(addProduct(newProduct));
-        setNewProduct({ name: '', description: '', price: '', image_url: '' }); // Limpiar el formulario
-    };
-
-    // Editar producto
-    const handleEditProduct = () => {
-        dispatch(updateProduct(productToEdit.id, newProduct));
-        setEditMode(false);
-        setNewProduct({ name: '', description: '', price: '', image_url: '' });
-    };
-
-    // Eliminar producto
-    const handleDeleteProduct = (productId) => {
-        if (!window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+    const handleAddProduct = async () => {
+        if (!newProduct.name || !newProduct.description || !newProduct.price || !newProduct.image_url) {
+            console.error('Todos los campos son obligatorios');
             return;
         }
-        dispatch(deleteProduct(productId));  // Aquí enviamos el ID al backend
+
+        try {
+            const response = await axios.post('http://localhost:5000/products', newProduct);
+            setProducts((prevProducts) => [...prevProducts, response.data]);
+            setNewProduct({ name: '', description: '', price: '', image_url: '' });
+        } catch (error) {
+            console.error('Error al agregar producto:', error.message);
+        }
     };
 
+    const handleEditProduct = (product) => {
+        setEditProduct(product);
+        setNewProduct({ name: product.name, description: product.description, price: product.price, image_url: product.image_url });
+    };
+
+    const handleUpdateProduct = async () => {
+        if (!editProduct) return;
+
+        try {
+            const response = await axios.put(`http://localhost:5000/products/${editProduct.id}`, newProduct);
+            setProducts((prevProducts) =>
+                prevProducts.map((product) => (product.id === editProduct.id ? response.data : product))
+            );
+            setEditProduct(null);
+            setNewProduct({ name: '', description: '', price: '', image_url: '' });
+        } catch (error) {
+            console.error('Error al actualizar producto:', error.message);
+        }
+    };
+
+    const handleDeleteProduct = async (id) => {
+        try {
+            await axios.delete(`http://localhost:5000/products/${id}`);
+            setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+        } catch (error) {
+            console.error('Error al eliminar producto:', error.message);
+        }
+    };
 
     return (
-        <div className="admin-panel bg-gray-100 p-4 shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Gestionar Productos</h2>
-
-            {/* Formulario para agregar/editar producto */}
-            <div className="mb-4">
+        <div className="admin-product-panel p-5 bg-gray-800 text-white rounded-lg shadow-md">
+            <h2 className="text-xl font-bold mb-4">Panel de Administración de Productos</h2>
+            <div className="add-product-form mb-4">
+                <h3 className="text-lg font-semibold mb-2">Agregar Producto</h3>
                 <input
                     type="text"
                     name="name"
+                    placeholder="Nombre del producto"
                     value={newProduct.name}
                     onChange={handleInputChange}
-                    placeholder="Nombre del producto"
-                    className="mb-2 p-2 border rounded"
+                    className="border p-2 mr-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                     type="text"
                     name="description"
+                    placeholder="Descripción"
                     value={newProduct.description}
                     onChange={handleInputChange}
-                    placeholder="Descripción"
-                    className="mb-2 p-2 border rounded"
+                    className="border p-2 mr-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                     type="text"
                     name="price"
+                    placeholder="Precio"
                     value={newProduct.price}
                     onChange={handleInputChange}
-                    placeholder="Precio"
-                    className="mb-2 p-2 border rounded"
+                    className="border p-2 mr-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                     type="text"
                     name="image_url"
+                    placeholder="URL de la imagen"
                     value={newProduct.image_url}
                     onChange={handleInputChange}
-                    placeholder="URL de la imagen"
-                    className="mb-2 p-2 border rounded"
+                    className="border p-2 mr-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-
-                {editMode ? (
-                    <button
-                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
-                        onClick={handleEditProduct}
-                    >
-                        Guardar Cambios
-                    </button>
-                ) : (
-                    <button
-                        className="bg-green-500 text-white p-2 rounded hover:bg-green-700"
-                        onClick={handleAddProduct}
-                    >
-                        Agregar Producto
-                    </button>
-                )}
+                <button onClick={editProduct ? handleUpdateProduct : handleAddProduct} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+                    {editProduct ? 'Actualizar Producto' : 'Agregar Producto'}
+                </button>
             </div>
 
-            {/* Lista de productos con opciones de editar y eliminar */}
-            <ul>
+            <div className="product-list">
+                <h3 className="text-lg font-semibold mb-2">Lista de Productos</h3>
                 {products.map((product) => (
-                    <li key={product.id} className="border-b p-2 flex justify-between">
-                        <span>{product.name} - ${product.price}</span>
+                    <div key={product.id} className="flex items-center justify-between mb-2 p-2 border-b">
                         <div>
-                            <button
-                                className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-700 mr-2"
-                                onClick={() => {
-                                    setEditMode(true);
-                                    setProductToEdit(product);
-                                    setNewProduct({
-                                        name: product.name,
-                                        description: product.description,
-                                        price: product.price,
-                                        image_url: product.image_url
-                                    });
-                                }}
-                            >
+                            <p>Nombre: {product.name}</p>
+                            <p>Descripción: {product.description}</p>
+                            <p>Precio: ${product.price}</p>
+                        </div>
+                        <div>
+                            <button onClick={() => handleEditProduct(product)} className="bg-yellow-400 text-white p-1 mr-2 rounded hover:bg-yellow-500">
                                 Editar
                             </button>
-                            <button
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-                                onClick={() => handleDeleteProduct(product.id)}  // Pasar el ID del producto
-                            >
+                            <button onClick={() => handleDeleteProduct(product.id)} className="bg-red-500 text-white p-1 rounded hover:bg-red-600">
                                 Eliminar
                             </button>
-
                         </div>
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, deleteProduct, updateProduct, fetchProducts } from '../redux/actions/productActions'; // Asegúrate de importar fetchProducts
+import { addProduct, deleteProduct, updateProduct, fetchProducts } from '../redux/actions/productActions';
 
 const AdminPanel = () => {
     const dispatch = useDispatch();
@@ -14,6 +14,11 @@ const AdminPanel = () => {
     });
 
     const [editProduct, setEditProduct] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
+
+    useEffect(() => {
+        dispatch(fetchProducts()); // Cargar productos al iniciar el componente
+    }, [dispatch]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -25,7 +30,8 @@ const AdminPanel = () => {
 
     const handleAddProduct = () => {
         dispatch(addProduct(newProduct));
-        setNewProduct({ name: '', description: '', price: '', image_url: '' });
+        setSuccessMessage('Producto agregado exitosamente!');
+        resetForm();
     };
 
     const handleEditProduct = (product) => {
@@ -40,28 +46,37 @@ const AdminPanel = () => {
 
     const handleUpdateProduct = () => {
         if (editProduct) {
-            dispatch(updateProduct(editProduct.id, newProduct));  // Usar el ID del producto editado
-            setEditProduct(null);  // Limpiar el producto seleccionado
-            setNewProduct({ name: '', description: '', price: '', image_url: '' });  // Limpiar el formulario
+            dispatch(updateProduct(editProduct.id, newProduct));
+            setSuccessMessage('Producto actualizado exitosamente!');
+            resetForm();
+            setEditProduct(null);
         }
     };
 
     const handleDeleteProduct = (id) => {
         dispatch(deleteProduct(id));
+        setSuccessMessage('Producto eliminado exitosamente!');
+    };
+
+    const resetForm = () => {
+        setNewProduct({ name: '', description: '', price: '', image_url: '' });
     };
 
     return (
         <div className="admin-panel">
             <h2>Admin Panel</h2>
+            {successMessage && <div className="success-message">{successMessage}</div>} {/* Mensaje de éxito */}
 
             {/* Formulario para agregar productos */}
             <div className="add-product-form">
-                <h3>Agregar Producto</h3>
+                <h3>{editProduct ? 'Editar Producto' : 'Agregar Producto'}</h3>
                 <input type="text" name="name" placeholder="Nombre" value={newProduct.name} onChange={handleInputChange} />
                 <input type="text" name="description" placeholder="Descripción" value={newProduct.description} onChange={handleInputChange} />
                 <input type="number" name="price" placeholder="Precio" value={newProduct.price} onChange={handleInputChange} />
                 <input type="text" name="image_url" placeholder="URL de la imagen" value={newProduct.image_url} onChange={handleInputChange} />
-                <button onClick={handleAddProduct}>Agregar Producto</button>
+                <button onClick={editProduct ? handleUpdateProduct : handleAddProduct}>
+                    {editProduct ? 'Actualizar Producto' : 'Agregar Producto'}
+                </button>
             </div>
 
             {/* Lista de productos para editar o eliminar */}
@@ -75,18 +90,6 @@ const AdminPanel = () => {
                     </div>
                 ))}
             </div>
-
-            {/* Formulario para editar productos */}
-            {editProduct && (
-                <div className="edit-product-form">
-                    <h3>Editar Producto</h3>
-                    <input type="text" name="name" placeholder="Nombre" value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
-                    <input type="text" name="description" placeholder="Descripción" value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} />
-                    <input type="number" name="price" placeholder="Precio" value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
-                    <input type="text" name="image_url" placeholder="URL de la imagen" value={newProduct.image_url} onChange={(e) => setNewProduct({ ...newProduct, image_url: e.target.value })} />
-                    <button onClick={handleUpdateProduct}>Actualizar Producto</button>
-                </div>
-            )}
         </div>
     );
 };

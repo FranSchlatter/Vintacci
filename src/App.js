@@ -7,23 +7,33 @@ import ProductsPage from './pages/ProductsPage';
 import AdminPage from './pages/AdminPage'; 
 import ProductDetailPage from './pages/ProductDetailPage';
 import Cart from './components/Cart';
+import Footer from './components/Footer';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
     return (
         <Router>
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/products" element={<ProductsPage />} />
-                <Route path="/products/:id" element={<ProductDetailPage />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/admin" element={<AdminPage />} />
-            </Routes>
+            <div className="flex flex-col min-h-screen">
+                <Navbar />
+                <ToastContainer />
+                <main className="flex-grow">
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/products" element={<ProductsPage />} />
+                        <Route path="/products/:id" element={<ProductDetailPage />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/admin" element={<AdminPage />} />
+                    </Routes>
+                </main>
+                <Footer />
+            </div>
         </Router>
     );
 };
 
 export default App;
+
 
 // const App = () => { ... }: Define el componente funcional App, que es el componente raíz de la aplicación.
 // <Router>: Contenedor que permite la navegación entre diferentes componentes basados en la URL actual.

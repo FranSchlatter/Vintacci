@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  @apply min-h-screen; /* Asegura que cubra la altura de la pantalla */
+  background-color: theme('colors.vintage-bg'); /* Aplica el color de fondo hueso */
+  color: theme('colors.vintage-accent'); /* Aplica el color de texto oscuro */
+  font-family: theme('fontFamily.vintage'); /* Aplica la fuente vintage */
+}

@@ -10,7 +10,6 @@ const AdminUserPanel = () => {
     });
     const [editUser, setEditUser] = useState(null);
 
-    // Obtener usuarios al cargar el componente
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -48,7 +47,7 @@ const AdminUserPanel = () => {
 
     const handleEditUser = (user) => {
         setEditUser(user);
-        setNewUser({ username: user.username, email: user.email, password: '' }); // La contraseña no se edita
+        setNewUser({ username: user.username, email: user.email, password: '' });
     };
 
     const handleUpdateUser = async () => {
@@ -76,17 +75,17 @@ const AdminUserPanel = () => {
     };
 
     return (
-        <div className="admin-user-panel p-5">
+        <div className="admin-user-panel p-5 bg-gray-800 text-white rounded-lg shadow-md mb-4 mt-5">
             <h2 className="text-xl font-bold mb-4">Panel de Administración de Usuarios</h2>
             <div className="add-user-form mb-4">
-                <h3 className="text-lg font-semibold">Agregar Usuario</h3>
+                <h3 className="text-lg font-semibold mb-2">Agregar Usuario</h3>
                 <input
                     type="text"
                     name="username"
                     placeholder="Nombre de usuario"
                     value={newUser.username}
                     onChange={handleInputChange}
-                    className="border p-2 mr-2"
+                    className="border p-2 mr-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                     type="email"
@@ -94,21 +93,21 @@ const AdminUserPanel = () => {
                     placeholder="Email"
                     value={newUser.email}
                     onChange={handleInputChange}
-                    className="border p-2 mr-2"
+                    className="border p-2 mr-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
-                    type="text"
+                    type="password"
                     name="password"
                     placeholder="Contraseña"
                     value={newUser.password}
                     onChange={handleInputChange}
-                    className="border p-2 mr-2"
+                    className="border p-2 mr-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <button onClick={editUser ? handleUpdateUser : handleAddUser} className="bg-blue-500 text-white p-2">
+                <button onClick={editUser ? handleUpdateUser : handleAddUser} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
                     {editUser ? 'Actualizar Usuario' : 'Agregar Usuario'}
                 </button>
             </div>
-
+    
             <div className="user-list">
                 <h3 className="text-lg font-semibold mb-2">Lista de Usuarios</h3>
                 {users.map((user) => (
@@ -116,13 +115,13 @@ const AdminUserPanel = () => {
                         <div>
                             <p>Nombre de usuario: {user.username}</p>
                             <p>Email: {user.email}</p>
-                            <p>Contraseña: {user.password}</p> {/* Muestra la contraseña */}
+                            <p>Contraseña: ********</p> {/* Muestra la contraseña oculta */}
                         </div>
                         <div>
-                            <button onClick={() => handleEditUser(user)} className="bg-yellow-400 text-white p-1 mr-2">
+                            <button onClick={() => handleEditUser(user)} className="bg-yellow-400 text-white p-1 mr-2 rounded hover:bg-yellow-500">
                                 Editar
                             </button>
-                            <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 text-white p-1">
+                            <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 text-white p-1 rounded hover:bg-red-600">
                                 Eliminar
                             </button>
                         </div>

@@ -54,3 +54,5 @@ module.exports = pool;
 // Reducer: El reducer actualiza el estado de Redux con los productos.
 // Frontend: ProductsPage obtiene los productos del estado y los renderiza.
 // Este flujo garantiza que los datos fluyan de manera eficiente desde la base de datos hasta el frontend, permitiendo una aplicación dinámica y reactiva. Si tienes alguna pregunta adicional o quieres profundizar en algún paso específico, ¡házmelo saber!
+
+// psql -U postgres

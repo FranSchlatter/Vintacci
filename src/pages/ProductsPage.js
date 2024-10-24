@@ -13,23 +13,21 @@ const ProductsPage = () => {
     }, [dispatch]);
 
     return (
-        <div>
-            <h1>Productos</h1>
-            <ProductList products={products} />
+        <div className="vintage-bg min-h-screen py-10">
+            <div className="container mx-auto px-6 font-vintage">
+                <h1 className="text-4xl font-bold text-center mb-10 text-vintage-accent">Nuestros Productos</h1>
+                {/* Renderizamos la lista de productos */}
+                <ProductList products={products} />
+            </div>
         </div>
     );
 };
 
 export default ProductsPage;
 
-// Explicación detallada
-// dispatch:
-// dispatch es una función proporcionada por el hook useDispatch de react-redux.
-// Su principal función es enviar acciones a la tienda de Redux para modificar el estado global de la aplicación.
-// Al llamar a dispatch(fetchProducts()), estamos diciendo que queremos ejecutar la acción fetchProducts, la cual a su vez probablemente va a realizar una llamada a una API para obtener datos y actualizar el estado con esos productos.
+// dispatch > función es enviar acciones para modificar el estado global.
+// useSelector es un hook que permite acceder al estado.
 
-// useSelector:
-// useSelector es un hook que permite acceder al estado de la tienda de Redux.
 // Uso de useSelector:
 // Cuando usas useSelector en tu componente (por ejemplo, en ProductsPage), estás extrayendo datos específicos del "store".
 // En el código const products = useSelector((state) => state.products.products);, lo que haces es acceder a:
