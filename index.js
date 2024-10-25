@@ -1,10 +1,11 @@
-// src/index.js
 const express = require('express');
-const pool = require('./db');  // Importamos la conexión desde db.js
+const cors = require('cors'); // Importar cors
+const sequelize = require('./db'); // Importamos sequelize desde db.js
+const Product = require('./src/models/Product');
+const User = require('./src/models/User');
+
 const app = express();
 const PORT = 5000;
-const cors = require('cors'); // Importar cors
-
 
 // Habilitar CORS
 app.use(cors());
@@ -12,13 +13,18 @@ app.use(cors());
 // Middleware para analizar el cuerpo de las solicitudes
 app.use(express.json());
 
+// Conectar a la base de datos
+sequelize.sync()
+    .then(() => console.log('Base de datos sincronizada'))
+    .catch(err => console.error('Error al sincronizar la base de datos:', err));
+
 // PRODUCTS
 
 // Ruta para obtener todos los productos
 app.get('/products', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM products');
-        res.json(result.rows);
+        const products = await Product.findAll();
+        res.json(products);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error al obtener productos');
@@ -27,42 +33,73 @@ app.get('/products', async (req, res) => {
 
 // Ruta para agregar un nuevo producto
 app.post('/products', async (req, res) => {
-    const { name, description, price, image_url } = req.body;
+    const { name, description, price, category, brand, style, era, size, sex, color, material, image_url, stock, serial_number } = req.body;
+
+    // Validación de datos
+    if ( !name || !description || !price || !category || !brand || !style || !era || !size|| !sex || !color || !material || !image_url || !stock || !serial_number ) {
+        return res.status(400).send('Todos los campos son obligatorios');
+    }
+
     try {
-        const result = await pool.query(
-            'INSERT INTO products (name, description, price, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
-            [name, description, price, image_url]
-        );
-        res.status(201).json(result.rows[0]);
+        const newProduct = await Product.create({
+            name,
+            description,
+            price,
+            category,
+            brand,
+            style, 
+            era,
+            size, 
+            sex, 
+            color,
+            material,
+            image_url,
+            stock,
+            serial_number,
+        });
+        res.status(201).json(newProduct);
     } catch (err) {
-        console.error(err.message);
+        console.error('Error al agregar el producto:', err.message);
         res.status(500).send('Error al agregar el producto');
     }
 });
 
-// Ruta para actualizar un producto
+// Ruta para actualizar un producto TODO
 app.put('/products/:id', async (req, res) => {
     const { id } = req.params;
     const { name, description, price, image_url } = req.body;
 
     try {
-        const result = await pool.query(
-            'UPDATE products SET name = $1, description = $2, price = $3, image_url = $4 WHERE id = $5 RETURNING *',
-            [name, description, price, image_url, id]
-        );
-        res.json(result.rows[0]);
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).send('Producto no encontrado');
+        }
+
+        const updatedProduct = await product.update({
+            name,
+            description,
+            price,
+            image_url
+        });
+
+        res.json(updatedProduct);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error al actualizar el producto');
     }
 });
 
-// Ruta para eliminar un producto
+// Ruta para eliminar un producto TODO
 app.delete('/products/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM products WHERE id = $1', [id]);
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).send('Producto no encontrado');
+        }
+
+        await product.destroy();
         res.status(204).send();  // Respuesta sin contenido (No Content)
     } catch (err) {
         console.error(err.message);
@@ -70,29 +107,28 @@ app.delete('/products/:id', async (req, res) => {
     }
 });
 
-// Filtrar un product
+// Filtrar un producto TODO
 app.get('/products/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
-        if (result.rows.length === 0) {
+        const product = await Product.findByPk(id);
+        if (!product) {
             return res.status(404).send('Producto no encontrado');
         }
-        res.json(result.rows[0]);
+        res.json(product);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error al obtener el producto');
     }
 });
 
-
 // USERS
 
 // Ruta para obtener todos los usuarios
 app.get('/users', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM users');
-        res.json(result.rows);
+        const users = await User.findAll();
+        res.json(users);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error al obtener usuarios');
@@ -101,46 +137,82 @@ app.get('/users', async (req, res) => {
 
 // Ruta para registrar un nuevo usuario
 app.post('/users', async (req, res) => {
-    const { username, email, password } = req.body;
+    console.log(req.body); // Agrega esta línea para depuración
+    const { username, gmail, password, role, first_name, last_name, dni, country, city, postal_code, street, height, apartment } = req.body;
+
+    // Validación de datos
+    if ( !username || !gmail || !password || !role || !first_name || !last_name || !dni || !country || !city || !postal_code || !street || !height || !apartment ) {
+        return res.status(400).send('Todos los campos son obligatorios');
+    }
+
     try {
-        const result = await pool.query(
-            'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',
-            [username, email, password]
-        );
-        res.status(201).json(result.rows[0]);
+        const newUser = await User.create({
+            username,
+            gmail,
+            password,
+            role,
+            first_name,
+            last_name,
+            dni,
+            country,
+            city,
+            postal_code,
+            street,
+            height,
+            apartment
+        });
+        res.status(201).json(newUser);
     } catch (err) {
-        console.error('Error al registrar el usuario:', err.message); // Agrega el mensaje de error
+        console.error('Error al registrar el usuario:', err.message);
         res.status(500).send('Error al registrar el usuario');
     }
 });
 
+// Ruta para actualizar un usuario TODO
 app.put('/users/:id', async (req, res) => {
     const { id } = req.params;
-    const { username, email, password } = req.body;
+    const { role, first_name, last_name, dni, country, city, postal_code, street, height, apartment, username, gmail, password } = req.body;
 
     try {
-        const result = await pool.query(
-            'UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *',
-            [username, email, password, id]
-        );
-        if (result.rows.length === 0) {
+        const user = await User.findByPk(id);
+        if (!user) {
             return res.status(404).send('Usuario no encontrado');
         }
-        res.json(result.rows[0]);
+
+        const updatedUser = await user.update({
+            role,
+            first_name,
+            last_name,
+            dni,
+            country,
+            city,
+            postal_code,
+            street,
+            height,
+            apartment,
+            username,
+            gmail,
+            password
+        });
+
+        res.json(updatedUser);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error al actualizar el usuario');
     }
 });
 
-// Ruta para eliminar un usuario
+// Ruta para eliminar un usuario TODO
 app.delete('/users/:id', async (req, res) => {
     const { id } = req.params;
+
     try {
-        const result = await pool.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
-        if (result.rows.length === 0) {
+        const user = await User.findByPk(id);
+        if (!user) {
             return res.status(404).send('Usuario no encontrado');
         }
+
+        await user.destroy();
         res.status(204).send();  // Respuesta sin contenido (No Content)
     } catch (err) {
         console.error(err.message);

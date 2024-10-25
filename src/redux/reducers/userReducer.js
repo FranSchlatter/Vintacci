@@ -1,29 +1,24 @@
 const initialState = {
-    users: [],
+    allUsers: [],
     loading: false,
     error: null,
 };
 
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'FETCH_USERS_SUCCESS':
-            return { ...state, users: action.payload, loading: false, error: null };
-        case 'ADD_USER_SUCCESS':
-            return { ...state, users: [...state.users, action.payload], loading: false, error: null };
-        case 'UPDATE_USER_SUCCESS':
+        case 'FETCH_USERS':
+            return { ...state, allUsers: action.payload, loading: false, error: null };
+        case 'ADD_USER':
+            return { ...state, allUsers: [...state.allUsers, action.payload], loading: false, error: null };
+        case 'UPDATE_USER':
             return {
                 ...state,
-                users: state.users.map(user => user.id === action.payload.id ? action.payload : user),
+                allUsers: state.allUsers.map(user => user.id === action.payload.id ? action.payload : user),
                 loading: false,
                 error: null,
             };
-        case 'DELETE_USER_SUCCESS':
-            return { ...state, users: state.users.filter(user => user.id !== action.payload), loading: false, error: null };
-        case 'FETCH_USERS_FAILURE':
-        case 'ADD_USER_FAILURE':
-        case 'UPDATE_USER_FAILURE':
-        case 'DELETE_USER_FAILURE':
-            return { ...state, loading: false, error: action.payload };
+        case 'DELETE_USER':
+            return { ...state, allUsers: state.allUsers.filter(user => user.id !== action.payload), loading: false, error: null };
         default:
             return state;
     }

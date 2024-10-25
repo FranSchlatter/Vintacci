@@ -6,7 +6,7 @@ import ProductList from '../components/ProductList';
 
 const ProductsPage = () => {
     const dispatch = useDispatch();
-    const products = useSelector((state) => state.products.products);
+    const products = useSelector((state) => state.products.allProducts);
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -30,7 +30,7 @@ export default ProductsPage;
 
 // Uso de useSelector:
 // Cuando usas useSelector en tu componente (por ejemplo, en ProductsPage), estás extrayendo datos específicos del "store".
-// En el código const products = useSelector((state) => state.products.products);, lo que haces es acceder a:
+// En el código const products = useSelector((state) => state.products.allProducts);, lo que haces es acceder a:
 // state: El estado global del store.
 // state.products: La parte del estado relacionada con los productos, que se obtiene del productReducer.
 // state.products.products: Finalmente, accedes al array de productos almacenados en la propiedad products de products.

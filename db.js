@@ -1,14 +1,26 @@
-const { Pool } = require('pg');
+// db.js
+const { Sequelize } = require('sequelize');
 
-const pool = new Pool({
-    user: 'postgres',
+// Conexión a la base de datos usando Sequelize
+const sequelize = new Sequelize('vintacci', 'postgres', 'Schlatter', {
     host: 'localhost',
-    database: 'vintacci',
-    password: 'Schlatter',
+    dialect: 'postgres',
     port: 5432,
+    logging: false, // No muestra logs
 });
 
-module.exports = pool;
+// Verifica la conexión
+sequelize.authenticate()
+    .then(() => {
+        console.log('Conexión a la base de datos exitosa.');
+    })
+    .catch(err => {
+        console.error('Error al conectar a la base de datos:', err);
+    });
+
+module.exports = sequelize; // Exporta el objeto sequelize
+
+
 
 // El flujo de datos desde la base de datos hasta el frontend en tu aplicación React con Redux y Express sigue varios pasos. Aquí te dejo un resumen detallado del proceso:
 

@@ -1,35 +1,31 @@
 // src/redux/reducers/productReducer.js
 const initialState = {
-    products: [],
+    allProducts: [],
     loading: false,
     error: null,
 };
 
 const productReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'FETCH_PRODUCTS_SUCCESS':
-            return { ...state, products: action.payload, loading: false };
-        case 'ADD_PRODUCT_SUCCESS':
-            return { ...state, products: [...state.products, action.payload], loading: false };
-        case 'UPDATE_PRODUCT_SUCCESS':
+        case 'FETCH_PRODUCTS':
+            return { ...state, allProducts: action.payload, loading: false };
+        case 'FETCH_PRODUCT_ID':
+            return { ...state, idProduct: action.payload, loading: false };
+        case 'ADD_PRODUCT':
+            return { ...state, allProducts: [...state.allProducts, action.payload], loading: false };
+        case 'UPDATE_PRODUCT':
             return {
                 ...state,
-                products: state.products.map((product) =>
+                allProducts: state.allProducts.map((product) =>
                     product.id === action.payload.id ? action.payload : product
                 ),
                 loading: false,
             };
-        case 'DELETE_PRODUCT_SUCCESS':
+        case 'DELETE_PRODUCT':
             return {
                 ...state,
-                products: state.products.filter((product) => product.id !== action.payload),  // Filtrar el producto eliminado
+                allProducts: state.allProducts.filter((product) => product.id !== action.payload),
             };
-        case 'DELETE_PRODUCT_FAILURE':
-            return { ...state, error: action.payload };
-        case 'FETCH_PRODUCTS_FAILURE':
-            return { ...state, error: action.payload };
-        case 'ADD_PRODUCT_FAILURE':
-            return { ...state, error: action.payload };
         default:
             return state;
     }
@@ -44,7 +40,7 @@ export default productReducer;
 // const initialState = { ... }:
 // Se define un objeto initialState que representa el estado inicial del reducer.
 // Contiene tres propiedades:
-// products: un arreglo vacío que almacenará los productos.
+// allProducts: un arreglo vacío que almacenará los productos.
 // loading: un booleano que indica si los productos están siendo cargados; inicialmente es false.
 // error: se inicia como null y se utilizará para almacenar cualquier error que ocurra al intentar cargar productos.
 
@@ -60,8 +56,8 @@ export default productReducer;
 // Se utiliza una declaración switch para manejar diferentes tipos de acciones.
 // Caso de Éxito:
 // case 'FETCH_PRODUCTS_SUCCESS':: Si se recibe una acción de éxito al obtener productos.
-// return { ...state, products: action.payload, loading: false };:
-// Se retorna un nuevo estado que combina el estado anterior (...state) y actualiza la propiedad products con el payload de la acción (que contiene los productos obtenidos).
+// return { ...state, allProducts: action.payload, loading: false };:
+// Se retorna un nuevo estado que combina el estado anterior (...state) y actualiza la propiedad allProducts con el payload de la acción (que contiene los productos obtenidos).
 // Se establece loading a false ya que la carga se ha completado.
 // default:: Si el tipo de acción no coincide con los casos anteriores.
 // return state;: Se retorna el estado actual sin cambios, lo que es importante para mantener el estado si no se han hecho actualizaciones.

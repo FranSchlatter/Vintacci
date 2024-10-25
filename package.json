@@ -11,7 +11,8 @@
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "express": "^4.21.1",
-    "pg": "^8.13.0",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
@@ -20,6 +21,7 @@
     "react-toastify": "^10.0.6",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
+    "sequelize": "^6.37.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

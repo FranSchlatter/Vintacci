@@ -5,8 +5,8 @@ import userReducer from './userReducer';
 import cartReducer from './cartReducer';
 
 const rootReducer = combineReducers({
-    products: productReducer, // Cambia aquí si tienes un nombre diferente
-    users: userReducer, // Cambia aquí si tienes un nombre diferente
+    products: productReducer,
+    users: userReducer,
     cart: cartReducer
 });
 

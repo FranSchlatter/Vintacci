@@ -4,10 +4,9 @@ import axios from 'axios';
 export const fetchUsers = () => async (dispatch) => {
     try {
         const response = await axios.get('http://localhost:5000/users');
-        dispatch({ type: 'FETCH_USERS_SUCCESS', payload: response.data });
+        dispatch({ type: 'FETCH_USERS', payload: response.data });
     } catch (error) {
         console.error('Error fetching users:', error);
-        dispatch({ type: 'FETCH_USERS_FAILURE', payload: error.message });
     }
 };
 
@@ -15,10 +14,9 @@ export const fetchUsers = () => async (dispatch) => {
 export const addUser = (user) => async (dispatch) => {
     try {
         const response = await axios.post('http://localhost:5000/users', user);
-        dispatch({ type: 'ADD_USER_SUCCESS', payload: response.data });
+        dispatch({ type: 'ADD_USER', payload: response.data });
     } catch (error) {
         console.error('Error adding user:', error);
-        dispatch({ type: 'ADD_USER_FAILURE', payload: error.message });
     }
 };
 
@@ -26,10 +24,9 @@ export const addUser = (user) => async (dispatch) => {
 export const updateUser = (id, user) => async (dispatch) => {
     try {
         const response = await axios.put(`http://localhost:5000/users/${id}`, user);
-        dispatch({ type: 'UPDATE_USER_SUCCESS', payload: response.data });
+        dispatch({ type: 'UPDATE_USER', payload: response.data });
     } catch (error) {
         console.error('Error updating user:', error);
-        dispatch({ type: 'UPDATE_USER_FAILURE', payload: error.message });
     }
 };
 
@@ -37,9 +34,8 @@ export const updateUser = (id, user) => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
     try {
         await axios.delete(`http://localhost:5000/users/${id}`);
-        dispatch({ type: 'DELETE_USER_SUCCESS', payload: id });
+        dispatch({ type: 'DELETE_USER', payload: id });
     } catch (error) {
         console.error('Error deleting user:', error);
-        dispatch({ type: 'DELETE_USER_FAILURE', payload: error.message });
     }
 };

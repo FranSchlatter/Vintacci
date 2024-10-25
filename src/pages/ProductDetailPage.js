@@ -1,36 +1,26 @@
 // src/pages/ProductDetailPage.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
+import { fetchProductId } from '../redux/actions/productActions';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
-    const [product, setProduct] = useState(null);
-
     const dispatch = useDispatch();
+    const product = useSelector((state) => state.products.idProduct);
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/products/${id}`);
-                setProduct(response.data);
-            } catch (error) {
-                console.error('Error fetching product details:', error);
-            }
-        };
-
-        fetchProduct();
-    }, [id]);
-
-    if (!product) {
-        return <p className="text-center text-gray-500 mt-10">Loading...</p>;
-    }
+        dispatch(fetchProductId(id));
+    }, [id, dispatch]);
 
     const handleAddToCart = () => {
         dispatch(addToCart(product)); // Agregar el producto al carrito
     };
+
+    if (!product) {
+        return <p className="text-center text-gray-500 mt-10">Loading...</p>;
+    }
 
     return (
         <div className="vintage-bg min-h-screen py-10">
