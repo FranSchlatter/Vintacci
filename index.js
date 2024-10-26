@@ -67,7 +67,20 @@ app.post('/products', async (req, res) => {
 // Ruta para actualizar un producto TODO
 app.put('/products/:id', async (req, res) => {
     const { id } = req.params;
-    const { name, description, price, image_url } = req.body;
+    const { name,
+        description,
+        price,
+        category,
+        brand,
+        style, 
+        era,
+        size, 
+        sex, 
+        color,
+        material,
+        image_url,
+        stock,
+        serial_number, } = req.body;
 
     try {
         const product = await Product.findByPk(id);
@@ -79,7 +92,17 @@ app.put('/products/:id', async (req, res) => {
             name,
             description,
             price,
-            image_url
+            category,
+            brand,
+            style, 
+            era,
+            size, 
+            sex, 
+            color,
+            material,
+            image_url,
+            stock,
+            serial_number
         });
 
         res.json(updatedProduct);
