@@ -1,53 +1,145 @@
-// src/pages/ProductDetailPage.js
+// import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
 import { fetchProductId } from '../redux/actions/productActions';
+import { Package, Ruler, Palette, Calendar, Tag, ShoppingCart, Users } from 'lucide-react'; //   Fabric
+import { Card, CardContent } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 
 const ProductDetailPage = () => {
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const product = useSelector((state) => state.products.idProduct);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.products.idProduct);
 
-    useEffect(() => {
-        dispatch(fetchProductId(id));
-    }, [id, dispatch]);
+  useEffect(() => {
+    dispatch(fetchProductId(id));
+  }, [id, dispatch]);
 
-    const handleAddToCart = () => {
-        dispatch(addToCart(product)); // Agregar el producto al carrito
-    };
-
-    if (!product) {
-        return <p className="text-center text-gray-500 mt-10">Loading...</p>;
-    }
-
+  if (!product) {
     return (
-        <div className="vintage-bg min-h-screen py-10">
-            <div className="container mx-auto p-6 max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden font-vintage">
-                {/* Contenedor principal para la imagen y los detalles */}
-                <div className="sm:flex sm:items-center">
-                    <img 
-                        src={product.image_url} 
-                        alt={product.name} 
-                        className="w-full sm:w-1/2 object-cover h-64 sm:h-auto"
-                    />
-                    <div className="p-6 sm:p-10">
-                        <h1 className="text-4xl font-bold mb-4 text-vintage-accent">{product.name}</h1>
-                        <p className="text-lg text-gray-600 mb-4">{product.description}</p>
-                        <p className="text-2xl font-semibold text-vintage-accent mb-6">${product.price}</p>
-                        {/* Botón de agregar al carrito */}
-                        <button
-                            onClick={handleAddToCart} // Agregar manejador de clic
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-                        >
-                            Agregar al Carrito
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+      </div>
     );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Imagen del producto */}
+          <div className="relative group">
+            <div className="aspect-square overflow-hidden rounded-xl bg-gray-100">
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            {product.stock < 5 && (
+              <Badge variant="destructive" className="absolute top-4 right-4">
+                ¡Últimas {product.stock} unidades!
+              </Badge>
+            )}
+          </div>
+
+          {/* Información del producto */}
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold">{product.name}</h1>
+              <p className="text-xl font-semibold mt-2">${product.price}</p>
+            </div>
+
+            <p className="text-gray-600">{product.description}</p>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Card>
+                <CardContent className="flex items-center gap-2 p-4">
+                  <Package className="h-5 w-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Marca</p>
+                    <p className="font-medium">{product.brand}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="flex items-center gap-2 p-4">
+                  <Calendar className="h-5 w-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Era</p>
+                    <p className="font-medium">{product.era}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="flex items-center gap-2 p-4">
+                  <Tag className="h-5 w-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Estilo</p>
+                    <p className="font-medium">{product.style}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="flex items-center gap-2 p-4">
+                  <Users className="h-5 w-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Género</p>
+                    <p className="font-medium">{product.sex}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="details">Detalles</TabsTrigger>
+                <TabsTrigger value="specs">Especificaciones</TabsTrigger>
+              </TabsList>
+              <TabsContent value="details" className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-center gap-2">
+                    <Ruler className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm">Talla: {product.size}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Palette className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm">Color: {product.color}</span>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="specs" className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-center gap-2">
+                    {/* <Fabric className="h-4 w-4 text-gray-500" /> */}
+                    <span className="text-sm">Material: {product.material}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Package className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm">Serial: {product.serial_number}</span>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            <button
+              onClick={() => dispatch(addToCart(product))}
+              className="w-full bg-black hover:bg-gray-800 text-white py-4 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+            >
+              <ShoppingCart className="h-5 w-5" />
+              Agregar al carrito
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProductDetailPage;

@@ -1,65 +1,111 @@
 import React from 'react';
-import { HeartIcon, ShoppingCartIcon } from '@heroicons/react/outline';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
+import { Heart, ShoppingCart, Package, Ruler, Palette } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
 
-const ProductItem = ({ product }) => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const handleClick = () => {
-        navigate(`/products/${product.id}`); // Redirigir al detalle del producto
-    };
+  const handleClick = () => {
+    navigate(`/products/${product.id}`);
+  };
 
-    const handleAddToCart = () => {
-        dispatch(addToCart(product)); // Agregar el producto al carrito
-    };
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    dispatch(addToCart(product));
+  };
 
-    return (
-        <div className="max-w-xs rounded overflow-hidden shadow-lg bg-gray-50 relative">
-            <div className="relative">
-                {/* Contenedor para la imagen con un tamaño fijo */}
-                <div className="h-60 w-full overflow-hidden"> {/* Ajusta la altura aquí */}
-                    <img 
-                        className="w-full h-full object-contain transition-transform duration-300 transform hover:scale-105" 
-                        src={product.image_url} 
-                        alt={product.name} 
-                        onClick={handleClick} 
-                    />
-                </div>
-    
-                {/* Ícono de favorito movido a la parte superior derecha */}
-                <button className="absolute top-2 right-2 text-gray-500 hover:text-red-500">
-                    <HeartIcon className="h-6 w-6" />
-                </button>
-            </div>
-    
-            <div className="px-6 py-4">
-                {/* Nombre del producto */}
-                <h2 className="font-bold text-xl mb-2">{product.name}</h2>
-    
-                {/* Descripción del producto */}
-                <p className="text-gray-700 text-sm mb-4">{product.description}</p>
-    
-                <div className="flex justify-between items-center">
-                    {/* Precio */}
-                    <p className="text-lg font-semibold">${product.price}</p>
-    
-                    {/* Botón para agregar al carrito */}
-                    <button
-                        onClick={handleAddToCart} // Agregar manejador de clic
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-                    >
-                        <ShoppingCartIcon className="h-5 w-5 mr-2" />
-                        <span>Agregar</span>
-                    </button>
-                </div>
-            </div>
+  return (
+    <Card className="w-full max-w-sm transition-all duration-300 hover:shadow-xl cursor-pointer group" onClick={handleClick}>
+      <CardHeader className="p-0 relative">
+        <div className="relative h-64 overflow-hidden">
+          <img 
+            src={product.image_url} 
+            alt={product.name}
+            className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              // Agregar lógica de favoritos
+            }}
+            className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
+          >
+            <Heart className="h-5 w-5 text-gray-600 hover:text-red-500" />
+          </button>
+          {product.stock < 5 && (
+            <Badge variant="destructive" className="absolute bottom-2 left-2">
+              ¡Últimas unidades!
+            </Badge>
+          )}
         </div>
-    );
+      </CardHeader>
+      
+      <CardContent className="p-4">
+        <div className="space-y-2">
+          <div className="flex justify-between items-start">
+            <h3 className="font-semibold text-lg line-clamp-1">{product.name}</h3>
+            <span className="font-bold text-lg">${product.price}</span>
+          </div>
+          
+          <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
+          
+          <div className="flex gap-2 flex-wrap">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge variant="outline" className="flex items-center gap-1">
+                    <Package className="h-3 w-3" />
+                    {product.brand}
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>Marca</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge variant="outline" className="flex items-center gap-1">
+                    <Ruler className="h-3 w-3" />
+                    {product.size}
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>Talla</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge variant="outline" className="flex items-center gap-1">
+                    <Palette className="h-3 w-3" />
+                    {product.color}
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>Color</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        </div>
+      </CardContent>
+
+      <CardFooter className="p-4 pt-0">
+        <button
+          onClick={handleAddToCart}
+          className="w-full bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors"
+        >
+          <ShoppingCart className="h-5 w-5" />
+          Agregar al carrito
+        </button>
+      </CardFooter>
+    </Card>
+  );
 };
 
-export default ProductItem;
-
-// Recibe product de su componente padre. ProductList linea 9.
+export default ProductCard;
