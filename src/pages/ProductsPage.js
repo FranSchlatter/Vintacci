@@ -1,7 +1,14 @@
 // src/pages/ProductsPage.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../redux/actions/productActions';
+import { 
+    updateFilter, 
+    updatePriceRange, 
+    removeFilter, 
+    setSearchQuery,
+    setSortBy
+} from '../redux/actions/filterActions';
 import ProductList from '../components/ProductList';
 import FilterPanel from '../components/Filters/FilterPanel';
 import SearchAndSort from '../components/Filters/SearchAndSort';
@@ -9,31 +16,22 @@ import ActiveFilters from '../components/Filters/ActiveFilters';
 
 const ProductsPage = () => {
     const dispatch = useDispatch();
+    
+    // Selectors
     const products = useSelector((state) => state.products.allProducts);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [activeFilters, setActiveFilters] = useState({
-        category: [],
-        brand: [],
-        style: [],
-        era: [],
-        size: [],
-        sex: [],
-        color: [],
-        material: [],
-        priceRange: { min: 0, max: 999999 }
-    });
-    const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('newest');
+    const activeFilters = useSelector((state) => state.filters.activeFilters);
+    const searchQuery = useSelector((state) => state.filters.searchQuery);
+    const sortBy = useSelector((state) => state.filters.sortBy);
 
+    // Cargar productos cuando el componente se monta
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
 
-    useEffect(() => {
-        applyFilters();
-    }, [products, activeFilters, searchQuery, sortBy]);
-
-    const applyFilters = () => {
+    // Función para aplicar filtros
+    const getFilteredProducts = () => {
+        if (!products) return [];
+        
         let result = [...products];
 
         // Aplicar búsqueda
@@ -50,7 +48,7 @@ const ProductsPage = () => {
                 result = result.filter(product =>
                     product.price >= filterValues.min && product.price <= filterValues.max
                 );
-            } else if (filterValues.length > 0) {
+            } else if (filterValues && filterValues.length > 0) {
                 result = result.filter(product =>
                     filterValues.includes(product[filterType])
                 );
@@ -72,50 +70,35 @@ const ProductsPage = () => {
                 result.sort((a, b) => b.name.localeCompare(a.name));
                 break;
             default:
-                // 'newest' - asumiendo que tienes un campo createdAt
-                result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         }
 
-        setFilteredProducts(result);
+        return result;
     };
 
+    // Handlers para los filtros
     const handleFilterChange = (filterType, value, isChecked) => {
-        setActiveFilters(prev => ({
-            ...prev,
-            [filterType]: isChecked
-                ? [...prev[filterType], value]
-                : prev[filterType].filter(v => v !== value)
-        }));
+        dispatch(updateFilter(filterType, value, isChecked));
     };
 
     const handlePriceRangeChange = (min, max) => {
-        setActiveFilters(prev => ({
-            ...prev,
-            priceRange: { min, max }
-        }));
+        dispatch(updatePriceRange(min, max));
     };
 
     const handleSearchChange = (query) => {
-        setSearchQuery(query);
+        dispatch(setSearchQuery(query));
     };
 
     const handleSortChange = (value) => {
-        setSortBy(value);
+        dispatch(setSortBy(value));
     };
 
-    const removeFilter = (filterType, value) => {
-        if (filterType === 'priceRange') {
-            setActiveFilters(prev => ({
-                ...prev,
-                priceRange: { min: 0, max: 999999 }
-            }));
-        } else {
-            setActiveFilters(prev => ({
-                ...prev,
-                [filterType]: prev[filterType].filter(v => v !== value)
-            }));
-        }
+    const handleRemoveFilter = (filterType, value) => {
+        dispatch(removeFilter(filterType, value));
     };
+
+    // Obtener productos filtrados
+    const filteredProducts = getFilteredProducts();
 
     return (
         <div className="vintage-bg min-h-screen py-10">
@@ -148,7 +131,7 @@ const ProductsPage = () => {
                         <ActiveFilters
                             activeFilters={activeFilters}
                             totalProducts={filteredProducts.length}
-                            onRemoveFilter={removeFilter}
+                            onRemoveFilter={handleRemoveFilter}
                         />
                         
                         {/* Lista de productos */}

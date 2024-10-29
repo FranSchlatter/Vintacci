@@ -9,6 +9,8 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
 import { ToastContainer } from 'react-toastify';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
@@ -22,6 +24,8 @@ const App = () => {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/products" element={<ProductsPage />} />
                         <Route path="/products/:id" element={<ProductDetailPage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                        <Route path="/contact" element={<ContactPage />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/admin" element={<AdminPage />} />
                     </Routes>
