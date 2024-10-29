@@ -10,19 +10,19 @@ export const filterConfig = {
     },
     category: {
         title: 'Categoría',
-        options: ['Camisetas', 'Pantalones', 'Zapatillas', 'Buzo', 'Campera']
+        options: ['Camisetas', 'Pantalones', 'Zapatillas', 'Buzos', 'Camperas']
     },
     brand: {
         title: 'Marca',
-        options: ['Nike', 'Adidas', 'Puma', 'Reebok', 'Under Armour']
+        options: ['Nike', 'Adidas', 'Puma', 'Reebok', 'Under Armour', 'Columbia', 'Vans', 'Lacoste', 'The North Face']
     },
     style: {
         title: 'Estilo',
-        options: ['Casual', 'Deportivo', 'Formal', 'Vintage', 'Urbano']
+        options: ['Casual', 'Deportivo', 'Vintage', 'Urbano']
     },
     era: {
         title: 'Época',
-        options: ['Verano', 'Inverno']
+        options: ['Verano', 'Invierno']
     },
     color: {
         title: 'Color',
@@ -30,7 +30,7 @@ export const filterConfig = {
     },
     material: {
         title: 'Material',
-        options: ['Algodón', 'Tela', 'Cuero', 'Mezclilla', 'Nylon']
+        options: ['Algodón', 'Tela', 'Cuero', 'Nylon']
     }
 };
 

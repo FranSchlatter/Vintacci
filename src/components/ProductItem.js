@@ -6,6 +6,7 @@ import { Heart, ShoppingCart, Package, Ruler, Palette } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
+import { toast } from 'react-toastify';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     dispatch(addToCart(product));
+    toast.success('¡Producto agregado al carrito!', { position: "bottom-right", autoClose: 2000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, style: { background: '#4B5563', color: 'white' }});
   };
 
   return (

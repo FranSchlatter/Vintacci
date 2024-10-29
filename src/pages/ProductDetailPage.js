@@ -8,6 +8,7 @@ import { Package, Ruler, Palette, Calendar, Tag, ShoppingCart, Users } from 'luc
 import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { toast } from 'react-toastify';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -129,7 +130,10 @@ const ProductDetailPage = () => {
             </Tabs>
 
             <button
-              onClick={() => dispatch(addToCart(product))}
+              onClick={() => {
+                dispatch(addToCart(product)) 
+                toast.success('¡Producto agregado al carrito!', { position: "bottom-right", autoClose: 2000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, style: { background: '#4B5563', color: 'white' }});
+              }}
               className="w-full bg-black hover:bg-gray-800 text-white py-4 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
             >
               <ShoppingCart className="h-5 w-5" />

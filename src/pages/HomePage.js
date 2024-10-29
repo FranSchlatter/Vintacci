@@ -20,7 +20,7 @@ const Homepage = () => {
       image: 'https://dcdn.mitiendanube.com/stores/004/538/129/products/5be21f59-abd3-4fdc-93e6-1868d13d7b0b-059c63dc44e27f08e317164230983693-1024-1024.jpg'
     },
     {
-      title: 'Remeras',
+      title: 'Camisetas',
       description: 'Diseños únicos',
       image: 'https://http2.mlstatic.com/D_954777-MLA79820582713_102024-O.jpg'
     },
