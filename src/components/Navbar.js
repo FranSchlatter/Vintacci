@@ -81,7 +81,7 @@ const Navbar = () => {
               onMouseEnter={() => setIsProductMenuOpen(true)}
               onMouseLeave={() => setIsProductMenuOpen(false)} // Agregamos este handler
             >
-              <button 
+              <button onClick={() => handleProductClick('Ver Todo', '')}
                 className="text-gray-700 hover:text-gray-900"
               >
                 Productos
