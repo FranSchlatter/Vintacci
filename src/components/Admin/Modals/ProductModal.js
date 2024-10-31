@@ -105,6 +105,20 @@ const ProductModal = ({ isOpen, onClose, onSave, product }) => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Marca
+                  </label>
+                  <input
+                    type="text"
+                    name="brand"
+                    value={formData.brand}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Precio
                   </label>
                   <input
@@ -180,6 +194,23 @@ const ProductModal = ({ isOpen, onClose, onSave, product }) => {
                   >
                     <option value="">Seleccionar talla</option>
                     {filterConfig.size.options.map(option => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Estilo
+                  </label>
+                  <select
+                    name="style"
+                    value={formData.style}
+                    onChange={handleChange}
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Seleccionar estilo</option>
+                    {filterConfig.style.options.map(option => (
                       <option key={option} value={option}>{option}</option>
                     ))}
                   </select>

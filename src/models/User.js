@@ -65,8 +65,9 @@ const User = sequelize.define('User', {
         defaultValue: DataTypes.NOW,
     },
 }, {
-    tableName: 'users',
-    timestamps: false, // Desactiva los timestamps automáticos
+    timestamps: true,
+    underscored: true,
+    tableName: 'users'
 });
 
 // Exportar el modelo

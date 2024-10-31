@@ -26,6 +26,17 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 allProducts: state.allProducts.filter((product) => product.id !== action.payload),
             };
+        case 'UPDATE_PRODUCTS_STOCK':
+            return {
+                ...state,
+                allProducts: state.allProducts.map(product => {
+                const update = action.payload.find(u => u.id === product.id);
+                if (update) {
+                    return { ...product, stock: product.stock - update.quantity };
+                }
+                return product;
+                })
+            };
         default:
             return state;
     }

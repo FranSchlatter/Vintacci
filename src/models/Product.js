@@ -58,8 +58,9 @@ const Product = sequelize.define('Product', {
         defaultValue: DataTypes.NOW,
     }
 }, {
-    timestamps: false,
-    tableName: 'products',
+    timestamps: true,
+    underscored: true,
+    tableName: 'products'
 });
 
 module.exports = Product;

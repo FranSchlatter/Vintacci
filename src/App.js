@@ -12,6 +12,8 @@ import { ToastContainer } from 'react-toastify';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import 'react-toastify/dist/ReactToastify.css';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
 
 const App = () => {
     return (
@@ -28,6 +30,8 @@ const App = () => {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/admin" element={<AdminPage />} />
+                        <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/order-confirmation/:orderNumber" element={<OrderConfirmationPage />} />   
                     </Routes>
                 </main>
                 <Footer />
