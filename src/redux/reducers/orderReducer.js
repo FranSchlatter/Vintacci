@@ -33,6 +33,12 @@ export const orderReducer = (state = initialState, action) => {
           action.payload : state.currentOrder
       };
 
+    case 'DELETE_ORDER':
+      return {
+        ...state,
+        allOrders: state.allOrders.filter(order => order.id !== action.payload)
+      };
+
     case 'SET_ORDER_DETAILS':
       return {
         ...state,

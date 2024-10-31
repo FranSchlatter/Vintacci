@@ -9,7 +9,6 @@ import PaymentStep from '../components/Checkout/PaymentStep';
 import OrderSummary from '../components/Checkout/OrderSummary';
 import { createOrder } from '../redux/actions/orderActions'
 import { generateInvoice } from '../redux/actions/orderActions'
-import { updateProductStock } from '../redux/actions/productActions'
 import { toast } from 'react-toastify';
 
 const CheckoutPage = () => {
@@ -66,13 +65,6 @@ const CheckoutPage = () => {
       console.log('Datos de la orden a enviar:', orderData); // Para debug
   
       const order = await dispatch(createOrder(orderData));
-  
-      await dispatch(updateProductStock(
-        cartItems.map(item => ({
-          id: item.id,
-          quantity: item.quantity
-        }))
-      ));
   
       await dispatch(generateInvoice(order.id));
       dispatch(clearCart());

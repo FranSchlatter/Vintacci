@@ -82,35 +82,6 @@ const productController = {
             console.error(err.message);
             res.status(500).send('Error al obtener el producto');
         }
-    },
-
-    updateProductStock: async (req, res) => {
-        const { id } = req.params;
-        const { quantity } = req.body;
-
-        try {
-            const product = await Product.findByPk(id);
-            if (!product) {
-                return res.status(404).send('Producto no encontrado');
-            }
-
-            if (product.stock < quantity) {
-                return res.status(400).json({
-                    error: 'Stock insuficiente',
-                    available: product.stock,
-                    requested: quantity
-                });
-            }
-
-            await product.update({
-                stock: product.stock - quantity
-            });
-
-            res.json(product);
-        } catch (err) {
-            console.error('Error updating stock:', err);
-            res.status(500).send('Error al actualizar el stock');
-        }
     }
 };
 

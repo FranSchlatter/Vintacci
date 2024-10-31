@@ -10,15 +10,6 @@ export const fetchProducts = () => async (dispatch) => {
     }
 }; 
 
-export const fetchProductId = (id) => async (dispatch) => {
-    try {
-        const response = await axios.get(`http://localhost:5000/products/${id}`);
-        dispatch({ type: 'FETCH_PRODUCT_ID', payload: response.data });
-    } catch (error) {
-        console.error("Error fetching products:", error);
-    }
-};
-
 export const addProduct = (productData) => async (dispatch) => {
     try {
         console.log(productData)
@@ -47,17 +38,11 @@ export const deleteProduct = (id) => async (dispatch) => {
     }
 };
 
-export const updateProductStock = (productUpdates) => async (dispatch) => {
+export const fetchProductId = (id) => async (dispatch) => {
     try {
-      // TODO revisar stock consume doble.
-      const promises = productUpdates.map(({ id, quantity }) =>
-        axios.patch(`http://localhost:5000/products/${id}/stock`, { quantity })
-      );
-      
-      await Promise.all(promises);
-      dispatch({ type: 'UPDATE_PRODUCTS_STOCK', payload: productUpdates });
+        const response = await axios.get(`http://localhost:5000/products/${id}`);
+        dispatch({ type: 'FETCH_PRODUCT_ID', payload: response.data });
     } catch (error) {
-      console.error('Error updating stock:', error);
-      throw error;
+        console.error("Error fetching products:", error);
     }
-  };
+};

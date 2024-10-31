@@ -9,8 +9,6 @@ const productReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'FETCH_PRODUCTS':
             return { ...state, allProducts: action.payload, loading: false };
-        case 'FETCH_PRODUCT_ID':
-            return { ...state, idProduct: action.payload, loading: false };
         case 'ADD_PRODUCT':
             return { ...state, allProducts: [...state.allProducts, action.payload], loading: false };
         case 'UPDATE_PRODUCT':
@@ -26,17 +24,8 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 allProducts: state.allProducts.filter((product) => product.id !== action.payload),
             };
-        case 'UPDATE_PRODUCTS_STOCK':
-            return {
-                ...state,
-                allProducts: state.allProducts.map(product => {
-                const update = action.payload.find(u => u.id === product.id);
-                if (update) {
-                    return { ...product, stock: product.stock - update.quantity };
-                }
-                return product;
-                })
-            };
+        case 'FETCH_PRODUCT_ID':
+            return { ...state, idProduct: action.payload, loading: false };
         default:
             return state;
     }

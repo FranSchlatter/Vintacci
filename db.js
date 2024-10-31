@@ -68,3 +68,21 @@ module.exports = sequelize; // Exporta el objeto sequelize
 // Este flujo garantiza que los datos fluyan de manera eficiente desde la base de datos hasta el frontend, permitiendo una aplicación dinámica y reactiva. Si tienes alguna pregunta adicional o quieres profundizar en algún paso específico, ¡házmelo saber!
 
 // psql -U postgres
+// TODO Pendientes:
+// Panel de admin orders.
+// Panel de admin facturas.
+// Panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, recibido, error, etc.)
+// Panel para usuarios. Mis pedidos con info necesaria.
+// Historial de ventas/compras?
+// Analitics con info real.
+// Separar front y back. 
+// Implemetar maps en info contacto y para enviar pedidos.
+// Remaster checkout, elegir direccion de las guardadas por el user, 
+// Anotaciones por admin en orders. 
+// 
+
+
+// After:
+// Remaster, productos, detailproduct con talles mas fotos zoom. Array de talles? Quedan 3 M, 2 L, etc... Colores, distintas img. Prod relacionados. Etc
+// Remaster, filtros, escalable / editable. Para x prod, x filtros (zapatillas talle, camisetas talle)
+// Cargar users products denuevo. 

@@ -39,3 +39,14 @@ export const deleteUser = (id) => async (dispatch) => {
         console.error('Error deleting user:', error);
     }
 };
+
+// Accion para traer user por id
+export const fetchUserById = (id) => async (dispatch) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        dispatch({ type: 'FETCH_USER_ID', payload: response.data });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        throw error;
+    }
+};

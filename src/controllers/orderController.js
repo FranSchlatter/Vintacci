@@ -154,6 +154,41 @@ const orderController = {
         }
     },
 
+    deleteOrder: async (req, res) => {
+        const { id } = req.params;
+    
+        try {
+            const order = await Order.findByPk(id, {
+                include: ['items']
+            });
+    
+            if (!order) {
+                return res.status(404).json({ error: 'Orden no encontrada' });
+            }
+    
+            // Restaurar el stock de los productos
+            await Promise.all(
+                order.items.map(async (item) => {
+                    const product = await Product.findByPk(item.product_id);
+                    if (product) {
+                        await product.update({
+                            stock: product.stock + item.quantity
+                        });
+                    }
+                })
+            );
+    
+            await order.destroy();
+            res.status(204).send();
+        } catch (err) {
+            console.error('Error al eliminar la orden:', err);
+            res.status(500).json({ 
+                error: 'Error al eliminar la orden',
+                message: err.message 
+            });
+        }
+    },
+
     generateInvoice: async (req, res) => {
         const { orderId } = req.params;
         console.log('Generando factura para orden:', orderId);

@@ -19,6 +19,12 @@ const userReducer = (state = initialState, action) => {
             };
         case 'DELETE_USER':
             return { ...state, allUsers: state.allUsers.filter(user => user.id !== action.payload), loading: false, error: null };
+        case 'FETCH_USER_ID':
+            return {
+                ...state,
+                selectedUser: action.payload,
+                loading: false
+            };
         default:
             return state;
     }

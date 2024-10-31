@@ -34,16 +34,12 @@ export const updateOrderStatus = (id, status) => async (dispatch) => {
   }
 };
 
-export const generateInvoice = (orderId) => async (dispatch) => {
+export const deleteOrder = (id) => async (dispatch) => {
   try {
-    const response = await axios.post(`http://localhost:5000/orders/${orderId}/invoice`);
-    dispatch({ type: 'SET_ORDER_INVOICE', payload: { 
-      orderId, 
-      invoice: response.data 
-    }});
-    return response.data;
+    await axios.delete(`http://localhost:5000/orders/${id}`);
+    dispatch({ type: 'DELETE_ORDER', payload: id });
   } catch (error) {
-    console.error('Error generating invoice:', error);
+    console.error('Error deleting order:', error);
     throw error;
   }
 };
@@ -58,3 +54,18 @@ export const getOrderDetails = (orderId) => async (dispatch) => {
     throw error;
   }
 };
+
+export const generateInvoice = (orderId) => async (dispatch) => {
+  try {
+    const response = await axios.post(`http://localhost:5000/orders/${orderId}/invoice`);
+    dispatch({ type: 'SET_ORDER_INVOICE', payload: { 
+      orderId, 
+      invoice: response.data 
+    }});
+    return response.data;
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    throw error;
+  }
+};
+
