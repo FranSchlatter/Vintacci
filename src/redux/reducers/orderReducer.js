@@ -6,7 +6,7 @@ const initialState = {
   error: null
 };
 
-export const orderReducer = (state = initialState, action) => {
+const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_ORDERS':
       return {
@@ -62,3 +62,5 @@ export const orderReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default orderReducer;

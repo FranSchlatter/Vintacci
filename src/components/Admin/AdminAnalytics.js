@@ -36,7 +36,7 @@ const AdminAnalytics = () => {
 
   // Datos de resumen
   const summaryData = {
-    totalSales: orders.reduce((sum, order) => sum + order?.total || 0, 0),
+    totalSales: orders.reduce((sum, order) => sum + parseInt(order?.total) || 0, 0),
     totalOrders: orders.length,
     totalUsers: users.length,
     totalProducts: products.length,

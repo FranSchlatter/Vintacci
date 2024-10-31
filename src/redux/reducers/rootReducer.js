@@ -4,11 +4,13 @@ import productReducer from './productReducer';
 import userReducer from './userReducer';
 import filterReducer from './filterReducer';
 import cartReducer from './cartReducer';
+import orderReducer from './orderReducer';
 
 const rootReducer = combineReducers({
     products: productReducer,
     users: userReducer,
     filters: filterReducer,
+    orders: orderReducer,
     cart: cartReducer
 });
 

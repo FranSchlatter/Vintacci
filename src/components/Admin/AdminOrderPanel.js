@@ -27,8 +27,8 @@ const AdminOrderPanel = () => {
     'processing': { label: 'En Proceso', icon: Package, color: 'text-blue-500' },
     'shipped': { label: 'Enviado', icon: Truck, color: 'text-purple-500' },
     'delivered': { label: 'Entregado', icon: CheckCircle, color: 'text-green-500' },
-    'cancelled': { label: 'Cancelado', icon: XCircle, color: 'text-red-500' },
-    'problem': { label: 'Con Problemas', icon: AlertCircle, color: 'text-orange-500' }
+    'cancelled': { label: 'Cancelado', icon: XCircle, color: 'text-red-500' }
+    // 'problem': { label: 'Con Problemas', icon: AlertCircle, color: 'text-orange-500' }
   };
 
   useEffect(() => {
@@ -37,9 +37,9 @@ const AdminOrderPanel = () => {
 
   // Filtrado de órdenes
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = 
-      order.id.toString().includes(searchTerm) ||
-      order.customer_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = order.id.toString().includes(searchTerm) || 
+                         order.billing_address?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         order.billing_address?.last_name?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     
@@ -48,7 +48,7 @@ const AdminOrderPanel = () => {
                            (!dateRange.end || orderDate <= new Date(dateRange.end));
 
     return matchesSearch && matchesStatus && matchesDateRange;
-  });
+});
 
   // Manejador de cambio de estado
   const handleStatusChange = async (orderId, newStatus) => {
@@ -164,36 +164,36 @@ const AdminOrderPanel = () => {
             {filteredOrders.map((order) => (
               <tr key={order.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  #{order.id}
+                    #{order.id.slice(0,8)}...
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">
-                    {order.customer_name}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {order.customer_email}
-                  </div>
+                    <div className="text-sm font-medium text-gray-900">
+                        {`${order.billing_address?.first_name} ${order.billing_address?.last_name}`}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                        {order.billing_address?.email}
+                    </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(order.created_at).toLocaleDateString()}
+                    {new Date(order.created_at).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <StatusBadge status={order.status} />
+                    <StatusBadge status={order.status} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${order.total}
+                    ${parseFloat(order.total).toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <select
-                    value={order.status}
-                    onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                    className="border rounded-lg px-2 py-1"
-                  >
-                    {Object.entries(orderStatuses).map(([key, { label }]) => (
-                      <option key={key} value={key}>{label}</option>
-                    ))}
-                  </select>
-                </td>
+                    <select
+                        value={order.status}
+                        onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                        className="border rounded-lg px-2 py-1"
+                    >
+                        {Object.entries(orderStatuses).map(([key, { label }]) => (
+                            <option key={key} value={key}>{label}</option>
+                        ))}
+                    </select>
+                  </td>
               </tr>
             ))}
           </tbody>
