@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/outline';
 import { setActiveFilters } from '../redux/actions/filterActions';
 import { filterConfig } from '../config/filterConfig';
+import { logoutUser } from '../redux/actions/authActions'
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
   
   // Obtener el estado del carrito
   const cartItems = useSelector(state => state.cart?.items || []);
   // Calcular el total de items
   const cartItemCount = cartItems.reduce((total, item) => total + (parseInt(item.quantity) || 0), 0);
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { isAuthenticated, currentUser } = useSelector(state => state.auth);
 
   const productMenuItems = {
     'Categorías': filterConfig.category.options,
@@ -21,6 +26,17 @@ const Navbar = () => {
     'Estilo': filterConfig.style.options,
     'Era': filterConfig.era.options
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleProductClick = async (category, item) => {
     const emptyFilters = {
@@ -60,6 +76,70 @@ const Navbar = () => {
     setIsProductMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    setIsUserMenuOpen(false);
+    navigate('/');
+  };
+
+  const userMenu = (
+    <div 
+      ref={userMenuRef}
+      className={`absolute right-0 top-12 w-48 bg-white rounded-lg shadow-lg py-2 z-50 ${
+        isUserMenuOpen ? 'block' : 'hidden'
+      }`}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {isAuthenticated ? (
+        <>
+          <div className="px-4 py-2 border-b">
+            <p className="text-sm font-medium text-gray-900">{currentUser?.first_name}</p>
+            <p className="text-xs text-gray-500">{currentUser?.email}</p>
+          </div>
+          <Link
+            to="/profile"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => setIsUserMenuOpen(false)}
+          >
+            Mi Perfil
+          </Link>
+          {currentUser?.role === 'admin' && (
+            <Link
+              to="/admin"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setIsUserMenuOpen(false)}
+            >
+              Panel Admin
+            </Link>
+          )}
+          <button
+            onClick={handleLogout}
+            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+          >
+            Cerrar Sesión
+          </button>
+        </>
+      ) : (
+        <>
+          <Link
+            to="/login"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => setIsUserMenuOpen(false)}
+          >
+            Iniciar Sesión
+          </Link>
+          <Link
+            to="/register"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            onClick={() => setIsUserMenuOpen(false)}
+          >
+            Registrarse
+          </Link>
+        </>
+      )}
+    </div>
+  );
+
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
@@ -79,9 +159,10 @@ const Navbar = () => {
             <div 
               className="relative group"
               onMouseEnter={() => setIsProductMenuOpen(true)}
-              onMouseLeave={() => setIsProductMenuOpen(false)} // Agregamos este handler
+              onMouseLeave={() => setIsProductMenuOpen(false)}
             >
-              <button onClick={() => handleProductClick('Ver Todo', '')}
+              <button 
+                onClick={() => handleProductClick('Ver Todo', '')}
                 className="text-gray-700 hover:text-gray-900"
               >
                 Productos
@@ -135,23 +216,38 @@ const Navbar = () => {
             <Link to="/contact" className="text-gray-700 hover:text-gray-900">
               Contacto
             </Link>
+
+            {/* TODO: REMOVER LUEGO */}
+            <Link to="/admin" className="text-gray-700 hover:text-gray-900">
+              Admin
+            </Link>
           </div>
 
           {/* Iconos derecha */}
           <div className="flex items-center space-x-6">
             {/* Carrito con contador */}
-            <button onClick={() => navigate('/cart')} className="relative text-gray-700 hover:text-gray-900" >
-                <ShoppingCartIcon className="h-6 w-6" />
-                {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-gray-800 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {cartItemCount}
-                    </span>
-                )}
+            <button
+              onClick={() => navigate('/cart')}
+              className="relative text-gray-700 hover:text-gray-900"
+            >
+              <ShoppingCartIcon className="h-6 w-6" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-gray-800 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
             </button>
-            {/* Admin Panel */}
-            <button onClick={() => navigate('/admin')} className="text-gray-700 hover:text-gray-900">
-              <UserIcon className="h-6 w-6" />
-            </button>
+
+            {/* Menú de usuario */}
+            <div className="relative">
+              <button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="text-gray-700 hover:text-gray-900 focus:outline-none"
+              >
+                <UserIcon className="h-6 w-6" />
+              </button>
+              {userMenu}
+            </div>
           </div>
         </div>
       </div>

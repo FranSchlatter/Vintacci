@@ -1,5 +1,6 @@
+// models/User.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../../db'); // Importa la conexión de la DB
+const sequelize = require('../../db');
 
 const User = sequelize.define('User', {
     id: {
@@ -10,12 +11,12 @@ const User = sequelize.define('User', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,  // Debe ser único
+        unique: true,
     },
-    gmail: {
+    email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,  // Debe ser único
+        unique: true,
     },
     password: {
         type: DataTypes.STRING,
@@ -37,38 +38,35 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    country: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    phone: {
+        type: DataTypes.STRING
     },
-    city: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    birth_date: {
+        type: DataTypes.DATE
     },
-    postal_code: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    preferences: {
+        type: DataTypes.JSON,
+        defaultValue: {}
     },
-    street: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    newsletter_subscription: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     },
-    height: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    last_login: {
+        type: DataTypes.DATE
     },
-    apartment: {
-        type: DataTypes.STRING,
+    status: {
+        type: DataTypes.ENUM('active', 'inactive', 'suspended'),
+        defaultValue: 'active'
     },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
-    },
+    }
 }, {
     timestamps: true,
     underscored: true,
     tableName: 'users'
 });
 
-// Exportar el modelo
 module.exports = User;

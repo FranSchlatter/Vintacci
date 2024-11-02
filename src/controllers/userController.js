@@ -15,7 +15,7 @@ const userController = {
     createUser: async (req, res) => {
         const { 
             username, 
-            gmail, 
+            email, 
             password, 
             role, 
             first_name, 
@@ -30,7 +30,7 @@ const userController = {
         } = req.body;
 
         // Validación de datos
-        if (!username || !gmail || !password || !role || !first_name || 
+        if (!username || !email || !password || !role || !first_name || 
             !last_name || !dni || !country || !city || !postal_code || 
             !street || !height) {
             return res.status(400).send('Todos los campos son obligatorios excepto apartment');
@@ -39,7 +39,7 @@ const userController = {
         try {
             const newUser = await User.create({
                 username,
-                gmail,
+                email,
                 password,
                 role,
                 first_name,
@@ -79,7 +79,7 @@ const userController = {
             height, 
             apartment, 
             username, 
-            gmail, 
+            email, 
             password 
         } = req.body;
 
@@ -101,7 +101,7 @@ const userController = {
                 height,
                 apartment,
                 username,
-                gmail,
+                email,
                 password
             });
 

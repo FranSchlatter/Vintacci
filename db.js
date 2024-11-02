@@ -69,20 +69,25 @@ module.exports = sequelize; // Exporta el objeto sequelize
 
 // psql -U postgres
 // TODO Pendientes:
+// Favs no anda
+// Agregar direccion user faltan datos.
+// Compra direccion de envio elegir de las cargadas. O cargar y guardar.
+// Orders no se vinculan con user. No se ven en el lugar del user, ni el user se ve en la orden de admin.
+// Create user de admin, cambiar logica para q no sea identico al de register.
+// Ocultar admin para users.
+
+
 // Panel de admin orders.
 // Panel de admin facturas.
 // Panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, recibido, error, etc.)
-// Panel para usuarios. Mis pedidos con info necesaria.
-// Historial de ventas/compras?
+// Historial de ventas/compras en user
 // Analitics con info real.
 // Separar front y back. 
 // Implemetar maps en info contacto y para enviar pedidos.
-// Remaster checkout, elegir direccion de las guardadas por el user, 
 // Anotaciones por admin en orders. 
-// 
+// Emails auto y manuales.
 
 
 // After:
 // Remaster, productos, detailproduct con talles mas fotos zoom. Array de talles? Quedan 3 M, 2 L, etc... Colores, distintas img. Prod relacionados. Etc
 // Remaster, filtros, escalable / editable. Para x prod, x filtros (zapatillas talle, camisetas talle)
-// Cargar users products denuevo. 

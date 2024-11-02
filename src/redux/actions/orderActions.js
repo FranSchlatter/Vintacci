@@ -46,14 +46,13 @@ export const deleteOrder = (id) => async (dispatch) => {
 
 export const getOrderDetails = (orderId) => async (dispatch) => {
   try {
-    const response = await axios.get(`http://localhost:5000/orders/${orderId}`);
-    dispatch({ type: 'SET_ORDER_DETAILS', payload: response.data });
-    return response.data;
+      const response = await axios.get(`http://localhost:5000/orders/${orderId}`);
+      dispatch({ type: 'SET_CURRENT_ORDER', payload: response.data });
   } catch (error) {
-    console.error('Error fetching order details:', error);
-    throw error;
+      console.error('Error fetching order details:', error);
   }
 };
+
 
 export const generateInvoice = (orderId) => async (dispatch) => {
   try {

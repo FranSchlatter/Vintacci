@@ -7,8 +7,14 @@ import { Card, CardContent, CardFooter, CardHeader } from "../components/ui/card
 import { Badge } from "../components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { addToFavorites, removeFromFavorites } from '../redux/actions/favoriteActions';
 
 const ProductCard = ({ product }) => {
+  const currentUser = useSelector(state => state.users.currentUser);
+  const favorites = useSelector(state => state.favorites.items);
+  const isFavorite = favorites.some(fav => fav.product_id === product.id);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,11 +40,21 @@ const ProductCard = ({ product }) => {
           <button 
             onClick={(e) => {
               e.stopPropagation();
-              // Agregar lógica de favoritos
+              if (!currentUser) {
+                toast.error('Debes iniciar sesión para agregar favoritos');
+                return;
+              }
+              if (isFavorite) {
+                dispatch(removeFromFavorites(currentUser.id, product.id));
+              } else {
+                dispatch(addToFavorites(currentUser.id, product.id));
+              }
             }}
             className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
           >
-            <Heart className="h-5 w-5 text-gray-600 hover:text-red-500" />
+            <Heart 
+              className={`h-5 w-5 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} 
+            />
           </button>
           {product.stock < 5 && (
             <Badge variant="destructive" className="absolute bottom-2 left-2">

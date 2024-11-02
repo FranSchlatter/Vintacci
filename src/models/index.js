@@ -5,19 +5,50 @@ const OrderItem = require('./OrderItem');
 const Invoice = require('./Invoice');
 const Product = require('./Product');
 const User = require('./User');
+const Address = require('./Address')
+const Favorite = require('./Favorite')
+const CartItem = require('./CartItem')
 
 function initializeAssociations() {
-    // Usuario - Órdenes
+    // User - Orders
     User.hasMany(Order, {
-        foreignKey: {
-            name: 'user_id',
-            allowNull: true
-        },
+        foreignKey: 'user_id',
         as: 'orders'
     });
     Order.belongsTo(User, {
         foreignKey: 'user_id',
         as: 'user'
+    });
+
+    // User - Addresses
+    User.hasMany(Address, {
+        foreignKey: 'user_id',
+        as: 'addresses'
+    });
+    Address.belongsTo(User, {
+        foreignKey: 'user_id'
+    });
+
+    // User - Favorites
+    User.belongsToMany(Product, {
+        through: Favorite,
+        as: 'favoriteProducts',
+        foreignKey: 'user_id'
+    });
+    
+    Product.belongsToMany(User, {
+        through: Favorite,
+        as: 'favoritedBy',
+        foreignKey: 'product_id'
+    });
+
+    // User - Cart
+    User.hasMany(CartItem, {
+        foreignKey: 'user_id',
+        as: 'cartItems'
+    });
+    CartItem.belongsTo(User, {
+        foreignKey: 'user_id'
     });
 
     // Orden - Items
@@ -67,5 +98,8 @@ module.exports = {
     Product,
     Order,
     OrderItem,
-    Invoice
+    Invoice,
+    Address,
+    Favorite,
+    CartItem
 };

@@ -1,6 +1,6 @@
 // models/Order.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../../db'); // Importa la conexión de la DB
+const sequelize = require('../../db');
 
 const Order = sequelize.define('Order', {
   id: {

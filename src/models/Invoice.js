@@ -1,6 +1,6 @@
 // models/Invoice.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../../db'); // Importa la conexión de la DB
+const sequelize = require('../../db');
 
 const Invoice = sequelize.define('Invoice', {
     id: {

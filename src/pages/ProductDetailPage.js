@@ -9,11 +9,16 @@ import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { toast } from 'react-toastify';
+import { Heart } from 'lucide-react';
+import { addToFavorites, removeFromFavorites } from '../redux/actions/favoriteActions';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.products.idProduct);
+  const currentUser = useSelector(state => state.users.currentUser);
+  const favorites = useSelector(state => state.favorites.items);
+  const isFavorite = favorites.some(fav => fav.product_id === product.id);
 
   useEffect(() => {
     dispatch(fetchProductId(id));
@@ -40,6 +45,24 @@ const ProductDetailPage = () => {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
+            <button 
+              onClick={() => {
+                if (!currentUser) {
+                  toast.error('Debes iniciar sesión para agregar favoritos');
+                  return;
+                }
+                if (isFavorite) {
+                  dispatch(removeFromFavorites(currentUser.id, product.id));
+                } else {
+                  dispatch(addToFavorites(currentUser.id, product.id));
+                }
+              }}
+              className="absolute top-4 left-4 p-3 bg-white/80 rounded-full hover:bg-white transition-colors shadow-sm"
+            >
+              <Heart 
+                className={`h-6 w-6 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} 
+              />
+            </button>
             {product.stock < 5 && (
               <Badge variant="destructive" className="absolute top-4 right-4">
                 ¡Últimas {product.stock} unidades!

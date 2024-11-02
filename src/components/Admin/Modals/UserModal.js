@@ -5,7 +5,7 @@ import { X } from 'lucide-react';
 const UserModal = ({ isOpen, onClose, onSave, user }) => {
   const [formData, setFormData] = useState({
     username: '',
-    gmail: '',
+    email: '',
     password: '',
     role: '',
     first_name: '',
@@ -25,7 +25,7 @@ const UserModal = ({ isOpen, onClose, onSave, user }) => {
     } else {
       setFormData({
         username: '',
-        gmail: '',
+        email: '',
         password: '',
         role: '',
         first_name: '',
@@ -92,8 +92,8 @@ const UserModal = ({ isOpen, onClose, onSave, user }) => {
                 </label>
                 <input
                   type="email"
-                  name="gmail"
-                  value={formData.gmail}
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
                   required
                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"

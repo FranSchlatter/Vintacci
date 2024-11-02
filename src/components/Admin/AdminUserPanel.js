@@ -38,7 +38,7 @@ const AdminUserPanel = () => {
     ?.filter(user => {
       const matchesSearch = 
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.gmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesRole = !activeFilters.role || user.role === activeFilters.role;
@@ -202,7 +202,7 @@ const AdminUserPanel = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{user.gmail}</div>
+                  <div className="text-sm text-gray-900">{user.email}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleBadgeColor(user.role)}`}>

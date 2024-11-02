@@ -14,6 +14,10 @@ import ContactPage from './pages/ContactPage';
 import 'react-toastify/dist/ReactToastify.css';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
+import OrderDetailPage from './pages/OrderDetailPage';
+import UserProfilePage from './pages/UserProfilePage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 
 const App = () => {
     return (
@@ -31,7 +35,11 @@ const App = () => {
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/admin" element={<AdminPage />} />
                         <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/profile" element={<UserProfilePage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
                         <Route path="/order-confirmation/:orderNumber" element={<OrderConfirmationPage />} />   
+                        <Route path="/orders/:orderId" element={<OrderDetailPage />} />
                     </Routes>
                 </main>
                 <Footer />

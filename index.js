@@ -1,4 +1,5 @@
 // index.js
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./db');
@@ -8,6 +9,8 @@ const sequelize = require('./db');
 const productRoutes = require('./src/routes/productRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const orderRoutes = require('./src/routes/orderRoutes');
+const addressRoutes = require('./src/routes/addressRoutes');
+const authRoutes = require('./src/routes/authRoutes');
 
 const app = express();
 const PORT = 5000;
@@ -20,6 +23,8 @@ app.use(express.json());
 app.use('/products', productRoutes);
 app.use('/users', userRoutes);
 app.use('/orders', orderRoutes);
+app.use('/addresses', addressRoutes);
+app.use('/auth', authRoutes);
 
 // Manejo de errores global
 app.use((err, req, res, next) => {
