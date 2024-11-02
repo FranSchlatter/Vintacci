@@ -69,23 +69,31 @@ module.exports = sequelize; // Exporta el objeto sequelize
 
 // psql -U postgres
 // TODO Pendientes:
-// Favs no anda
+// Mi perfil, re-render con cambios.
+// Favs no anda, posible falta de datos de user en el componente.
 // Agregar direccion user faltan datos.
 // Compra direccion de envio elegir de las cargadas. O cargar y guardar.
 // Orders no se vinculan con user. No se ven en el lugar del user, ni el user se ve en la orden de admin.
 // Create user de admin, cambiar logica para q no sea identico al de register.
+// Revisar codigo, sacar cosas no utilizadas, reestructurar todo.
+// Revisar y entender todo el codigo. Luego avanzar con nuevas funcionalidades.
 // Ocultar admin para users.
 
 
-// Panel de admin orders.
+// NUEVAS FUNCIONALIDADES.
+// Sesion de invitado, q puede hacer? Puede comprar? Forzar a login?
 // Panel de admin facturas.
 // Panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, recibido, error, etc.)
 // Historial de ventas/compras en user
 // Analitics con info real.
-// Separar front y back. 
 // Implemetar maps en info contacto y para enviar pedidos.
 // Anotaciones por admin en orders. 
 // Emails auto y manuales.
+// Permanecer conectado. No cerrar sesion con reload.
+// Login google.
+// Validar todo los forms, errores abajo
+// Separar front y back. 2 package.json
+// Revisar mercado pago, nike, etc para sacar + funcionalidades.
 
 
 // After:

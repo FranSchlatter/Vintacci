@@ -21,12 +21,16 @@ export const addUser = (user) => async (dispatch) => {
 };
 
 // Acción para actualizar un usuario existente
-export const updateUser = (id, user) => async (dispatch) => {
+export const updateUser = (id, userData) => async (dispatch) => {
     try {
-        const response = await axios.put(`http://localhost:5000/users/${id}`, user);
+        const response = await axios.put(`http://localhost:5000/users/${id}`, userData);
         dispatch({ type: 'UPDATE_USER', payload: response.data });
+        // Añadir esta línea para actualizar también el estado de auth
+        dispatch({ type: 'UPDATE_CURRENT_USER', payload: response.data });
+        return response.data;
     } catch (error) {
         console.error('Error updating user:', error);
+        throw error; // Importante lanzar el error para manejarlo en el componente
     }
 };
 

@@ -32,7 +32,7 @@ const PersonalInfo = ({ user }) => {
             setIsEditing(false);
             toast.success('Perfil actualizado con éxito');
         } catch (error) {
-            toast.error('Error al actualizar el perfil');
+            toast.error(error.response?.data?.error || 'Error al actualizar el perfil');
         }
     };
 
