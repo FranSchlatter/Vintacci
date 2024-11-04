@@ -10,8 +10,12 @@ const Invoice = sequelize.define('Invoice', {
     },
     order_id: {
       type: DataTypes.UUID,
-      allowNull: false
-    },
+      allowNull: false,
+      references: {
+          model: 'order',
+          key: 'id'
+      }
+    },  
     invoice_number: {
       type: DataTypes.STRING,
       unique: true,
@@ -33,19 +37,11 @@ const Invoice = sequelize.define('Invoice', {
     total: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-  },
-    updated_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-  }
+    }
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'invoices'
+    tableName: 'invoice'
   });
 
 module.exports = Invoice;

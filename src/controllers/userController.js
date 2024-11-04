@@ -1,137 +1,132 @@
-// src/controllers/userController.js
 const { User } = require('../models');
+const bcrypt = require('bcryptjs'); // Necesario para hashear passwords
 
 const userController = {
     getAllUsers: async (req, res) => {
         try {
-            const users = await User.findAll();
+            const users = await User.findAll({
+                attributes: { exclude: ['password'] }
+            });
             res.json(users);
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Error al obtener usuarios');
+        } catch (error) {
+            console.error('Error getting users:', error);
+            res.status(500).json({ error: 'Error al obtener usuarios' });
         }
     },
 
     createUser: async (req, res) => {
-        const { 
-            username, 
-            email, 
-            password, 
-            role, 
-            first_name, 
-            last_name, 
-            dni, 
-            country, 
-            city, 
-            postal_code, 
-            street, 
-            height, 
-            apartment 
-        } = req.body;
-
-        // Validación de datos
-        if (!username || !email || !password || !role || !first_name || 
-            !last_name || !dni || !country || !city || !postal_code || 
-            !street || !height) {
-            return res.status(400).send('Todos los campos son obligatorios excepto apartment');
-        }
-
         try {
+            const { 
+                username, 
+                email, 
+                password,
+                role,
+                first_name, 
+                last_name,
+                dni,
+                phone,
+                birth_date,
+                preferences,
+                newsletter_subscription
+            } = req.body;
+
+            if (!username || !email || !password || !role || !first_name || !last_name || !dni) {
+                return res.status(400).json({ error: 'Faltan campos requeridos' });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
             const newUser = await User.create({
                 username,
                 email,
-                password,
+                password: hashedPassword,
                 role,
                 first_name,
                 last_name,
                 dni,
-                country,
-                city,
-                postal_code,
-                street,
-                height,
-                apartment
+                phone,
+                birth_date,
+                preferences,
+                newsletter_subscription,
+                status: 'active'
             });
-            res.status(201).json(newUser);
-        } catch (err) {
-            console.error('Error al registrar el usuario:', err.message);
-            if (err.name === 'SequelizeUniqueConstraintError') {
-                return res.status(400).json({ 
-                    error: 'Usuario ya existe',
-                    details: 'El username o email ya está en uso'
-                });
+
+            const { password: _, ...userWithoutPassword } = newUser.toJSON();
+            res.status(201).json(userWithoutPassword);
+        } catch (error) {
+            console.error('Error creating user:', error);
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                return res.status(400).json({ error: 'El username o email ya está en uso' });
             }
-            res.status(500).send('Error al registrar el usuario');
+            res.status(500).json({ error: 'Error al crear usuario' });
         }
     },
 
     updateUser: async (req, res) => {
         const { id } = req.params;
         const { 
-            role, 
-            first_name, 
-            last_name, 
-            dni, 
-            country, 
-            city, 
-            postal_code, 
-            street, 
-            height, 
-            apartment, 
-            username, 
-            email, 
-            password 
+            username,
+            email,
+            role,
+            first_name,
+            last_name,
+            dni,
+            phone,
+            birth_date,
+            preferences,
+            newsletter_subscription,
+            status,
+            password // opcional
         } = req.body;
 
         try {
             const user = await User.findByPk(id);
             if (!user) {
-                return res.status(404).send('Usuario no encontrado');
+                return res.status(404).json({ error: 'Usuario no encontrado' });
             }
 
-            const updatedUser = await user.update({
+            // Si se proporciona nueva contraseña, hashearla
+            const updateData = {
+                username,
+                email,
                 role,
                 first_name,
                 last_name,
                 dni,
-                country,
-                city,
-                postal_code,
-                street,
-                height,
-                apartment,
-                username,
-                email,
-                password
-            });
+                phone,
+                birth_date,
+                preferences,
+                newsletter_subscription,
+                status,
+                ...(password && { password: await bcrypt.hash(password, 10) })
+            };
 
-            res.json(updatedUser);
-        } catch (err) {
-            console.error(err.message);
-            if (err.name === 'SequelizeUniqueConstraintError') {
-                return res.status(400).json({ 
-                    error: 'Error de actualización',
-                    details: 'El username o email ya está en uso'
-                });
+            const updatedUser = await user.update(updateData);
+            const { password: _, ...userWithoutPassword } = updatedUser.toJSON();
+
+            res.json(userWithoutPassword);
+        } catch (error) {
+            console.error('Error updating user:', error);
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                return res.status(400).json({ error: 'El username o email ya está en uso' });
             }
-            res.status(500).send('Error al actualizar el usuario');
+            res.status(500).json({ error: 'Error al actualizar usuario' });
         }
     },
 
     deleteUser: async (req, res) => {
         const { id } = req.params;
-
         try {
             const user = await User.findByPk(id);
             if (!user) {
-                return res.status(404).send('Usuario no encontrado');
+                return res.status(404).json({ error: 'Usuario no encontrado' });
             }
 
             await user.destroy();
             res.status(204).send();
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Error al eliminar el usuario');
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            res.status(500).json({ error: 'Error al eliminar usuario' });
         }
     },
 
@@ -139,15 +134,45 @@ const userController = {
         const { id } = req.params;
         try {
             const user = await User.findByPk(id, {
-                include: ['orders'] // Incluir órdenes asociadas si es necesario
+                attributes: { exclude: ['password'] },
+                include: ['orders']
             });
+            
             if (!user) {
-                return res.status(404).send('Usuario no encontrado');
+                return res.status(404).json({ error: 'Usuario no encontrado' });
             }
+
             res.json(user);
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Error al obtener el usuario');
+        } catch (error) {
+            console.error('Error getting user:', error);
+            res.status(500).json({ error: 'Error al obtener usuario' });
+        }
+    },
+
+    makeUserAdmin: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const user = await User.findByPk(id);
+            if (!user) {
+                return res.status(404).json({ error: 'Usuario no encontrado' });
+            }
+
+            // Verificar si ya es admin
+            if (user.role === 'admin') {
+                return res.status(400).json({ error: 'El usuario ya es administrador' });
+            }
+
+            // Actualizar a admin
+            await user.update({ role: 'admin' });
+
+            const { password: _, ...userWithoutPassword } = user.toJSON();
+            res.json({
+                message: 'Usuario actualizado a administrador exitosamente',
+                user: userWithoutPassword
+            });
+        } catch (error) {
+            console.error('Error making user admin:', error);
+            res.status(500).json({ error: 'Error al convertir usuario en administrador' });
         }
     }
 };

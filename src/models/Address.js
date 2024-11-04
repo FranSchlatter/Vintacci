@@ -10,7 +10,11 @@ const Address = sequelize.define('Address', {
     },
     user_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'user',
+            key: 'id'
+        }
     },
     alias: {
         type: DataTypes.STRING,
@@ -59,6 +63,10 @@ const Address = sequelize.define('Address', {
         type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    timestamps: true,
+    underscored: true,
+    tableName: 'address'
 });
 
 module.exports = Address;

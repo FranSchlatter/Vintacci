@@ -1,33 +1,31 @@
-// src/redux/actions/authActions.js
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { fetchUserFavorites } from './favoriteActions';
 
 export const loginUser = (credentials) => async (dispatch) => {
     try {
-        const response = await axios.post('http://localhost:5000/auth/login', credentials);
-        const { token, user } = response.data;
+        const { data: { token, user } } = await axios.post('http://localhost:5000/auth/login', credentials);
         
-        // Guardar token en localStorage
         localStorage.setItem('token', token);
-        
-        // Configurar token para futuras peticiones
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         
         dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+        dispatch(fetchUserFavorites(user.id));
+        
         return user;
     } catch (error) {
-        dispatch({ type: 'LOGIN_FAIL' });
+        console.error('Login error:', error);
         throw error;
     }
 };
 
 export const registerUser = (userData) => async (dispatch) => {
     try {
-        const response = await axios.post('http://localhost:5000/auth/register', userData);
+        const { data } = await axios.post('http://localhost:5000/auth/register', userData);
         toast.success('Registro exitoso. Por favor, inicia sesión.');
-        return response.data;
+        return data;
     } catch (error) {
-        dispatch({ type: 'REGISTER_FAIL' });
+        console.error('Register error:', error);
         throw error;
     }
 };
@@ -40,15 +38,16 @@ export const logoutUser = () => (dispatch) => {
 
 export const checkAuth = () => async (dispatch) => {
     const token = localStorage.getItem('token');
-    if (!token) {
-        return dispatch({ type: 'LOGOUT' });
-    }
+    if (!token) return dispatch({ type: 'LOGOUT' });
 
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const response = await axios.get('http://localhost:5000/auth/me');
-        dispatch({ type: 'LOGIN_SUCCESS', payload: response.data });
+        const { data: user } = await axios.get('http://localhost:5000/auth/me');
+        
+        dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+        dispatch(fetchUserFavorites(user.id));
     } catch (error) {
+        console.error('Auth check error:', error);
         localStorage.removeItem('token');
         delete axios.defaults.headers.common['Authorization'];
         dispatch({ type: 'LOGOUT' });

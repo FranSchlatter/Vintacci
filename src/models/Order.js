@@ -10,7 +10,11 @@ const Order = sequelize.define('Order', {
   },
   user_id: {
     type: DataTypes.UUID,
-    allowNull: true
+    allowNull: true,
+    references: {
+        model: 'user',
+        key: 'id'
+    }
   },
   total: {
     type: DataTypes.DECIMAL(10, 2),
@@ -47,19 +51,11 @@ const Order = sequelize.define('Order', {
   tracking_number: {
     type: DataTypes.STRING,
     allowNull: true
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  },
-  updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
   }
 }, {
   timestamps: true,
   underscored: true,
-  tableName: 'orders'
+  tableName: 'order'
 });
 
 module.exports = Order;

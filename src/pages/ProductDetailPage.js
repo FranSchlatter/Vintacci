@@ -16,7 +16,7 @@ const ProductDetailPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.products.idProduct);
-  const currentUser = useSelector(state => state.users.currentUser);
+  const currentUser = useSelector(state => state.auth.currentUser);
   const favorites = useSelector(state => state.favorites.items);
   const isFavorite = favorites.some(fav => fav.product_id === product.id);
 

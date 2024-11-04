@@ -2,32 +2,16 @@
 const initialState = {
     isAuthenticated: false,
     currentUser: null,
-    loading: true,
-    error: null
+    loading: true
 };
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOGIN_SUCCESS':
+        case 'UPDATE_CURRENT_USER':
             return {
                 ...state,
                 isAuthenticated: true,
-                currentUser: action.payload,
-                loading: false
-            };
-
-        case 'LOGIN_FAIL':
-        case 'REGISTER_FAIL':
-            return {
-                ...state,
-                isAuthenticated: false,
-                currentUser: null,
-                loading: false,
-                error: action.payload
-            };
-            case 'UPDATE_CURRENT_USER':
-            return {
-                ...state,
                 currentUser: action.payload,
                 loading: false
             };
@@ -38,7 +22,6 @@ const authReducer = (state = initialState, action) => {
                 currentUser: null,
                 loading: false
             };
-
         default:
             return state;
     }

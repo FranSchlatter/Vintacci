@@ -58,15 +58,11 @@ const User = sequelize.define('User', {
     status: {
         type: DataTypes.ENUM('active', 'inactive', 'suspended'),
         defaultValue: 'active'
-    },
-    created_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
     }
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'users'
+    tableName: 'user'
 });
 
 module.exports = User;

@@ -62,8 +62,6 @@ const CheckoutPage = () => {
         payment_method: paymentData.method || 'credit_card'  // Campo requerido en el modelo
       };
   
-      console.log('Datos de la orden a enviar:', orderData); // Para debug
-  
       const order = await dispatch(createOrder(orderData));
   
       await dispatch(generateInvoice(order.id));
@@ -72,7 +70,6 @@ const CheckoutPage = () => {
   
     } catch (error) {
       toast.error('Error al procesar la orden');
-      console.error('Error en el checkout:', error);
     }
   };
 

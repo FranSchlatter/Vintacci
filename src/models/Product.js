@@ -52,15 +52,11 @@ const Product = sequelize.define('Product', {
     },
     serial_number: {
         type: DataTypes.STRING,
-    },
-    created_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
     }
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'products'
+    tableName: 'product'
 });
 
 module.exports = Product;

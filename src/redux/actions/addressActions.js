@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 export const fetchUserAddresses = (userId) => async (dispatch) => {
     try {
-        const response = await axios.get(`http://localhost:5000/addresses/user/${userId}`);
+        const response = await axios.get(`http://localhost:5000/address/user/${userId}`);
         dispatch({ type: 'FETCH_USER_ADDRESSES', payload: response.data });
     } catch (error) {
         console.error('Error fetching addresses:', error);
@@ -14,7 +14,7 @@ export const fetchUserAddresses = (userId) => async (dispatch) => {
 
 export const addAddress = (userId, addressData) => async (dispatch) => {
     try {
-        const response = await axios.post(`http://localhost:5000/addresses/user/${userId}`, addressData);
+        const response = await axios.post(`http://localhost:5000/address/user/${userId}`, addressData);
         dispatch({ type: 'ADD_ADDRESS', payload: response.data });
         toast.success('Dirección agregada con éxito');
         return response.data;
@@ -27,7 +27,7 @@ export const addAddress = (userId, addressData) => async (dispatch) => {
 
 export const updateAddress = (addressId, addressData) => async (dispatch) => {
     try {
-        const response = await axios.put(`http://localhost:5000/addresses/${addressId}`, addressData);
+        const response = await axios.put(`http://localhost:5000/address/${addressId}`, addressData);
         dispatch({ type: 'UPDATE_ADDRESS', payload: response.data });
         toast.success('Dirección actualizada con éxito');
         return response.data;
@@ -40,7 +40,7 @@ export const updateAddress = (addressId, addressData) => async (dispatch) => {
 
 export const deleteAddress = (addressId) => async (dispatch) => {
     try {
-        await axios.delete(`http://localhost:5000/addresses/${addressId}`);
+        await axios.delete(`http://localhost:5000/address/${addressId}`);
         dispatch({ type: 'DELETE_ADDRESS', payload: addressId });
         toast.success('Dirección eliminada con éxito');
     } catch (error) {
@@ -52,7 +52,7 @@ export const deleteAddress = (addressId) => async (dispatch) => {
 
 export const setDefaultAddress = (addressId, userId) => async (dispatch) => {
     try {
-        const response = await axios.patch(`http://localhost:5000/addresses/${addressId}/default/${userId}`);
+        const response = await axios.patch(`http://localhost:5000/address/${addressId}/default/${userId}`);
         dispatch({ type: 'SET_DEFAULT_ADDRESS', payload: response.data });
         toast.success('Dirección predeterminada actualizada');
         return response.data;

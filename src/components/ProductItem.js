@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
@@ -11,12 +11,31 @@ import { useSelector } from 'react-redux';
 import { addToFavorites, removeFromFavorites } from '../redux/actions/favoriteActions';
 
 const ProductCard = ({ product }) => {
-  const currentUser = useSelector(state => state.users.currentUser);
+  const currentUser = useSelector(state => state.auth.currentUser);
   const favorites = useSelector(state => state.favorites.items);
   const isFavorite = favorites.some(fav => fav.product_id === product.id);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      toast.error('Debes iniciar sesión para agregar favoritos');
+      return;
+    }
+
+    try {
+      // Esta es la clave: si ya es favorito, removemos
+      if (isFavorite) {
+        await dispatch(removeFromFavorites(currentUser.id, product.id));
+      } else {
+        await dispatch(addToFavorites(currentUser.id, product.id));
+      }
+    } catch (error) {
+      toast.error('Error al gestionar favoritos');
+    }
+};
 
   const handleClick = () => {
     navigate(`/products/${product.id}`);
@@ -38,18 +57,7 @@ const ProductCard = ({ product }) => {
             className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!currentUser) {
-                toast.error('Debes iniciar sesión para agregar favoritos');
-                return;
-              }
-              if (isFavorite) {
-                dispatch(removeFromFavorites(currentUser.id, product.id));
-              } else {
-                dispatch(addToFavorites(currentUser.id, product.id));
-              }
-            }}
+            onClick={handleFavoriteClick}
             className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
           >
             <Heart 

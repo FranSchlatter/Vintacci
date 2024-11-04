@@ -69,7 +69,6 @@ module.exports = sequelize; // Exporta el objeto sequelize
 
 // psql -U postgres
 // TODO Pendientes:
-// Mi perfil, re-render con cambios.
 // Favs no anda, posible falta de datos de user en el componente.
 // Agregar direccion user faltan datos.
 // Compra direccion de envio elegir de las cargadas. O cargar y guardar.

@@ -10,53 +10,66 @@ const Favorite = require('./Favorite')
 const CartItem = require('./CartItem')
 
 function initializeAssociations() {
-    // User - Orders
+    // User - Orders (1:N)
     User.hasMany(Order, {
         foreignKey: 'user_id',
-        as: 'orders'
+        as: 'orders',
+        onDelete: 'SET NULL'
     });
     Order.belongsTo(User, {
         foreignKey: 'user_id',
         as: 'user'
     });
 
-    // User - Addresses
+    // User - Addresses (1:N)
     User.hasMany(Address, {
         foreignKey: 'user_id',
-        as: 'addresses'
+        as: 'addresses',
+        onDelete: 'CASCADE'
     });
     Address.belongsTo(User, {
         foreignKey: 'user_id'
     });
 
-    // User - Favorites
+    // User - Products through Favorites (N:N)
     User.belongsToMany(Product, {
         through: Favorite,
         as: 'favoriteProducts',
-        foreignKey: 'user_id'
+        foreignKey: 'user_id',
+        otherKey: 'product_id',
+        onDelete: 'CASCADE'
     });
     
     Product.belongsToMany(User, {
         through: Favorite,
         as: 'favoritedBy',
-        foreignKey: 'product_id'
+        foreignKey: 'product_id',
+        otherKey: 'user_id',
+        onDelete: 'CASCADE'
     });
 
-    // User - Cart
+    // User - Cart (1:N)
     User.hasMany(CartItem, {
         foreignKey: 'user_id',
-        as: 'cartItems'
+        as: 'cartItems',
+        onDelete: 'CASCADE'
     });
     CartItem.belongsTo(User, {
         foreignKey: 'user_id'
     });
 
-    // Orden - Items
+    // Product - CartItem (1:N)
+    Product.hasMany(CartItem, {
+        foreignKey: 'product_id',
+        onDelete: 'CASCADE'
+    });
+    CartItem.belongsTo(Product, {
+        foreignKey: 'product_id'
+    });
+
+    // Order - OrderItems (1:N)
     Order.hasMany(OrderItem, {
-        foreignKey: {
-            name: 'order_id',
-            allowNull: false
-        },
+        foreignKey: 'order_id',
         as: 'items',
         onDelete: 'CASCADE'
     });
@@ -64,24 +77,20 @@ function initializeAssociations() {
         foreignKey: 'order_id'
     });
 
-    // Orden - Factura
+    // Order - Invoice (1:1)
     Order.hasOne(Invoice, {
-        foreignKey: {
-            name: 'order_id',
-            allowNull: false
-        },
+        foreignKey: 'order_id',
+        as: 'invoice',
         onDelete: 'CASCADE'
     });
     Invoice.belongsTo(Order, {
         foreignKey: 'order_id'
     });
 
-    // OrderItem - Producto
+    // Product - OrderItem (1:N)
     Product.hasMany(OrderItem, {
-        foreignKey: {
-            name: 'product_id',
-            allowNull: false
-        }
+        foreignKey: 'product_id',
+        onDelete: 'RESTRICT'
     });
     OrderItem.belongsTo(Product, {
         foreignKey: 'product_id'

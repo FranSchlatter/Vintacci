@@ -10,16 +10,28 @@ const CartItem = sequelize.define('CartItem', {
     },
     user_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'user',
+            key: 'id'
+        }
     },
     product_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'product',
+            key: 'id'
+        }
     },
     quantity: {
         type: DataTypes.INTEGER,
         defaultValue: 1
     }
+}, {
+    timestamps: true,
+    underscored: true,
+    tableName: 'cart_item'
 });
 
 module.exports = CartItem;

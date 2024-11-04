@@ -9,19 +9,20 @@ const orderController = {
                 include: [
                     {
                         model: OrderItem,
-                        as: 'items',
+                        as: 'items',  // Usamos el alias definido en las asociaciones
                         include: [Product]
                     },
                     {
-                        model: Invoice
+                        model: Invoice,
+                        as: 'invoice'  // Agregamos el alias aquí
                     }
                 ],
                 order: [['created_at', 'DESC']]
             });
             res.json(orders);
-        } catch (err) {
-            console.error('Error al obtener órdenes:', err);
-            res.status(500).send('Error al obtener órdenes');
+        } catch (error) {
+            console.error('Error al obtener órdenes:', error);
+            res.status(500).json({ error: 'Error al obtener órdenes' });
         }
     },
 
@@ -98,6 +99,7 @@ const orderController = {
 
     getOrderById: async (req, res) => {
         const { id } = req.params;
+    
         try {
             const order = await Order.findByPk(id, {
                 include: [
@@ -107,50 +109,93 @@ const orderController = {
                         include: [Product]
                     },
                     {
-                        model: Invoice
+                        model: Invoice,
+                        as: 'invoice'
                     }
                 ]
             });
             
             if (!order) {
+                console.error('No se encontró la orden');
                 return res.status(404).json({ error: 'Orden no encontrada' });
             }
             
             res.json(order);
-        } catch (err) {
-            console.error('Error al obtener la orden:', err);
-            res.status(500).send('Error al obtener la orden');
+        } catch (error) {
+            console.error('Error al obtener la orden:', error);
+            res.status(500).json({ error: 'Error al obtener la orden' });
         }
     },
-
+    
     updateOrderStatus: async (req, res) => {
         const { id } = req.params;
-        const { status } = req.body;
-
+        const { 
+            status, 
+            tracking_number,
+            shipping_address,
+            billing_address,
+            shipping_method,
+            shipping_cost,
+            payment_method,
+            notes,
+            total
+        } = req.body;
+    
         try {
             const order = await Order.findByPk(id);
             if (!order) {
                 return res.status(404).json({ error: 'Orden no encontrada' });
             }
-
-            await order.update({ status });
-
+    
+            // Actualizamos todos los campos que vengan en el body
+            const updateData = {
+                ...(status && { status }),
+                ...(tracking_number && { tracking_number }),
+                ...(shipping_address && { shipping_address }),
+                ...(billing_address && { billing_address }),
+                ...(shipping_method && { shipping_method }),
+                ...(shipping_cost && { shipping_cost }),
+                ...(payment_method && { payment_method }),
+                ...(notes && { notes }),
+                ...(total && { total })
+            };
+    
+            await order.update(updateData);
+    
             // Si se cancela la orden, restaurar stock
             if (status === 'cancelled') {
                 const orderItems = await OrderItem.findAll({
                     where: { order_id: id },
                     include: [Product]
                 });
-
+    
                 await Promise.all(orderItems.map(async (item) => {
                     await item.Product.increment('stock', { by: item.quantity });
                 }));
             }
-
-            res.json(order);
+    
+            // Obtener la orden actualizada con todas sus relaciones
+            const updatedOrder = await Order.findByPk(id, {
+                include: [
+                    {
+                        model: OrderItem,
+                        as: 'items',
+                        include: [Product]
+                    },
+                    {
+                        model: Invoice,
+                        as: 'invoice'
+                    }
+                ]
+            });
+    
+            res.json(updatedOrder);
         } catch (err) {
-            console.error('Error al actualizar el estado:', err);
-            res.status(500).send('Error al actualizar el estado de la orden');
+            console.error('Error al actualizar la orden:', err);
+            res.status(500).json({ 
+                error: 'Error al actualizar la orden',
+                message: err.message 
+            });
         }
     },
 
@@ -191,7 +236,6 @@ const orderController = {
 
     generateInvoice: async (req, res) => {
         const { orderId } = req.params;
-        console.log('Generando factura para orden:', orderId);
         
         try {
             const order = await Order.findByPk(orderId);

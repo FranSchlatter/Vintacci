@@ -12,7 +12,6 @@ export const fetchProducts = () => async (dispatch) => {
 
 export const addProduct = (productData) => async (dispatch) => {
     try {
-        console.log(productData)
         const response = await axios.post('http://localhost:5000/products', productData);
         dispatch({ type: 'ADD_PRODUCT', payload: response.data });
     } catch (error) {

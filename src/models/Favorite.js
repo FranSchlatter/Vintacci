@@ -10,15 +10,24 @@ const Favorite = sequelize.define('Favorite', {
     },
     user_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'user',
+            key: 'id'
+        }
     },
     product_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'product',
+            key: 'id'
+        }
     }
 }, {
     timestamps: true,
-    tableName: 'favorites'
+    underscored: true,
+    tableName: 'favorite'
 });
 
 module.exports = Favorite;
