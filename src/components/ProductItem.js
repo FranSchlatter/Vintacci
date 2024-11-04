@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
@@ -26,7 +26,6 @@ const ProductCard = ({ product }) => {
     }
 
     try {
-      // Esta es la clave: si ya es favorito, removemos
       if (isFavorite) {
         await dispatch(removeFromFavorites(currentUser.id, product.id));
       } else {

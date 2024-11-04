@@ -69,12 +69,17 @@ module.exports = sequelize; // Exporta el objeto sequelize
 
 // psql -U postgres
 // TODO Pendientes:
-// Favs no anda, posible falta de datos de user en el componente.
-// Agregar direccion user faltan datos.
-// Compra direccion de envio elegir de las cargadas. O cargar y guardar.
-// Orders no se vinculan con user. No se ven en el lugar del user, ni el user se ve en la orden de admin.
-// Create user de admin, cambiar logica para q no sea identico al de register.
-// Revisar codigo, sacar cosas no utilizadas, reestructurar todo.
+// DONE: Backend funcionando 100%. Rutas por postman! 
+// Favoritos > No anda cuando ya existe, falta logica eliminar en perfil de user. 
+// Form agregar direccion en user > faltan datos.
+// Crear order > direccion de envio elegir de las cargadas. Cargar nueva y guardar. > Notificacion al hacer la compra
+// Oders > no se ven en el perfil del user, ni el user se ve en la orden de admin.
+// Form crear user viejo, actualizar sin address y campos nuevos. 
+// Admin panel configuracion no hace nada. 
+
+
+
+// Revisar codigo front, sacar cosas no utilizadas, reestructurar todo.
 // Revisar y entender todo el codigo. Luego avanzar con nuevas funcionalidades.
 // Ocultar admin para users.
 

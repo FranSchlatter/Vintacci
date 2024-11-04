@@ -1,14 +1,15 @@
 // src/components/UserProfile/Wishlist.js
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Heart, ShoppingCart, Trash2, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { addToCart } from '../../redux/actions/cartActions';
 import { toast } from 'react-toastify';
+import { removeFromFavorites } from '../../redux/actions/favoriteActions';
+
 
 const Wishlist = ({ userId }) => {
     const dispatch = useDispatch();
-    // Por ahora usaremos un array vacío hasta implementar favorites en Redux
     const favorites = useSelector(state => state.favorites?.items || []);
 
     const handleAddToCart = (product) => {
@@ -17,8 +18,14 @@ const Wishlist = ({ userId }) => {
     };
 
     const handleRemoveFromWishlist = (productId) => {
-        // TODO: Implementar cuando tengamos la acción de remover de favoritos
-        toast.success('Producto eliminado de favoritos');
+        if (userId) {
+            dispatch(removeFromFavorites(userId, productId))
+                .then(() => {
+                })
+                .catch(error => {
+                    console.error('Error removing from wishlist:', error);
+                });
+        }
     };
 
     if (!favorites.length) {

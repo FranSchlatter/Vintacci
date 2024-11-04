@@ -12,7 +12,7 @@ const favoriteController = {
                     model: Product,
                     as: 'favoriteProducts',
                     through: { attributes: [] }, // Esto evita incluir datos de la tabla intermedia
-                    attributes: ['id', 'name', 'price', 'image_url', 'stock']
+                    attributes: ['id', 'name', 'price', 'image_url', 'stock', 'brand', 'category']
                 }]
             });
 
