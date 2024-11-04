@@ -1,5 +1,5 @@
 // src/controllers/orderController.js
-const { Order, OrderItem, Product, Invoice } = require('../models');
+const { Order, OrderItem, Product, Invoice, User } = require('../models');
 const sequelize = require('../../db');
 
 const orderController = {
@@ -8,13 +8,21 @@ const orderController = {
             const orders = await Order.findAll({
                 include: [
                     {
+                        model: User,
+                        as: 'user',
+                        attributes: ['id', 'first_name', 'last_name', 'email', 'dni']
+                    },
+                    {
                         model: OrderItem,
-                        as: 'items',  // Usamos el alias definido en las asociaciones
-                        include: [Product]
+                        as: 'items',
+                        include: [{
+                            model: Product,
+                            attributes: ['id', 'name', 'price', 'image_url', 'size', 'serial_number']
+                        }]
                     },
                     {
                         model: Invoice,
-                        as: 'invoice'  // Agregamos el alias aquí
+                        as: 'invoice'
                     }
                 ],
                 order: [['created_at', 'DESC']]
@@ -40,6 +48,7 @@ const orderController = {
             const result = await sequelize.transaction(async (t) => {
                 // 1. Crear la orden
                 const order = await Order.create({
+                    user_id: req.body.user_id,
                     total,
                     status: 'pending',
                     shipping_address: shipping,
@@ -104,9 +113,17 @@ const orderController = {
             const order = await Order.findByPk(id, {
                 include: [
                     {
+                        model: User,
+                        as: 'user',
+                        attributes: ['id', 'first_name', 'last_name', 'email', 'dni']
+                    },
+                    {
                         model: OrderItem,
                         as: 'items',
-                        include: [Product]
+                        include: [{
+                            model: Product,
+                            attributes: ['id', 'name', 'price', 'image_url', 'size', 'serial_number']
+                        }]
                     },
                     {
                         model: Invoice,

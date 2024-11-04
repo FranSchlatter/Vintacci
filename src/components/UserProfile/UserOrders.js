@@ -109,7 +109,7 @@ const UserOrders = ({ userId }) => {
                             <div className="flex justify-between items-center">
                                 <div className="space-y-1">
                                     <p className="text-sm text-gray-500">
-                                        Pedido realizado el {formatDate(order.created_at)}
+                                        Pedido realizado el {formatDate(order.createdAt)}
                                     </p>
                                     <p className="font-medium">
                                         Nº de Pedido: {order.id.slice(0,8)}...
@@ -125,12 +125,12 @@ const UserOrders = ({ userId }) => {
                                 {order.items?.map((item) => (
                                     <div key={item.id} className="flex items-center space-x-4">
                                         <img
-                                            src={item.product.image_url}
-                                            alt={item.product.name}
+                                            src={item.Product.image_url}
+                                            alt={item.Product.name}
                                             className="w-20 h-20 object-cover rounded"
                                         />
                                         <div className="flex-1">
-                                            <h4 className="font-medium">{item.product.name}</h4>
+                                            <h4 className="font-medium">{item.Product.name}</h4>
                                             <p className="text-sm text-gray-500">
                                                 Cantidad: {item.quantity}
                                             </p>

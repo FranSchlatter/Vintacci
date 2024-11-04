@@ -81,7 +81,7 @@ const OrderDetailPage = () => {
                         <div>
                             <h1 className="text-2xl font-bold">Pedido #{order.id.slice(0,8)}</h1>
                             <p className="text-gray-500 mt-1">
-                                Realizado el {new Date(order.created_at).toLocaleDateString()}
+                                Realizado el {new Date(order.createdAt).toLocaleDateString()}
                             </p>
                         </div>
                         <StatusBadge status={order.status} />

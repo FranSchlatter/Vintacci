@@ -6,12 +6,13 @@ import {
   XCircle, Clock, AlertCircle 
 } from 'lucide-react';
 import { toast } from 'react-toastify';
-// Asumiendo que crearemos estas acciones
+import { useNavigate } from 'react-router-dom';
 import { fetchOrders, updateOrderStatus } from '../../redux/actions/orderActions';
 
 const AdminOrderPanel = () => {
   const dispatch = useDispatch();
   const orders = useSelector((state) => state.orders?.allOrders || []);
+  const navigate = useNavigate();
   
   // Estados locales
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,6 +21,10 @@ const AdminOrderPanel = () => {
     start: '',
     end: ''
   });
+
+  const handleRowClick = (orderId) => {
+    navigate(`/orders/${orderId}`);
+};
 
   // Estados posibles de un pedido
   const orderStatuses = {
@@ -162,20 +167,24 @@ const AdminOrderPanel = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredOrders.map((order) => (
-              <tr key={order.id}>
+               <tr 
+                key={order.id} 
+                onClick={() => handleRowClick(order.id)}
+                className="cursor-pointer hover:bg-gray-50"
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                     #{order.id.slice(0,8)}...
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
-                        {`${order.billing_address?.first_name} ${order.billing_address?.last_name}`}
+                        {`${order.user?.first_name} ${order.user?.last_name}`}
                     </div>
                     <div className="text-sm text-gray-500">
-                        {order.billing_address?.email}
+                        {order.user?.email}
                     </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(order.created_at).toLocaleDateString()}
+                    {new Date(order.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                     <StatusBadge status={order.status} />
