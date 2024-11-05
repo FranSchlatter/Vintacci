@@ -70,7 +70,6 @@ module.exports = sequelize; // Exporta el objeto sequelize
 // psql -U postgres
 // TODO Pendientes:
 // Mi perfil, mis orders, ver factura
-// Mi perfil, mis orders, ver detalle
 // Order id no se ve completo en admin ni en user. 
 // Form Mi profile, mis dirrecciones > faltan datos.
 // Crear order > direccion de envio elegir de las cargadas / Cargar nueva y guardarla. > Notificacion al hacer la compra

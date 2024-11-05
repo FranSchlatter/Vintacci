@@ -39,7 +39,7 @@ const orderReducer = (state = initialState, action) => {
         allOrders: state.allOrders.filter(order => order.id !== action.payload)
       };
 
-    case 'SET_ORDER_DETAILS':
+    case 'SET_CURRENT_ORDER':
       return {
         ...state,
         currentOrder: action.payload,

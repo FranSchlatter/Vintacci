@@ -72,6 +72,8 @@ const OrderDetailPage = () => {
         );
     }
 
+    console.log(order)
+
     return (
         <div className="container mx-auto py-8 px-4">
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -100,12 +102,12 @@ const OrderDetailPage = () => {
                                     className="flex items-center space-x-4 border rounded-lg p-4"
                                 >
                                     <img
-                                        src={item.product.image_url}
-                                        alt={item.product.name}
+                                        src={item.Product.image_url}
+                                        alt={item.Product.name}
                                         className="w-20 h-20 object-cover rounded"
                                     />
                                     <div className="flex-1">
-                                        <h3 className="font-medium">{item.product.name}</h3>
+                                        <h3 className="font-medium">{item.Product.name}</h3>
                                         <p className="text-gray-500">Cantidad: {item.quantity}</p>
                                         <p className="text-gray-500">
                                             ${parseFloat(item.price).toFixed(2)} c/u
