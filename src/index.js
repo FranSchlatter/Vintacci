@@ -13,8 +13,3 @@ root.render(
     <App />
   </Provider>
 );
-
-// const root = ReactDOM.createRoot(document.getElementById('root'));: Crea un root que se vincula con el elemento del DOM que tiene el id root, donde se renderizará la aplicación.
-// root.render(: Método que inicia el proceso de renderizado de la aplicación dentro del elemento especificado.
-// <Provider store={store}>: Envuelve la aplicación en el componente Provider, lo que permite que todos los componentes dentro de App accedan al store de Redux y su estado. Esto es fundamental para que la gestión del estado global funcione correctamente.
-// <App />: Renderiza el componente App, que a su vez contiene el enrutamiento y la lógica de la aplicación.

@@ -1,6 +1,6 @@
 // src/components/Admin/AdminSettings.js
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { 
   Store, 
   Mail, 
@@ -14,7 +14,7 @@ import {
 import { toast } from 'react-toastify';
 
 const AdminSettings = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // Aquí obtendrías la configuración actual desde Redux
   const [activeTab, setActiveTab] = useState('general');
 
@@ -28,14 +28,14 @@ const AdminSettings = () => {
     language: 'es'
   });
 
-  const [emailSettings, setEmailSettings] = useState({
-    smtpHost: '',
-    smtpPort: '',
-    smtpUser: '',
-    smtpPassword: '',
-    senderName: 'Vintacci',
-    senderEmail: 'noreply@vintacci.com'
-  });
+  // const [emailSettings, setEmailSettings] = useState({
+  //   smtpHost: '',
+  //   smtpPort: '',
+  //   smtpUser: '',
+  //   smtpPassword: '',
+  //   senderName: 'Vintacci',
+  //   senderEmail: 'noreply@vintacci.com'
+  // });
 
   const [paymentSettings, setPaymentSettings] = useState({
     mercadoPagoEnabled: true,
@@ -56,30 +56,30 @@ const AdminSettings = () => {
     ]
   });
 
-  const [notificationSettings, setNotificationSettings] = useState({
-    orderConfirmation: true,
-    orderStatusUpdate: true,
-    shippingUpdate: true,
-    abandonedCart: true,
-    stockAlerts: true,
-    newsletterEnabled: true
-  });
+  // const [notificationSettings, setNotificationSettings] = useState({
+  //   orderConfirmation: true,
+  //   orderStatusUpdate: true,
+  //   shippingUpdate: true,
+  //   abandonedCart: true,
+  //   stockAlerts: true,
+  //   newsletterEnabled: true
+  // });
 
-  const [securitySettings, setSecuritySettings] = useState({
-    twoFactorAuth: false,
-    passwordMinLength: 8,
-    passwordRequireSpecialChar: true,
-    sessionTimeout: 60,
-    maxLoginAttempts: 5
-  });
+  // const [securitySettings, setSecuritySettings] = useState({
+  //   twoFactorAuth: false,
+  //   passwordMinLength: 8,
+  //   passwordRequireSpecialChar: true,
+  //   sessionTimeout: 60,
+  //   maxLoginAttempts: 5
+  // });
 
-  const [appearanceSettings, setAppearanceSettings] = useState({
-    theme: 'light',
-    primaryColor: '#3B82F6',
-    secondaryColor: '#1F2937',
-    logoUrl: '/logo.png',
-    favicon: '/favicon.ico'
-  });
+  // const [appearanceSettings, setAppearanceSettings] = useState({
+  //   theme: 'light',
+  //   primaryColor: '#3B82F6',
+  //   secondaryColor: '#1F2937',
+  //   logoUrl: '/logo.png',
+  //   favicon: '/favicon.ico'
+  // });
 
   // Manejadores para cada tipo de configuración
   const handleGeneralSettingsChange = (e) => {

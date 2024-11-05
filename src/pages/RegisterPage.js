@@ -18,9 +18,9 @@ const RegisterPage = () => {
         dni: '',
         phone: '',
         birth_date: '',
-        role: 'user', // Valor por defecto
+        role: 'user', 
         newsletter_subscription: false,
-        status: 'active' // Valor por defecto
+        status: 'active'
     });
 
     const handleSubmit = async (e) => {

@@ -1,18 +1,13 @@
 // src/components/UserProfile/AccountSettings.js
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { 
-    Lock, 
-    Bell, 
-    Mail, 
-    AlertTriangle,
-    Save,
-    Toggle
+    Lock, Bell, AlertTriangle, Save
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 const AccountSettings = ({ user }) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState('security');
     
     const [passwordForm, setPasswordForm] = useState({

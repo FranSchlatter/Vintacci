@@ -1,5 +1,5 @@
 // src/components/Checkout/AddressStep.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
     fetchUserAddresses, 
@@ -29,34 +29,34 @@ const AddressStep = ({ onComplete }) => {
         is_default: false
     });
 
-    const resetForm = () => {
-        setFormData({
-            alias: '',
-            first_name: currentUser?.first_name || '',
-            last_name: currentUser?.last_name || '',
-            street: '',
-            number: '',
-            apartment: '',
-            city: '',
-            state: '',
-            postal_code: '',
-            country: '',
-            phone: currentUser?.phone || '',
-            is_default: false
-        });
-    };
-
     useEffect(() => {
         if (currentUser?.id) {
             dispatch(fetchUserAddresses(currentUser.id));
         }
     }, [dispatch, currentUser]);
 
+    const resetForm = useCallback(() => {
+      setFormData({
+          alias: '',
+          first_name: currentUser?.first_name || '',
+          last_name: currentUser?.last_name || '',
+          street: '',
+          number: '',
+          apartment: '',
+          city: '',
+          state: '',
+          postal_code: '',
+          country: 'México',
+          phone: currentUser?.phone || '',
+          is_default: false
+      });
+    }, [currentUser]);
+    
     useEffect(() => {
         if (currentUser) {
             resetForm();
         }
-    }, [currentUser]);
+    }, [currentUser, resetForm]);
 
     useEffect(() => {
         if (addresses.length > 0 && !selectedAddressId) {

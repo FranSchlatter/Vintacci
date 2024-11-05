@@ -2,14 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
-  Plus, Search, Filter, Grid, List, Download, Upload, 
-  Edit, Trash2, EyeIcon
+  Plus, Search, Grid, List, Download, 
+  Edit, Trash2
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { fetchProducts, addProduct, updateProduct, deleteProduct } from '../../redux/actions/productActions';
 import ProductModal from './Modals/ProductModal';
 import ConfirmModal from './Modals/ConfirmModal';
-import { filterConfig } from '../../config/filterConfig';
 
 const AdminProductPanel = () => {
   const dispatch = useDispatch();

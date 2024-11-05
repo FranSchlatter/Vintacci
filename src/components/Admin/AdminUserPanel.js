@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
-  Plus, Search, Filter, UserPlus, Mail, 
-  Edit, Trash2, ShoppingBag, Shield
+  Search, UserPlus, Edit, Trash2, ShoppingBag
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { fetchUsers, addUser, updateUser, deleteUser } from '../../redux/actions/userActions';

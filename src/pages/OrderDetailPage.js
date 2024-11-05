@@ -7,12 +7,10 @@ import {
     Package, 
     Truck, 
     MapPin, 
-    Calendar,
     FileText,
     Clock,
     CheckCircle,
-    XCircle,
-    AlertCircle 
+    XCircle
 } from 'lucide-react';
 
 const OrderDetailPage = () => {

@@ -9,12 +9,7 @@ import {
     setDefaultAddress 
 } from '../../redux/actions/addressActions';
 import { 
-    MapPin, 
-    Plus, 
-    Edit, 
-    Trash2, 
-    Star, 
-    Check 
+    MapPin, Plus, Edit, Trash2, Star
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 
