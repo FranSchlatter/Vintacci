@@ -130,21 +130,8 @@ const UserAddresses = ({ userId }) => {
             {isAddingNew && (
                 <form onSubmit={handleSubmit} className="bg-gray-50 p-6 rounded-lg">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Alias (ej: Casa, Trabajo)
-                            </label>
-                            <input
-                                type="text"
-                                name="alias"
-                                value={formData.alias}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        {/* Otros campos del formulario */}
+        
+                        {/* Nombre */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
                                 Nombre
@@ -159,6 +146,7 @@ const UserAddresses = ({ userId }) => {
                             />
                         </div>
 
+                        {/* Apellido */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
                                 Apellido
@@ -173,6 +161,7 @@ const UserAddresses = ({ userId }) => {
                             />
                         </div>
 
+                        {/* Calle */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
                                 Calle
@@ -187,6 +176,7 @@ const UserAddresses = ({ userId }) => {
                             />
                         </div>
 
+                        {/* Número */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
                                 Número
@@ -201,6 +191,7 @@ const UserAddresses = ({ userId }) => {
                             />
                         </div>
 
+                        {/* Departamento */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
                                 Departamento
@@ -214,8 +205,97 @@ const UserAddresses = ({ userId }) => {
                             />
                         </div>
 
-                        {/* Continúa con los demás campos... */}
+                         {/* Alias */}
+                         <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                Alias (ej: Casa, Trabajo)
+                            </label>
+                            <input
+                                type="text"
+                                name="alias"
+                                value={formData.alias}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
 
+                        {/* Ciudad */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                Ciudad
+                            </label>
+                            <input
+                                type="text"
+                                name="city"
+                                value={formData.city}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+
+                        {/* Estado/Provincia */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                Estado/Provincia
+                            </label>
+                            <input
+                                type="text"
+                                name="state"
+                                value={formData.state}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+
+                        {/* País */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                País
+                            </label>
+                            <input
+                                type="text"
+                                name="country"
+                                value={formData.country}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+
+                        {/* Código Postal */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                Código Postal
+                            </label>
+                            <input
+                                type="text"
+                                name="postal_code"
+                                value={formData.postal_code}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+
+                        {/* Teléfono */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                Teléfono
+                            </label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+
+                        {/* Dirección predeterminada */}
                         <div className="md:col-span-2">
                             <label className="flex items-center space-x-2">
                                 <input
@@ -250,7 +330,7 @@ const UserAddresses = ({ userId }) => {
                 </form>
             )}
 
-            {/* Lista de direcciones */}
+            {/* Lista de direcciones (se mantiene igual) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {addresses.map(address => (
                     <div
@@ -276,6 +356,9 @@ const UserAddresses = ({ userId }) => {
                                 </p>
                                 <p className="text-sm text-gray-600">
                                     {address.country} ({address.postal_code})
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    Tel: {address.phone}
                                 </p>
                             </div>
                         </div>
