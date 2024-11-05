@@ -70,8 +70,6 @@ module.exports = sequelize; // Exporta el objeto sequelize
 // psql -U postgres
 // TODO Pendientes:
 // Order id no se ve completo en admin ni en user. 
-// Form Mi profile, mis dirrecciones > faltan datos.
-// Crear order > direccion de envio elegir de las cargadas / Cargar nueva y guardarla. > Notificacion al hacer la compra
 // Form crear user viejo admin, actualizar sin address y campos nuevos. 
 // Admin panel configuracion no hace nada. 
 

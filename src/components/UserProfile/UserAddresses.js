@@ -69,7 +69,6 @@ const UserAddresses = ({ userId }) => {
         if (window.confirm('¿Estás seguro de eliminar esta dirección?')) {
             try {
                 await dispatch(deleteAddress(addressId));
-                toast.success('Dirección eliminada');
             } catch (error) {
                 toast.error('Error al eliminar la dirección');
             }
@@ -194,7 +193,7 @@ const UserAddresses = ({ userId }) => {
                         {/* Departamento */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
-                                Departamento
+                                Departamento (opcional)
                             </label>
                             <input
                                 type="text"

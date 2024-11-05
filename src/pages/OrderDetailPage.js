@@ -72,8 +72,6 @@ const OrderDetailPage = () => {
         );
     }
 
-    console.log(order)
-
     return (
         <div className="container mx-auto py-8 px-4">
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">

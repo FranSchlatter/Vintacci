@@ -15,6 +15,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartItems = useSelector(state => state.cart.items);
+  const currentUser = useSelector(state => state.auth.currentUser);
   const [currentStep, setCurrentStep] = useState(1);
   const [checkoutData, setCheckoutData] = useState({
     address: null,
@@ -49,17 +50,14 @@ const CheckoutPage = () => {
   
       const orderData = {
         items: cartItems,
-        shipping: {
-          ...checkoutData.shipping,
-          method: shippingMethod,      // Agregar explícitamente
-          cost: shippingCost,          // Agregar explícitamente
-        },
+        shipping: checkoutData.address,
         billing: checkoutData.address,
         total: total,
+        user_id: currentUser.id,
         status: 'pending',
-        shipping_method: shippingMethod,  // Campo requerido en el modelo
-        shipping_cost: shippingCost,      // Campo requerido en el modelo
-        payment_method: paymentData.method || 'credit_card'  // Campo requerido en el modelo
+        shipping_method: shippingMethod,  
+        shipping_cost: shippingCost,      
+        payment_method: paymentData.method || 'credit_card' 
       };
   
       const order = await dispatch(createOrder(orderData));
@@ -67,6 +65,7 @@ const CheckoutPage = () => {
       await dispatch(generateInvoice(order.id));
       dispatch(clearCart());
       navigate(`/order-confirmation/${order.id}`);
+      toast.success('Compra realizada con exito');
   
     } catch (error) {
       toast.error('Error al procesar la orden');
