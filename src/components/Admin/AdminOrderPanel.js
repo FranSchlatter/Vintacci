@@ -173,7 +173,7 @@ const AdminOrderPanel = () => {
                 className="cursor-pointer hover:bg-gray-50"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
-                    #{order.id.slice(0,8)}...
+                    #{order.id.slice(0,8)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">

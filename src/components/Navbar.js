@@ -216,11 +216,6 @@ const Navbar = () => {
             <Link to="/contact" className="text-gray-700 hover:text-gray-900">
               Contacto
             </Link>
-
-            {/* TODO: REMOVER LUEGO */}
-            <Link to="/admin" className="text-gray-700 hover:text-gray-900">
-              Admin
-            </Link>
           </div>
 
           {/* Iconos derecha */}

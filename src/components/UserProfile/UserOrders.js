@@ -111,7 +111,7 @@ const UserOrders = ({ userId }) => {
                                         Pedido realizado el {formatDate(order.createdAt)}
                                     </p>
                                     <p className="font-medium">
-                                        Nº de Pedido: {order.id.slice(0,8)}...
+                                        Nº de Pedido: {order.id.slice(0,8)}
                                     </p>
                                 </div>
                                 <StatusBadge status={order.status} />

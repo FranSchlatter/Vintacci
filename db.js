@@ -22,10 +22,6 @@ module.exports = sequelize;
 
 // psql -U postgres
 // TODO Pendientes:
-// Order id no se ve completo en admin ni en user. 
-// Admin panel configuracion no hace nada. 
-
-
 // NUEVAS FUNCIONALIDADES.
 // Sesion de invitado, q puede hacer? Puede comprar? Forzar a login?
 // Ocultar admin para users.
@@ -39,6 +35,7 @@ module.exports = sequelize;
 // Emails auto y manuales.
 // Permanecer conectado. No cerrar sesion con reload.
 // Login google.
+// Admin panel configuracion. 
 // Validar todo los forms, errores abajo
 // Separar front y back. 2 package.json
 // Revisar mercado pago, nike, etc para sacar + funcionalidades.
