@@ -23,22 +23,16 @@ module.exports = sequelize;
 // psql -U postgres
 // TODO Pendientes:
 // Order id no se ve completo en admin ni en user. 
-// Admin en user campos q no exiten ubicacion compras?? 
-// Form crear user viejo admin, actualizar sin address y campos nuevos. 
 // Admin panel configuracion no hace nada. 
-
-
-// Revisar codigo front, sacar cosas no utilizadas, reestructurar todo.
-// Revisar y entender todo el codigo. Luego avanzar con nuevas funcionalidades.
-// Ocultar admin para users.
 
 
 // NUEVAS FUNCIONALIDADES.
 // Sesion de invitado, q puede hacer? Puede comprar? Forzar a login?
-// Mi perfil, mis orders, ver factura
-// Panel de admin facturas.
+// Ocultar admin para users.
+// Mi perfil, mis orders, ver/descargar factura
+// Panel de admin facturas. Que hace?
 // Panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, recibido, error, etc.)
-// Historial de ventas/compras en user
+// Historial de ventas/compras en user / prod?
 // Analitics con info real.
 // Implemetar maps en info contacto y para enviar pedidos.
 // Anotaciones por admin en orders. 
@@ -53,3 +47,8 @@ module.exports = sequelize;
 // After:
 // Remaster, productos, detailproduct con talles mas fotos zoom. Array de talles? Quedan 3 M, 2 L, etc... Colores, distintas img. Prod relacionados. Etc
 // Remaster, filtros, escalable / editable. Para x prod, x filtros (zapatillas talle, camisetas talle)
+// Producto = info basica para todos igual
+// - Opciones = [{color: xxx, xxx, xxx
+// -             talle: xxx, xxx, xxx}] // mostras las opctions y en base a lo q seleciconas se muestra la variant
+// - Variant = [{color1,talle1 ... stock.. img... precio... blablabla. ID > Esto es lo que se mete al order},
+// -            {color2,talle1 ... stock.. img... precio... blablabla. ID > Esto es lo que se mete al order}] 
