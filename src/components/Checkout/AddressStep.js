@@ -1,12 +1,10 @@
-// src/components/Checkout/AddressStep.js
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-    fetchUserAddresses, 
-    addAddress
-} from '../../redux/actions/addressActions';
+import { fetchUserAddresses, addAddress } from '../../redux/actions/addressActions';
 import { MapPin, Plus, Check } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { addressSchema, formatZodErrors } from '../../config/validationSchemas';
+import FormInput from '../common/FormInput';
 
 const AddressStep = ({ onComplete }) => {
     const dispatch = useDispatch();
@@ -14,19 +12,11 @@ const AddressStep = ({ onComplete }) => {
     const addresses = useSelector(state => state.addresses.addresses);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [isAddingNew, setIsAddingNew] = useState(false);
+    const [errors, setErrors] = useState({});
+    
     const [formData, setFormData] = useState({
-        alias: '',
-        first_name: '',
-        last_name: '',
-        street: '',
-        number: '',
-        apartment: '',
-        city: '',
-        state: '',
-        postal_code: '',
-        country: '',
-        phone: '',
-        is_default: false
+        alias: '', first_name: '', last_name: '', street: '', number: '', apartment: '',
+        city: '', state: '', postal_code: '', country: '', phone: '', is_default: false
     });
 
     useEffect(() => {
@@ -36,20 +26,21 @@ const AddressStep = ({ onComplete }) => {
     }, [dispatch, currentUser]);
 
     const resetForm = useCallback(() => {
-      setFormData({
-          alias: '',
-          first_name: currentUser?.first_name || '',
-          last_name: currentUser?.last_name || '',
-          street: '',
-          number: '',
-          apartment: '',
-          city: '',
-          state: '',
-          postal_code: '',
-          country: 'México',
-          phone: currentUser?.phone || '',
-          is_default: false
-      });
+        setFormData({
+            alias: '',
+            first_name: currentUser?.first_name || '',
+            last_name: currentUser?.last_name || '',
+            street: '',
+            number: '',
+            apartment: '',
+            city: '',
+            state: '',
+            postal_code: '',
+            country: 'México',
+            phone: currentUser?.phone || '',
+            is_default: false
+        });
+        setErrors({});
     }, [currentUser]);
     
     useEffect(() => {
@@ -71,27 +62,34 @@ const AddressStep = ({ onComplete }) => {
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: '' }));
+        }
     };
 
     const handleAddressSubmit = async (e) => {
-      e.preventDefault();
-      if (!currentUser?.id) {
-          toast.error('Debes iniciar sesión para agregar una dirección');
-          return;
-      }
-  
-      try {
-          const result = await dispatch(addAddress(currentUser.id, formData));
-          if (result.error) {
-              throw new Error(result.error);
-          }
-          
-          dispatch(fetchUserAddresses(currentUser.id));
-          resetForm();
-          setIsAddingNew(false);
-      } catch (error) {
-          toast.error('Error al guardar la dirección');
-      }
+        e.preventDefault();
+        if (!currentUser?.id) {
+            toast.error('Debes iniciar sesión para agregar una dirección');
+            return;
+        }
+
+        try {
+            const validatedData = addressSchema.parse(formData);
+            const result = await dispatch(addAddress(currentUser.id, validatedData));
+            if (result.error) throw new Error(result.error);
+            
+            dispatch(fetchUserAddresses(currentUser.id));
+            resetForm();
+            setIsAddingNew(false);
+            toast.success('Dirección agregada correctamente');
+        } catch (error) {
+            if (error.errors) {
+                setErrors(formatZodErrors(error));
+            } else {
+                toast.error('Error al guardar la dirección');
+            }
+        }
     };
 
     const handleContinue = () => {
@@ -136,22 +134,14 @@ const AddressStep = ({ onComplete }) => {
                                     )}
                                     <div className="flex-1">
                                         <h3 className="font-medium">{address.alias}</h3>
-                                        <p className="text-sm text-gray-600">
-                                            {address.first_name} {address.last_name}
-                                        </p>
+                                        <p className="text-sm text-gray-600">{address.first_name} {address.last_name}</p>
                                         <p className="text-sm text-gray-600">
                                             {address.street} {address.number}
                                             {address.apartment && `, ${address.apartment}`}
                                         </p>
-                                        <p className="text-sm text-gray-600">
-                                            {address.city}, {address.state}
-                                        </p>
-                                        <p className="text-sm text-gray-600">
-                                            {address.country} ({address.postal_code})
-                                        </p>
-                                        <p className="text-sm text-gray-600">
-                                            Tel: {address.phone}
-                                        </p>
+                                        <p className="text-sm text-gray-600">{address.city}, {address.state}</p>
+                                        <p className="text-sm text-gray-600">{address.country} ({address.postal_code})</p>
+                                        <p className="text-sm text-gray-600">Tel: {address.phone}</p>
                                     </div>
                                 </div>
                             </div>
@@ -161,10 +151,7 @@ const AddressStep = ({ onComplete }) => {
                     <div className="flex justify-between items-center pt-4 border-t">
                         <button
                             type="button"
-                            onClick={() => {
-                                setIsAddingNew(true);
-                                resetForm();
-                            }}
+                            onClick={() => { setIsAddingNew(true); resetForm(); }}
                             className="flex items-center space-x-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg"
                         >
                             <Plus size={20} />
@@ -185,158 +172,21 @@ const AddressStep = ({ onComplete }) => {
             {(isAddingNew || addresses.length === 0) && (
                 <form onSubmit={handleAddressSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Alias (ej: Casa, Trabajo)
-                            </label>
-                            <input
-                                type="text"
-                                name="alias"
-                                value={formData.alias}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Nombre
-                            </label>
-                            <input
-                                type="text"
-                                name="first_name"
-                                value={formData.first_name}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Apellido
-                            </label>
-                            <input
-                                type="text"
-                                name="last_name"
-                                value={formData.last_name}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Teléfono
-                            </label>
-                            <input
-                                type="tel"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
+                        <FormInput label="Alias (ej: Casa, Trabajo)" name="alias" value={formData.alias} onChange={handleInputChange} error={errors.alias} required />
+                        <FormInput label="Nombre" name="first_name" value={formData.first_name} onChange={handleInputChange} error={errors.first_name} required />
+                        <FormInput label="Apellido" name="last_name" value={formData.last_name} onChange={handleInputChange} error={errors.last_name} required />
+                        <FormInput label="Teléfono" type="tel" name="phone" value={formData.phone} onChange={handleInputChange} error={errors.phone} required />
 
                         <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Calle
-                            </label>
-                            <input
-                                type="text"
-                                name="street"
-                                value={formData.street}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
+                            <FormInput label="Calle" name="street" value={formData.street} onChange={handleInputChange} error={errors.street} required />
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Número
-                            </label>
-                            <input
-                                type="text"
-                                name="number"
-                                value={formData.number}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Departamento (opcional)
-                            </label>
-                            <input
-                                type="text"
-                                name="apartment"
-                                value={formData.apartment}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Ciudad
-                            </label>
-                            <input
-                                type="text"
-                                name="city"
-                                value={formData.city}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Estado
-                            </label>
-                            <input
-                                type="text"
-                                name="state"
-                                value={formData.state}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                Código Postal
-                            </label>
-                            <input
-                                type="text"
-                                name="postal_code"
-                                value={formData.postal_code}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                País
-                            </label>
-                            <input
-                                type="text"
-                                name="country"
-                                value={formData.country}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
+                        <FormInput label="Número" name="number" value={formData.number} onChange={handleInputChange} error={errors.number} required />
+                        <FormInput label="Departamento (opcional)" name="apartment" value={formData.apartment} onChange={handleInputChange} error={errors.apartment} />
+                        <FormInput label="Ciudad" name="city" value={formData.city} onChange={handleInputChange} error={errors.city} required />
+                        <FormInput label="Estado" name="state" value={formData.state} onChange={handleInputChange} error={errors.state} required />
+                        <FormInput label="Código Postal" name="postal_code" value={formData.postal_code} onChange={handleInputChange} error={errors.postal_code} required />
+                        <FormInput label="País" name="country" value={formData.country} onChange={handleInputChange} error={errors.country} required />
 
                         <div className="md:col-span-2">
                             <label className="flex items-center space-x-2">
@@ -347,9 +197,7 @@ const AddressStep = ({ onComplete }) => {
                                     onChange={handleInputChange}
                                     className="rounded text-blue-600 focus:ring-blue-500"
                                 />
-                                <span className="text-sm text-gray-700">
-                                    Establecer como dirección predeterminada
-                                </span>
+                                <span className="text-sm text-gray-700">Establecer como dirección predeterminada</span>
                             </label>
                         </div>
                     </div>
@@ -358,19 +206,13 @@ const AddressStep = ({ onComplete }) => {
                         {addresses.length > 0 && (
                             <button
                                 type="button"
-                                onClick={() => {
-                                    setIsAddingNew(false);
-                                    resetForm();
-                                }}
+                                onClick={() => { setIsAddingNew(false); resetForm(); }}
                                 className="px-4 py-2 border rounded-lg hover:bg-gray-50"
                             >
                                 Cancelar
                             </button>
                         )}
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                        >
+                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                             Guardar nueva dirección
                         </button>
                     </div>

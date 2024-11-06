@@ -22,30 +22,28 @@ module.exports = sequelize;
 
 // psql -U postgres
 // TODO Pendientes:
-// NUEVAS FUNCIONALIDADES.
-// Sesion de invitado, q puede hacer? Puede comprar? Forzar a login?
-// Ocultar admin para users.
-// Mi perfil, mis orders, ver/descargar factura
-// Panel de admin facturas. Que hace?
-// Panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, recibido, error, etc.)
-// Historial de ventas/compras en user / prod?
-// Analitics con info real.
-// Implemetar maps en info contacto y para enviar pedidos.
+// Panel de admin/user facturas. Que hace, descargar?
+// Emails, contacto, panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, etc.), email manual, email stock newletter true
 // Anotaciones por admin en orders. 
-// Emails auto y manuales.
-// Permanecer conectado. No cerrar sesion con reload.
-// Login google.
-// Admin panel configuracion. 
-// Validar todo los forms, errores abajo
-// Separar front y back. 2 package.json
-// Revisar mercado pago, nike, etc para sacar + funcionalidades.
+// Historial de compras x user > panel admin
+// Implemetar maps en info contacto.
+
 
 
 // After:
-// Remaster, productos, detailproduct con talles mas fotos zoom. Array de talles? Quedan 3 M, 2 L, etc... Colores, distintas img. Prod relacionados. Etc
 // Remaster, filtros, escalable / editable. Para x prod, x filtros (zapatillas talle, camisetas talle)
+// Remaster, productos, detailproduct con talles mas fotos zoom. Prod relacionados. Etc
 // Producto = info basica para todos igual
 // - Opciones = [{color: xxx, xxx, xxx
 // -             talle: xxx, xxx, xxx}] // mostras las opctions y en base a lo q seleciconas se muestra la variant
 // - Variant = [{color1,talle1 ... stock.. img... precio... blablabla. ID > Esto es lo que se mete al order},
 // -            {color2,talle1 ... stock.. img... precio... blablabla. ID > Esto es lo que se mete al order}] 
+
+// Paycheck real, o mercado pago fake.
+// Separar front y back. 2 package.json
+// Revisar mercado pago, nike, etc para sacar + funcionalidades.
+// Permanecer conectado. No cerrar sesion con reload.
+// Sesion de invitado, q puede hacer? Puede comprar? Forzar a login?
+// Login google.
+// Analitics con info real.
+// Admin panel configuracion. 
