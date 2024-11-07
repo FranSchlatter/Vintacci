@@ -1,13 +1,13 @@
-// src/components/Admin/AdminOrderPanel.js
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Search, Package, Truck, CheckCircle, 
-  XCircle, Clock 
+  XCircle, Clock, Save 
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { fetchOrders, updateOrderStatus } from '../../redux/actions/orderActions';
+import { fetchOrders, updateOrder } from '../../redux/actions/orderActions';
+import { parseISO } from 'date-fns';
 
 const AdminOrderPanel = () => {
   const dispatch = useDispatch();
@@ -21,10 +21,11 @@ const AdminOrderPanel = () => {
     start: '',
     end: ''
   });
+  const [editingNotes, setEditingNotes] = useState({});
 
   const handleRowClick = (orderId) => {
     navigate(`/orders/${orderId}`);
-};
+  };
 
   // Estados posibles de un pedido
   const orderStatuses = {
@@ -33,32 +34,72 @@ const AdminOrderPanel = () => {
     'shipped': { label: 'Enviado', icon: Truck, color: 'text-purple-500' },
     'delivered': { label: 'Entregado', icon: CheckCircle, color: 'text-green-500' },
     'cancelled': { label: 'Cancelado', icon: XCircle, color: 'text-red-500' }
-    // 'problem': { label: 'Con Problemas', icon: AlertCircle, color: 'text-orange-500' }
   };
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
 
+  // Función auxiliar para manejar fechas
+  const getDateFromOrder = (order) => {
+    const dateStr = order.createdAt || order.created_at;
+    if (!dateStr) return new Date();
+    try {
+      return parseISO(dateStr);
+    } catch (e) {
+      console.error('Error parsing date:', dateStr);
+      return new Date(dateStr);
+    }
+  };
+
   // Filtrado de órdenes
   const filteredOrders = orders.filter(order => {
+    // Búsqueda por texto (se mantiene igual)
     const matchesSearch = order.id.toString().includes(searchTerm) || 
-                         order.billing_address?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.billing_address?.last_name?.toLowerCase().includes(searchTerm.toLowerCase());
+                         order.user?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         order.user?.last_name?.toLowerCase().includes(searchTerm.toLowerCase());
     
+    // Filtro por estado (se mantiene igual)
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     
-    const orderDate = new Date(order.created_at);
-    const matchesDateRange = (!dateRange.start || orderDate >= new Date(dateRange.start)) &&
-                           (!dateRange.end || orderDate <= new Date(dateRange.end));
+    // Filtro por fecha mejorado
+    const orderDate = getDateFromOrder(order);
+    
+    // Convertir las fechas a formato YYYY-MM-DD para comparación
+    const orderDateString = orderDate.toISOString().split('T')[0];
+    
+    const matchesDateRange = (
+        !dateRange.start || orderDateString >= dateRange.start
+    ) && (
+        !dateRange.end || orderDateString <= dateRange.end
+    );
 
     return matchesSearch && matchesStatus && matchesDateRange;
 });
 
-  // Manejador de cambio de estado
-  const handleStatusChange = async (orderId, newStatus) => {
+  // Manejador para las notas
+  const handleNotesChange = (orderId, notes) => {
+    setEditingNotes({
+      ...editingNotes,
+      [orderId]: notes
+    });
+  };
+
+  // Manejador para guardar las notas
+  const handleSaveNotes = async (orderId) => {
     try {
-      await dispatch(updateOrderStatus(orderId, newStatus));
+      await dispatch(updateOrder(orderId, { notes: editingNotes[orderId] }));
+      toast.success('Notas guardadas correctamente');
+    } catch (error) {
+      toast.error('Error al guardar las notas');
+    }
+  };
+
+  // Manejador de cambio de estado
+  const handleStatusChange = async (e, orderId) => {
+    e.stopPropagation(); // Prevenir la propagación del click
+    try {
+      await dispatch(updateOrder(orderId, { status: e.target.value }));
       toast.success('Estado del pedido actualizado');
     } catch (error) {
       toast.error('Error al actualizar el estado del pedido');
@@ -101,7 +142,7 @@ const AdminOrderPanel = () => {
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="Buscar por ID o cliente..."
+              placeholder="Busqueda por ID o cliente"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border rounded-lg"
@@ -136,6 +177,14 @@ const AdminOrderPanel = () => {
               onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
               className="border rounded-lg px-4 py-2"
             />
+            {(dateRange.start || dateRange.end) && (
+              <button
+                onClick={() => setDateRange({ start: '', end: '' })}
+                className="px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
+                Limpiar
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -163,46 +212,66 @@ const AdminOrderPanel = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Acciones
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Notas
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredOrders.map((order) => (
-               <tr 
+              <tr 
                 key={order.id} 
                 onClick={() => handleRowClick(order.id)}
                 className="cursor-pointer hover:bg-gray-50"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
-                    #{order.id.slice(0,8)}
+                  #{order.id.slice(0,8)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                        {`${order.user?.first_name} ${order.user?.last_name}`}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                        {order.user?.email}
-                    </div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {`${order.user?.first_name} ${order.user?.last_name}`}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {order.user?.email}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(order.createdAt).toLocaleDateString()}
+                  {getDateFromOrder(order).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                    <StatusBadge status={order.status} />
+                  <StatusBadge status={order.status} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${parseFloat(order.total).toFixed(2)}
+                  ${parseFloat(order.total).toFixed(2)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <select
-                        value={order.status}
-                        onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                        className="border rounded-lg px-2 py-1"
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium" onClick={e => e.stopPropagation()}>
+                  <select
+                    value={order.status}
+                    onChange={(e) => handleStatusChange(e, order.id)}
+                    className="border rounded-lg px-2 py-1"
+                  >
+                    {Object.entries(orderStatuses).map(([key, { label }]) => (
+                      <option key={key} value={key}>{label}</option>
+                    ))}
+                  </select>
+                </td>
+                <td className="px-6 py-4" onClick={e => e.stopPropagation()}>
+                  <div className="flex items-start space-x-2">
+                    <textarea
+                      value={editingNotes[order.id] ?? order.notes ?? ''}
+                      onChange={(e) => handleNotesChange(order.id, e.target.value)}
+                      placeholder="Agregar notas..."
+                      className="border rounded-lg px-3 py-2 w-full min-h-[80px] resize-y"
+                    />
+                    <button
+                      onClick={() => handleSaveNotes(order.id)}
+                      className="p-2 hover:bg-gray-100 rounded-lg"
+                      title="Guardar notas"
                     >
-                        {Object.entries(orderStatuses).map(([key, { label }]) => (
-                            <option key={key} value={key}>{label}</option>
-                        ))}
-                    </select>
-                  </td>
+                      <Save size={20} className="text-gray-600" />
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

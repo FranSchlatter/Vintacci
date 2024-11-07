@@ -27,7 +27,9 @@ const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         allOrders: state.allOrders.map(order =>
-          order.id === action.payload.id ? action.payload : order
+          order.id === action.payload.id 
+            ? { ...order, ...action.payload }
+            : order
         ),
         currentOrder: state.currentOrder?.id === action.payload.id ? 
           action.payload : state.currentOrder

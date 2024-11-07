@@ -23,9 +23,9 @@ export const createOrder = (orderData) => async (dispatch) => {
   }
 };
 
-export const updateOrderStatus = (id, status) => async (dispatch) => {
+export const updateOrder = (id, updateData) => async (dispatch) => {
   try {
-    const response = await axios.patch(`http://localhost:5000/orders/${id}`, { status });
+    const response = await axios.patch(`http://localhost:5000/orders/${id}`, updateData);
     dispatch({ type: 'UPDATE_ORDER', payload: response.data });
     return response.data;
   } catch (error) {

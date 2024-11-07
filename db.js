@@ -23,8 +23,7 @@ module.exports = sequelize;
 // psql -U postgres
 // TODO Pendientes:
 // Panel de admin/user facturas. Que hace, descargar?
-// Emails, contacto, panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, etc.), email manual, email stock newletter true
-// Anotaciones por admin en orders. 
+// Emails > contacto, panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, etc.), email manual, email stock newletter true
 // Historial de compras x user > panel admin
 // Implemetar maps en info contacto.
 
