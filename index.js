@@ -12,6 +12,7 @@ const orderRoutes = require('./src/routes/orderRoutes');
 const addressRoutes = require('./src/routes/addressRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 const favoriteRoutes = require('./src/routes/favoriteRoutes')
+const emailRoutes = require('./src/routes/emailRoutes')
 
 const app = express();
 const PORT = 5000;
@@ -27,6 +28,7 @@ app.use('/orders', orderRoutes);
 app.use('/address', addressRoutes);
 app.use('/auth', authRoutes);
 app.use('/favorites', favoriteRoutes);
+app.use('/email', emailRoutes);
 
 // Manejo de errores global
 app.use((err, req, res, next) => {

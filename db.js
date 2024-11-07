@@ -20,7 +20,7 @@ sequelize.authenticate()
 
 module.exports = sequelize;
 
-// psql -U postgres
+// psql -U postgres > Email: FAN5743FNP4AXV6S7GYVQ73N
 // TODO Pendientes:
 // Panel de admin/user facturas. Que hace, descargar?
 // Emails > contacto, panel de admin botones para enviar email pre-definidos y actualizar estados de pedidos. (empacado, enviado, etc.), email manual, email stock newletter true

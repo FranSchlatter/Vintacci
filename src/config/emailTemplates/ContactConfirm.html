@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hemos recibido tu mensaje</title>
+</head>
+<body>
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1>¡Gracias por contactarnos, {{name}}!</h1>
+        
+        <p>Hemos recibido tu mensaje sobre "{{subject}}".</p>
+
+        <p>Nuestro equipo revisará tu consulta y te responderemos a la brevedad posible.</p>
+
+        <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3>Resumen de tu mensaje:</h3>
+            <p><strong>Asunto:</strong> {{subject}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Mensaje:</strong> {{message}}</p>
+        </div>
+
+        <p>Horario de atención:</p>
+        <ul>
+            <li>Lunes a Viernes: 9:00 - 20:00</li>
+            <li>Sábados: 10:00 - 15:00</li>
+        </ul>
+
+        <p>Si tienes alguna consulta adicional, no dudes en contactarnos.</p>
+    </div>
+</body>
+</html>

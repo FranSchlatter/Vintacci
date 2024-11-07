@@ -46,11 +46,11 @@ const User = sequelize.define('User', {
     },
     preferences: {
         type: DataTypes.JSON,
-        defaultValue: {}
-    },
-    newsletter_subscription: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: {
+            order_notifications: true,
+            new_products: false,
+            offers: false
+        }
     },
     last_login: {
         type: DataTypes.DATE

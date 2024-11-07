@@ -1,0 +1,197 @@
+// src/config/emailService.js
+const sgMail = require('@sendgrid/mail');
+require('dotenv').config();
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// IDs de los templates en SendGrid
+const TEMPLATES = {
+    // Usuario
+    WELCOME: 'd-3cc19b81af0948b9ac624a7532770ac9',              // Template de bienvenida
+
+    // Contacto
+    CONTACT_STAFF: 'd-2577da77bc2c48768885d425fdffd8ee',        // Email al staff
+    CONTACT_CONFIRMATION: 'd-2739181f87644579a2d94f6cde04afe9',  // Confirmación al cliente
+
+    // Órdenes
+    ORDER_CREATED: 'd-xxxxxx',         // Nueva orden
+    ORDER_STATUS: {
+        pending: 'd-xxxxxx',
+        processing: 'd-xxxxxx',
+        shipped: 'd-xxxxxx',
+        delivered: 'd-xxxxxx',
+        cancelled: 'd-xxxxxx'
+    },
+    ORDER_CUSTOM: 'd-xxxxxx',          // Email personalizado
+
+    // Newsletter
+    NEW_PRODUCT: 'd-xxxxxx',
+    OFFER: 'd-xxxxxx'
+};
+
+const sendEmail = async (to, templateId, dynamicTemplateData) => {
+    const msg = {
+        to,
+        from: {
+            email: process.env.SENDGRID_FROM_EMAIL,
+            name: process.env.SENDGRID_FROM_NAME
+        },
+        templateId,
+        dynamicTemplateData
+    };
+
+    try {
+        await sgMail.send(msg);
+        console.log(msg)
+        return true;
+    } catch (error) {
+        console.error('Error sending email:', error);
+        throw error;
+    }
+};
+
+const EmailService = {
+    // Email de bienvenida
+    sendWelcomeEmail: async (userData) => {
+        return sendEmail(
+            userData.email,
+            TEMPLATES.WELCOME,
+            {
+                firstName: userData.first_name,
+                lastName: userData.last_name,
+                loginUrl: `${process.env.FRONTEND_URL}/login`,
+                preferencesUrl: `${process.env.FRONTEND_URL}/preferences`
+            }
+        );
+    },
+
+    // Email de confirmación al cliente (contacto)
+    sendContactConfirmEmail: async (contactData) => {
+        console.log('sendContactConfirmEmail')
+        return sendEmail(
+            contactData.email,
+            TEMPLATES.CONTACT_CONFIRMATION,
+            {
+                name: contactData.name,
+                email: contactData.email,
+                subject: contactData.subject,
+                message: contactData.message
+            }
+        );
+    },
+
+    // Email al staff (contacto)
+    sendContactStaffEmail: async (contactData) => {
+        console.log('sendContactStaffEmail')
+        return sendEmail(
+            process.env.CONTACT_EMAIL,
+            TEMPLATES.CONTACT_STAFF,
+            {
+                name: contactData.name,
+                email: contactData.email,
+                subject: contactData.subject,
+                message: contactData.message,
+                date: new Date().toLocaleDateString()
+            }
+        );
+    },
+
+    // Email de nueva orden
+    sendOrderCreatedEmail: async (orderData) => {
+        if (!orderData.user?.email || !orderData.user?.preferences?.order_notifications) {
+            return false;
+        }
+
+        return sendEmail(
+            orderData.user.email,
+            TEMPLATES.ORDER_CREATED,
+            {
+                orderNumber: orderData.id,
+                customerName: `${orderData.user.first_name} ${orderData.user.last_name}`,
+                orderDetails: orderData.items,
+                total: orderData.total,
+                orderDate: new Date(orderData.createdAt).toLocaleDateString(),
+                orderUrl: `${process.env.FRONTEND_URL}/orders/${orderData.id}`
+            }
+        );
+    },
+
+    // Email de cambio de estado de orden
+    sendOrderStatusEmail: async (orderData) => {
+        if (!orderData.user?.email || !orderData.user?.preferences?.order_notifications) {
+            return false;
+        }
+
+        const templateId = TEMPLATES.ORDER_STATUS[orderData.status];
+        if (!templateId) return false;
+
+        return sendEmail(
+            orderData.user.email,
+            templateId,
+            {
+                orderNumber: orderData.id,
+                customerName: `${orderData.user.first_name} ${orderData.user.last_name}`,
+                status: orderData.status,
+                orderDetails: orderData.items,
+                total: orderData.total,
+                statusDate: new Date().toLocaleDateString(),
+                orderUrl: `${process.env.FRONTEND_URL}/orders/${orderData.id}`
+            }
+        );
+    },
+
+    // Email personalizado de orden
+    sendOrderCustomEmail: async (orderData, emailContent) => {
+        if (!orderData.user?.email) return false;
+
+        return sendEmail(
+            orderData.user.email,
+            TEMPLATES.ORDER_CUSTOM,
+            {
+                orderNumber: orderData.id,
+                customerName: `${orderData.user.first_name} ${orderData.user.last_name}`,
+                subject: emailContent.subject,
+                message: emailContent.message,
+                orderUrl: `${process.env.FRONTEND_URL}/orders/${orderData.id}`
+            }
+        );
+    },
+
+    // Email de nuevo producto
+    sendNewProductEmail: async (productData) => {
+        // Aquí podrías obtener los usuarios con preferences.new_products = true
+        const subscribedUsers = []; // Implementar lógica para obtener usuarios suscritos
+        
+        return sendEmail(
+            subscribedUsers.map(user => user.email),
+            TEMPLATES.NEW_PRODUCT,
+            {
+                productName: productData.name,
+                productDescription: productData.description,
+                productPrice: productData.price,
+                productImage: productData.image,
+                productUrl: `${process.env.FRONTEND_URL}/products/${productData.id}`
+            }
+        );
+    },
+
+    // Email de oferta
+    sendOfferEmail: async (offerData) => {
+        // Aquí podrías obtener los usuarios con preferences.offers = true
+        const subscribedUsers = []; // Implementar lógica para obtener usuarios suscritos
+
+        return sendEmail(
+            subscribedUsers.map(user => user.email),
+            TEMPLATES.OFFER,
+            {
+                offerTitle: offerData.title,
+                offerDescription: offerData.description,
+                offerDiscount: offerData.discount,
+                offerExpiration: offerData.expirationDate,
+                offerUrl: `${process.env.FRONTEND_URL}/offers/${offerData.id}`
+            }
+        );
+    }
+};
+
+module.exports = EmailService;
