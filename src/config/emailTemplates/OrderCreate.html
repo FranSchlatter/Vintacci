@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmación de Compra - Vintacci</title>
+</head>
+<body>
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+        <h1 style="color: #333; text-align: center;">¡Gracias por tu compra, {{customerName}}!</h1>
+        
+        <p style="font-size: 16px;">Tu orden #{{orderNumber}} ha sido creada exitosamente.</p>
+
+        <!-- Detalles de la Orden -->
+        <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="color: #1e40af; margin-bottom: 15px;">Detalles de la Orden</h2>
+            <p><strong>Fecha de creación:</strong> {{orderDate}}</p>
+            <p><strong>Estado:</strong> {{status}}</p>
+            <p><strong>Método de pago:</strong> {{paymentMethod}}</p>
+        </div>
+
+        <!-- Productos -->
+        <div style="margin: 30px 0;">
+            <h2 style="color: #1e40af; margin-bottom: 15px;">Productos</h2>
+            {{#each orderDetails}}
+            <div style="display: flex; margin-bottom: 20px; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px;">
+                <img src="{{imageUrl}}" alt="{{name}}" style="width: 100px; height: 100px; object-fit: cover; margin-right: 15px;">
+                <div>
+                    <h3 style="margin: 0 0 5px 0;">{{name}}</h3>
+                    <p style="margin: 0 0 5px 0;"><strong>Talle:</strong> {{size}}</p>
+                    <p style="margin: 0 0 5px 0;"><strong>Cantidad:</strong> {{quantity}}</p>
+                    <p style="margin: 0;"><strong>Precio:</strong> ${{price}}</p>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Resumen de Costos -->
+        <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="color: #1e40af; margin-bottom: 15px;">Resumen de Costos</h2>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>Subtotal:</span>
+                <span>${{subtotal}}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>Impuestos:</span>
+                <span>${{tax}}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>Costo de envío:</span>
+                <span>${{shippingCost}}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 2px solid #e5e7eb;">
+                <span>Total:</span>
+                <span>${{total}}</span>
+            </div>
+        </div>
+
+        <!-- Dirección de Envío -->
+        <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h2 style="color: #1e40af; margin-bottom: 15px;">Dirección de Envío</h2>
+            <p style="margin: 5px 0;"><strong>Destinatario:</strong> {{shippingAddress.firstName}} {{shippingAddress.lastName}}</p>
+            <p style="margin: 5px 0;"><strong>Dirección:</strong> {{shippingAddress.street}} {{shippingAddress.number}}
+            {{#if shippingAddress.apartment}}, Depto {{shippingAddress.apartment}}{{/if}}</p>
+            <p style="margin: 5px 0;"><strong>Ciudad:</strong> {{shippingAddress.city}}, {{shippingAddress.state}}</p>
+            <p style="margin: 5px 0;"><strong>Código Postal:</strong> {{shippingAddress.postalCode}}</p>
+            <p style="margin: 5px 0;"><strong>País:</strong> {{shippingAddress.country}}</p>
+            <p style="margin: 5px 0;"><strong>Teléfono:</strong> {{shippingAddress.phone}}</p>
+        </div>
+
+        <!-- Botón Ver Orden -->
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{orderUrl}}" 
+               style="background-color: #1e40af; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                Ver detalles de la orden
+            </a>
+        </div>
+
+        <!-- Notas y Pie -->
+        {{#if notes}}
+        <div style="margin: 20px 0; padding: 15px; background-color: #fef3c7; border-radius: 8px;">
+            <strong>Notas:</strong> {{notes}}
+        </div>
+        {{/if}}
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Si tienes alguna pregunta sobre tu orden, no dudes en contactarnos.</p>
+            <p>¡Gracias por confiar en Vintacci!</p>
+        </div>
+    </div>
+</body>
+</html>

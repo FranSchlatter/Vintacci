@@ -61,8 +61,12 @@ const emailController = {
 
     sendOrderCustom: async (req, res) => {
         try {
-            const { orderId, ...emailData } = req.body;
-            await EmailService.sendOrderCustomEmail(orderId, emailData);
+            const { orderId, subject, message, estimatedDate } = req.body;
+            await EmailService.sendOrderCustomEmail(orderId, {
+                subject,
+                message,
+                estimatedDate
+            });
             res.status(200).json({ message: 'Custom order email sent successfully' });
         } catch (error) {
             console.error('Custom order email error:', error);

@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Search, Package, Truck, CheckCircle, 
-  XCircle, Clock, Save 
+  XCircle, Clock, Save, Mail 
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { fetchOrders, updateOrder } from '../../redux/actions/orderActions';
 import { parseISO } from 'date-fns';
+import axios from 'axios';
+import CustomEmailModal from './Modals/CustomEmailModal';
 
 const AdminOrderPanel = () => {
   const dispatch = useDispatch();
@@ -22,6 +24,8 @@ const AdminOrderPanel = () => {
     end: ''
   });
   const [editingNotes, setEditingNotes] = useState({});
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   const handleRowClick = (orderId) => {
     navigate(`/orders/${orderId}`);
@@ -50,22 +54,17 @@ const AdminOrderPanel = () => {
       console.error('Error parsing date:', dateStr);
       return new Date(dateStr);
     }
-  };
+  }
 
   // Filtrado de órdenes
   const filteredOrders = orders.filter(order => {
-    // Búsqueda por texto (se mantiene igual)
     const matchesSearch = order.id.toString().includes(searchTerm) || 
                          order.user?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.user?.last_name?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // Filtro por estado (se mantiene igual)
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     
-    // Filtro por fecha mejorado
     const orderDate = getDateFromOrder(order);
-    
-    // Convertir las fechas a formato YYYY-MM-DD para comparación
     const orderDateString = orderDate.toISOString().split('T')[0];
     
     const matchesDateRange = (
@@ -75,7 +74,7 @@ const AdminOrderPanel = () => {
     );
 
     return matchesSearch && matchesStatus && matchesDateRange;
-});
+  });
 
   // Manejador para las notas
   const handleNotesChange = (orderId, notes) => {
@@ -97,11 +96,20 @@ const AdminOrderPanel = () => {
 
   // Manejador de cambio de estado
   const handleStatusChange = async (e, orderId) => {
-    e.stopPropagation(); // Prevenir la propagación del click
+    e.stopPropagation();
     try {
       await dispatch(updateOrder(orderId, { status: e.target.value }));
+      
+      // Obtener la orden actualizada
+      const orderResponse = await axios.get(`http://localhost:5000/orders/${orderId}`);
+      const updatedOrder = orderResponse.data;
+
+      // Enviar email de actualización de estado
+      await axios.post('http://localhost:5000/email/order-status', updatedOrder);
+      
       toast.success('Estado del pedido actualizado');
     } catch (error) {
+      console.error('Error:', error);
       toast.error('Error al actualizar el estado del pedido');
     }
   };
@@ -194,27 +202,13 @@ const AdminOrderPanel = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ID Pedido
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Cliente
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Fecha
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Estado
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Total
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Acciones
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Notas
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Pedido</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notas</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -224,16 +218,12 @@ const AdminOrderPanel = () => {
                 onClick={() => handleRowClick(order.id)}
                 className="cursor-pointer hover:bg-gray-50"
               >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  #{order.id.slice(0,8)}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap">#{order.id.slice(0,8)}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
                     {`${order.user?.first_name} ${order.user?.last_name}`}
                   </div>
-                  <div className="text-sm text-gray-500">
-                    {order.user?.email}
-                  </div>
+                  <div className="text-sm text-gray-500">{order.user?.email}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {getDateFromOrder(order).toLocaleDateString()}
@@ -245,15 +235,27 @@ const AdminOrderPanel = () => {
                   ${parseFloat(order.total).toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium" onClick={e => e.stopPropagation()}>
-                  <select
-                    value={order.status}
-                    onChange={(e) => handleStatusChange(e, order.id)}
-                    className="border rounded-lg px-2 py-1"
-                  >
-                    {Object.entries(orderStatuses).map(([key, { label }]) => (
-                      <option key={key} value={key}>{label}</option>
-                    ))}
-                  </select>
+                  <div className="flex items-center space-x-2">
+                    <select
+                      value={order.status}
+                      onChange={(e) => handleStatusChange(e, order.id)}
+                      className="border rounded-lg px-2 py-1"
+                    >
+                      {Object.entries(orderStatuses).map(([key, { label }]) => (
+                        <option key={key} value={key}>{label}</option>
+                      ))}
+                    </select>
+                    <button
+                      onClick={() => {
+                        setSelectedOrder(order);
+                        setIsEmailModalOpen(true);
+                      }}
+                      className="p-2 hover:bg-gray-100 rounded-lg"
+                      title="Enviar email personalizado"
+                    >
+                      <Mail size={20} className="text-gray-600" />
+                    </button>
+                  </div>
                 </td>
                 <td className="px-6 py-4" onClick={e => e.stopPropagation()}>
                   <div className="flex items-start space-x-2">
@@ -277,6 +279,18 @@ const AdminOrderPanel = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Modal de Email Personalizado */}
+      {selectedOrder && (
+        <CustomEmailModal
+          order={selectedOrder}
+          isOpen={isEmailModalOpen}
+          onClose={() => {
+            setIsEmailModalOpen(false);
+            setSelectedOrder(null);
+          }}
+        />
+      )}
     </div>
   );
 };
