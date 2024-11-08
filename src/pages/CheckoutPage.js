@@ -10,6 +10,7 @@ import OrderSummary from '../components/Checkout/OrderSummary';
 import { createOrder } from '../redux/actions/orderActions'
 import { generateInvoice } from '../redux/actions/orderActions'
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -60,17 +61,29 @@ const CheckoutPage = () => {
         payment_method: paymentData.method || 'credit_card' 
       };
   
+      // Crear la orden
       const order = await dispatch(createOrder(orderData));
-  
+      
+      // Generar factura
       await dispatch(generateInvoice(order.id));
+
+      // Enviar email de confirmación
+      try {
+        await axios.post('http://localhost:5000/email/order-created', order);
+      } catch (emailError) {
+        console.error('Error sending order confirmation email:', emailError);
+      }
+
+      // Limpiar carrito y redireccionar
       dispatch(clearCart());
       navigate(`/order-confirmation/${order.id}`);
-      toast.success('Compra realizada con exito');
+      toast.success('Compra realizada con éxito');
   
     } catch (error) {
+      console.error('Error processing order:', error);
       toast.error('Error al procesar la orden');
     }
-  };
+};
 
   return (
     <div className="container mx-auto py-8 px-4">

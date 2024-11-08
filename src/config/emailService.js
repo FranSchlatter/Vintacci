@@ -14,7 +14,7 @@ const TEMPLATES = {
     CONTACT_CONFIRMATION: 'd-2739181f87644579a2d94f6cde04afe9',  // Confirmación al cliente
 
     // Órdenes
-    ORDER_CREATED: 'd-xxxxxx',         // Nueva orden
+    ORDER_CREATED: 'd-fa8c76b3d04e41c7bfa84519e07339c1',         // Nueva orden
     ORDER_STATUS: {
         pending: 'd-xxxxxx',
         processing: 'd-xxxxxx',
@@ -42,32 +42,29 @@ const sendEmail = async (to, templateId, dynamicTemplateData) => {
 
     try {
         await sgMail.send(msg);
-        console.log(msg)
         return true;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error en sendEmail:', error.response?.body || error);
         throw error;
     }
 };
-
 const EmailService = {
     // Email de bienvenida
     sendWelcomeEmail: async (userData) => {
         return sendEmail(
             userData.email,
             TEMPLATES.WELCOME,
-            {
+            {   
                 firstName: userData.first_name,
                 lastName: userData.last_name,
                 loginUrl: `${process.env.FRONTEND_URL}/login`,
-                preferencesUrl: `${process.env.FRONTEND_URL}/preferences`
+                preferencesUrl: `${process.env.FRONTEND_URL}/profile`
             }
         );
     },
 
     // Email de confirmación al cliente (contacto)
     sendContactConfirmEmail: async (contactData) => {
-        console.log('sendContactConfirmEmail')
         return sendEmail(
             contactData.email,
             TEMPLATES.CONTACT_CONFIRMATION,
@@ -82,7 +79,6 @@ const EmailService = {
 
     // Email al staff (contacto)
     sendContactStaffEmail: async (contactData) => {
-        console.log('sendContactStaffEmail')
         return sendEmail(
             process.env.CONTACT_EMAIL,
             TEMPLATES.CONTACT_STAFF,
@@ -98,19 +94,49 @@ const EmailService = {
 
     // Email de nueva orden
     sendOrderCreatedEmail: async (orderData) => {
-        if (!orderData.user?.email || !orderData.user?.preferences?.order_notifications) {
-            return false;
-        }
-
         return sendEmail(
             orderData.user.email,
             TEMPLATES.ORDER_CREATED,
             {
-                orderNumber: orderData.id,
                 customerName: `${orderData.user.first_name} ${orderData.user.last_name}`,
-                orderDetails: orderData.items,
-                total: orderData.total,
+                orderNumber: orderData.id,
                 orderDate: new Date(orderData.createdAt).toLocaleDateString(),
+                status: orderData.status,
+                paymentMethod: orderData.payment_method,
+                
+                // Detalles de productos
+                orderDetails: orderData.items.map(item => ({
+                    name: item.Product.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    imageUrl: item.Product.image_url,
+                    size: item.Product.size
+                })),
+    
+                // Costos
+                subtotal: orderData.invoice.subtotal,
+                tax: orderData.invoice.tax,
+                shippingCost: orderData.shipping_cost,
+                total: orderData.total,
+    
+                // Dirección de envío
+                shippingAddress: {
+                    firstName: orderData.shipping_address.first_name,
+                    lastName: orderData.shipping_address.last_name,
+                    street: orderData.shipping_address.street,
+                    number: orderData.shipping_address.number,
+                    apartment: orderData.shipping_address.apartment,
+                    city: orderData.shipping_address.city,
+                    state: orderData.shipping_address.state,
+                    postalCode: orderData.shipping_address.postal_code,
+                    country: orderData.shipping_address.country,
+                    phone: orderData.shipping_address.phone
+                },
+    
+                // Notas adicionales
+                notes: orderData.notes,
+                
+                // URL de la orden
                 orderUrl: `${process.env.FRONTEND_URL}/orders/${orderData.id}`
             }
         );

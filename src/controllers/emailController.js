@@ -1,5 +1,6 @@
 // src/controllers/emailController.js
 const EmailService = require('../config/emailService');
+const axios = require('axios');
 
 const emailController = {
     sendWelcome: async (req, res) => {
@@ -14,7 +15,6 @@ const emailController = {
     },
 
     sendContactConfirm: async (req, res) => {
-        console.log('sendContactConfirm')
         try {
             const contactData = req.body;
             await EmailService.sendContactConfirmEmail(contactData);
@@ -26,7 +26,6 @@ const emailController = {
     },
 
     sendContactStaff: async (req, res) => {
-        console.log('sendContactStaff')
         try {
             const contactData = req.body;
             await EmailService.sendContactStaffEmail(contactData);
@@ -39,12 +38,13 @@ const emailController = {
 
     sendOrderCreated: async (req, res) => {
         try {
-            const orderData = req.body;
-            await EmailService.sendOrderCreatedEmail(orderData);
+            const orderId = req.body.id;
+            const { data: orderWithDetails } = await axios.get(`http://localhost:5000/orders/${orderId}`);
+            await EmailService.sendOrderCreatedEmail(orderWithDetails);
             res.status(200).json({ message: 'Order created email sent successfully' });
         } catch (error) {
             console.error('Order created email error:', error);
-            res.status(500).json({ error: 'Error sending order created email' });
+            res.status(500).json({ error: 'Error sending order created email', details: error.message });
         }
     },
 

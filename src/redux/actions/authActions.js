@@ -22,6 +22,7 @@ export const loginUser = (credentials) => async (dispatch) => {
 export const registerUser = (userData) => async (dispatch) => {
     try {
         const { data } = await axios.post('http://localhost:5000/auth/register', userData);
+        await axios.post('http://localhost:5000/email/welcome', data.user);
         toast.success('Registro exitoso. Por favor, inicia sesión.');
         return data;
     } catch (error) {
