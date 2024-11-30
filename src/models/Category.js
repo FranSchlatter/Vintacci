@@ -1,44 +1,40 @@
-// src/models/Product.js
+// src/models/Category.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
-const Product = sequelize.define('Product', {
+const Category = sequelize.define('Category', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    productCode: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true, // Podría ser algo como "REM001", "CAM001", etc.
-    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    slug: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
     description: {
         type: DataTypes.TEXT,
     },
-    brand: {
-        type: DataTypes.STRING,
-    },
-    status: {
-        type: DataTypes.ENUM('active', 'inactive', 'draft'),
-        defaultValue: 'active'
-    },
-    categoryId: {
+    parentId: {
         type: DataTypes.UUID,
         references: {
             model: 'categories',
             key: 'id'
         },
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'products'
+    tableName: 'categories'
 });
+// Auto-referencial para subcategorías
+// Category.belongsTo(Category, { as: 'parent', foreignKey: 'parentId' });
+// Category.hasMany(Category, { as: 'subcategories', foreignKey: 'parentId' });
 
-module.exports = Product;
+module.exports = Category;

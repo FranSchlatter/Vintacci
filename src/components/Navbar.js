@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/outline';
 import { setActiveFilters } from '../redux/actions/filterActions';
-import { filterConfig } from '../config/filterConfig';
+// import { filterConfig } from '../config/filterConfig';
 import { logoutUser } from '../redux/actions/authActions'
 
 const Navbar = () => {
@@ -21,10 +21,10 @@ const Navbar = () => {
   const { isAuthenticated, currentUser } = useSelector(state => state.auth);
 
   const productMenuItems = {
-    'Categorías': filterConfig.category.options,
-    'Género': filterConfig.sex.options,
-    'Estilo': filterConfig.style.options,
-    'Era': filterConfig.era.options
+    // 'Categorías': filterConfig.category.options,
+    // 'Género': filterConfig.sex.options,
+    // 'Estilo': filterConfig.style.options,
+    // 'Era': filterConfig.era.options
   };
 
   useEffect(() => {

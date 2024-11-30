@@ -1,40 +1,75 @@
 // src/config/filterConfig.js
 export const filterConfig = {
-    sex: {
-        title: 'Género',
-        options: ['Hombre', 'Mujer', 'Unisex', 'Niño']
-    },
-    size: {
-        title: 'Talla',
-        options: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
-    },
+    // Filtros basados en el producto base
     category: {
-        title: 'Categoría',
-        options: ['Camisetas', 'Pantalones', 'Zapatillas', 'Buzos', 'Camperas']
+        title: "Categorías",
+        type: "select",
+        getOptions: (categories) => categories.map(cat => ({
+            value: cat.id,
+            label: cat.name
+        }))
     },
     brand: {
-        title: 'Marca',
-        options: ['Nike', 'Adidas', 'Puma', 'Reebok', 'Under Armour', 'Columbia', 'Vans', 'Lacoste', 'The North Face']
+        title: "Marcas",
+        type: "checkbox",
+        getOptions: (products) => [...new Set(products.map(p => p.brand))]
     },
-    style: {
-        title: 'Estilo',
-        options: ['Casual', 'Deportivo', 'Vintage', 'Urbano']
+    status: {
+        title: "Estado",
+        type: "checkbox",
+        options: ["active", "inactive", "draft"]
     },
-    era: {
-        title: 'Época',
-        options: ['Verano', 'Invierno']
+    price: {
+        title: "Precio",
+        type: "range",
+        getRange: (products) => {
+            const allPrices = products.flatMap(p => 
+                p.ProductVariants.map(v => Number(v.price))
+            );
+            return {
+                min: Math.min(...allPrices),
+                max: Math.max(...allPrices)
+            };
+        }
     },
-    color: {
-        title: 'Color',
-        options: ['Negro', 'Blanco', 'Gris', 'Azul', 'Verde', 'Amarillo']
+    options: {
+        title: "Opciones",
+        type: "nested",
+        sections: {
+            color: {
+                title: "Colores",
+                type: "checkbox",
+                getOptions: (options) => 
+                    options
+                        .filter(opt => opt.type === 'color')
+                        .map(opt => ({
+                            value: opt.id,
+                            label: opt.name
+                        }))
+            },
+            size: {
+                title: "Talles",
+                type: "checkbox",
+                getOptions: (options) => 
+                    options
+                        .filter(opt => opt.type === 'size')
+                        .map(opt => ({
+                            value: opt.id,
+                            label: opt.name
+                        }))
+            }
+        }
     },
-    material: {
-        title: 'Material',
-        options: ['Algodón', 'Tela', 'Cuero', 'Nylon']
+    tags: {
+        title: "Etiquetas",
+        type: "checkbox",
+        getOptions: (products) => {
+            const allTags = products.flatMap(p => p.Tags || []);
+            return [...new Set(allTags.map(tag => ({
+                value: tag.id,
+                label: tag.name,
+                type: tag.type
+            })))];
+        }
     }
 };
-
-// era: { // Posible mejora futura.
-//     title: 'Época',
-//     options: ['60s', '70s', '80s', '90s', '2000s']
-// },

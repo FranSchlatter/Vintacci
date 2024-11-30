@@ -158,54 +158,78 @@ export const userSchema = z.object({
       .object({}).optional()
   });
 
-// Primero, agregar esto en src/config/validationSchemas.js
+// Schema para opciones de producto
+export const productOptionSchema = z.object({
+  id: z.string().optional(), // opcional porque al crear puede no tener ID
+  type: z.string().min(1, "El tipo de opción es requerido"),
+  value: z.string().min(1, "El valor de la opción es requerido")
+});
+
+// Schema para variantes
+export const productVariantSchema = z.object({
+  id: z.string().optional(),
+  price: z
+    .number()  // Cambiado a number
+    .min(0.01, "El precio debe ser mayor a 0"),
+  stock: z
+    .number()  // Cambiado a number
+    .min(0, "El stock debe ser un número válido"),
+  image_url: z
+    .string()
+    .url("La URL de la imagen no es válida"),
+  status: z
+    .enum(['active', 'inactive'])
+    .default('active'),
+  discountPrice: z
+    .number()  // Cambiado a number
+    .optional(),
+  discountStart: z.string().optional(),
+  discountEnd: z.string().optional(),
+  options: z.array(z.string()).min(1, "Debe seleccionar al menos una opción")
+});
+
+// Schema principal de producto
 export const productSchema = z.object({
-    name: z
-      .string()
-      .min(3, "El nombre debe tener al menos 3 caracteres")
-      .max(100, "El nombre no puede exceder los 100 caracteres"),
-    description: z
-      .string()
-      .min(10, "La descripción debe tener al menos 10 caracteres")
-      .max(500, "La descripción no puede exceder los 500 caracteres"),
-    price: z
-      .string()
-      .min(1, "El precio es requerido")
-      .refine((val) => !isNaN(val) && Number(val) > 0, "El precio debe ser mayor a 0"),
-    category: z
-      .string()
-      .min(1, "La categoría es requerida"),
-    brand: z
-      .string()
-      .min(1, "La marca es requerida"),
-    style: z
-      .string()
-      .min(1, "El estilo es requerido"),
-    era: z
-      .string()
-      .min(1, "La época es requerida"),
-    size: z
-      .string()
-      .min(1, "La talla es requerida"),
-    sex: z
-      .string()
-      .min(1, "El género es requerido"),
-    color: z
-      .string()
-      .min(1, "El color es requerido"),
-    material: z
-      .string()
-      .min(1, "El material es requerido"),
-    image_url: z
-      .string()
-      .url("La URL de la imagen no es válida"),
-    stock: z
-      .string()
-      .min(1, "El stock es requerido")
-      .refine((val) => !isNaN(val) && Number(val) >= 0, "El stock debe ser un número válido"),
-    serial_number: z
-      .string()
-      .min(1, "El numero de serie es requerido")
+  name: z
+    .string()
+    .min(3, "El nombre debe tener al menos 3 caracteres")
+    .max(100, "El nombre no puede exceder los 100 caracteres"),
+  description: z
+    .string()
+    .min(10, "La descripción debe tener al menos 10 caracteres")
+    .max(500, "La descripción no puede exceder los 500 caracteres"),
+  brand: z
+    .string()
+    .min(1, "La marca es requerida"),
+  status: z
+    .enum(['active', 'inactive', 'draft'])
+    .default('active'),
+  categoryId: z
+    .string()
+    .min(1, "La categoría es requerida"),
+  tags: z
+    .array(z.string())
+    .optional(),
+  variants: z
+    .array(productVariantSchema)
+    .min(1, "Debe tener al menos una variante")
+    .refine(
+      variants => {
+        // Verificar que no hay combinaciones duplicadas de opciones
+        const combinations = new Set();
+        for (const variant of variants) {
+          const optionKey = [...variant.options].sort().join('-');
+          if (combinations.has(optionKey)) {
+            return false;
+          }
+          combinations.add(optionKey);
+        }
+        return true;
+      },
+      {
+        message: "No puede haber variantes con la misma combinación de opciones"
+      }
+    )
   });
 
   // Formulario de contacto

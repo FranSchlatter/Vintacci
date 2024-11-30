@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
-import { fetchProductId } from '../redux/actions/productActions';
+import { fetchProductById } from '../redux/actions/productActions';
 import { Package, Ruler, Palette, Calendar, Tag, ShoppingCart, Users } from 'lucide-react'; //   Fabric
 import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
@@ -21,7 +21,7 @@ const ProductDetailPage = () => {
   const isFavorite = favorites.some(fav => fav.product_id === product.id);
 
   useEffect(() => {
-    dispatch(fetchProductId(id));
+    dispatch(fetchProductById(id));
   }, [id, dispatch]);
 
   if (!product) {

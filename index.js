@@ -13,6 +13,9 @@ const addressRoutes = require('./src/routes/addressRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 const favoriteRoutes = require('./src/routes/favoriteRoutes')
 const emailRoutes = require('./src/routes/emailRoutes')
+const categoryRoutes = require('./src/routes/categoryRoutes');
+const tagRoutes = require('./src/routes/tagRoutes');
+const productOptionRoutes = require('./src/routes/productOptionRoutes');
 
 const app = express();
 const PORT = 5000;
@@ -29,6 +32,9 @@ app.use('/address', addressRoutes);
 app.use('/auth', authRoutes);
 app.use('/favorites', favoriteRoutes);
 app.use('/email', emailRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/tags', tagRoutes);
+app.use('/product-options', productOptionRoutes);
 
 // Manejo de errores global
 app.use((err, req, res, next) => {

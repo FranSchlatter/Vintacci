@@ -1,13 +1,21 @@
 // models/index.js
 const sequelize = require('../../db');
+
+// Importar todos los modelos
 const Order = require('./Order');
 const OrderItem = require('./OrderItem');
 const Invoice = require('./Invoice');
 const Product = require('./Product');
 const User = require('./User');
-const Address = require('./Address')
-const Favorite = require('./Favorite')
-const CartItem = require('./CartItem')
+const Address = require('./Address');
+const Favorite = require('./Favorite');
+const CartItem = require('./CartItem');
+const Category = require('./Category');
+const Tag = require('./Tag');
+const ProductOption = require('./ProductOption');
+const ProductVariant = require('./ProductVariant');
+const ProductTag = require('./ProductTag');
+const VariantOption = require('./VariantOption');
 
 function initializeAssociations() {
     // User - Orders (1:N)
@@ -95,12 +103,62 @@ function initializeAssociations() {
     OrderItem.belongsTo(Product, {
         foreignKey: 'product_id'
     });
+
+    // Categories (auto-referencial)
+    Category.belongsTo(Category, { 
+        as: 'parent', 
+        foreignKey: 'parentId',
+        onDelete: 'RESTRICT'
+    });
+    Category.hasMany(Category, { 
+        as: 'subcategories', 
+        foreignKey: 'parentId',
+        onDelete: 'CASCADE'
+    });
+
+    // Product - Category
+    Product.belongsTo(Category, {
+        foreignKey: 'categoryId',
+        onDelete: 'RESTRICT'
+    });
+    Category.hasMany(Product, {
+        foreignKey: 'categoryId'
+    });
+
+    // Product - ProductVariant
+    Product.hasMany(ProductVariant, {
+        foreignKey: 'productId',
+        onDelete: 'CASCADE'
+    });
+    ProductVariant.belongsTo(Product, {
+        foreignKey: 'productId'
+    });
+
+    // Product - Tags
+    Product.belongsToMany(Tag, { 
+        through: ProductTag,
+        onDelete: 'CASCADE'
+    });
+    Tag.belongsToMany(Product, { 
+        through: ProductTag,
+        onDelete: 'CASCADE'
+    });
+
+    // ProductVariant - ProductOption
+    ProductVariant.belongsToMany(ProductOption, { 
+        through: VariantOption,
+        onDelete: 'CASCADE'
+    });
+    ProductOption.belongsToMany(ProductVariant, { 
+        through: VariantOption,
+        onDelete: 'CASCADE'
+    });
 }
 
-// 3. Inicializar asociaciones
+// Inicializar asociaciones
 initializeAssociations();
 
-// 4. Exportar todo
+// Exportar todo
 module.exports = {
     sequelize,
     User,
@@ -110,5 +168,11 @@ module.exports = {
     Invoice,
     Address,
     Favorite,
-    CartItem
+    CartItem,
+    Category,
+    Tag,
+    ProductOption,
+    ProductVariant,
+    ProductTag,
+    VariantOption
 };
