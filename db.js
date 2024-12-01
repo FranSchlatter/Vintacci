@@ -83,5 +83,14 @@ module.exports = sequelize;
 
 
 
-// Errores: Edit product > Create variant > No re-renderiza el modals y no se muestra la variant en la lista.
+// Mejoro pero sigue funcionando mal
 
+// Los filtros siguen con errores.
+
+// El filtro de tags esta equivocado, los tags no se dividen en categorias... Style Activity Season, no existe... Deberias buscar todos los tags disponibles y mostrarlos.
+
+// El filtro de categoria funciona bien
+
+// El filtro de precio no anda
+
+// El ordenamiento no funciona correctamente, solo ordena por precio de menor a mayor, de mayor a menor no pasa nada. 

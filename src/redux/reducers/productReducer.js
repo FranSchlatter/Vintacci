@@ -34,6 +34,29 @@ const productReducer = (state = initialState, action) => {
                 success: false
             };
 
+        // Fetch product by ID
+        case 'FETCH_PRODUCT_BY_ID_REQUEST':
+            return {
+                ...state,
+                currentProduct: null,
+                loading: true,
+                error: null
+            };
+        case 'FETCH_PRODUCT_BY_ID_SUCCESS':
+            return {
+                ...state,
+                currentProduct: action.payload,
+                loading: false,
+                error: null
+            };
+        case 'FETCH_PRODUCT_BY_ID_FAILURE':
+            return {
+                ...state,
+                currentProduct: null,
+                loading: false,
+                error: action.payload
+            };
+
         // Add product
         case 'ADD_PRODUCT_REQUEST':
             return {
@@ -133,6 +156,15 @@ const productReducer = (state = initialState, action) => {
                         }
                         : product
                 ),
+                currentProduct: state.currentProduct?.id === action.payload.productId
+                    ? {
+                        ...state.currentProduct,
+                        ProductVariants: [
+                            ...(state.currentProduct.ProductVariants || []),
+                            action.payload.variant
+                        ]
+                    }
+                    : state.currentProduct,
                 variantLoading: false,
                 variantError: null
             };
@@ -152,6 +184,16 @@ const productReducer = (state = initialState, action) => {
                         }
                         : product
                 ),
+                currentProduct: state.currentProduct?.id === action.payload.productId
+                    ? {
+                        ...state.currentProduct,
+                        ProductVariants: (state.currentProduct.ProductVariants || []).map(variant =>
+                            variant.id === action.payload.variantId
+                                ? action.payload.updatedVariant
+                                : variant
+                        )
+                    }
+                    : state.currentProduct,
                 variantLoading: false,
                 variantError: null
             };
@@ -169,6 +211,14 @@ const productReducer = (state = initialState, action) => {
                         }
                         : product
                 ),
+                currentProduct: state.currentProduct?.id === action.payload.productId
+                    ? {
+                        ...state.currentProduct,
+                        ProductVariants: (state.currentProduct.ProductVariants || []).filter(
+                            variant => variant.id !== action.payload.variantId
+                        )
+                    }
+                    : state.currentProduct,
                 variantLoading: false,
                 variantError: null
             };
