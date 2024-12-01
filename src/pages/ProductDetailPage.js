@@ -36,40 +36,6 @@ const ProductDetailPage = () => {
     );
   }, [product]);
 
-  // Calcular información de precios y descuentos
-  const getPriceInfo = useMemo(() => {
-    if (!activeVariants.length) return null;
-
-    const prices = activeVariants.map(variant => ({
-      regular: Number(variant.price),
-      discount: variant.discountPrice ? Number(variant.discountPrice) : null,
-      hasValidDiscount: variant.discountPrice && 
-        new Date(variant.discountStart) <= new Date() &&
-        new Date(variant.discountEnd) >= new Date()
-    }));
-
-    const minRegularPrice = Math.min(...prices.map(p => p.regular));
-    const maxRegularPrice = Math.max(...prices.map(p => p.regular));
-    const discountedVariants = prices.filter(p => p.hasValidDiscount);
-    
-    return {
-      priceRange: {
-        min: minRegularPrice.toFixed(2),
-        max: maxRegularPrice.toFixed(2),
-        hasRange: minRegularPrice !== maxRegularPrice
-      },
-      discounts: {
-        available: discountedVariants.length > 0,
-        count: discountedVariants.length,
-        maxDiscount: discountedVariants.length > 0 
-          ? Math.max(...discountedVariants.map(p => 
-              ((p.regular - p.discount) / p.regular) * 100
-            ))
-          : 0
-      }
-    };
-  }, [activeVariants]);
-
   // Organizar las opciones disponibles
   const { availableColors, availableSizes, optionsByColor, optionsBySize } = useMemo(() => {
     const colorMap = new Map();
@@ -146,7 +112,7 @@ const ProductDetailPage = () => {
     setSelectedColor(colorOption?.id || null);
     setSelectedSize(sizeOption?.id || null);
   };
-  
+
   const handleColorSelect = (colorId) => {
     setSelectedColor(colorId);
     const availableSizesForColor = optionsByColor.get(colorId);
