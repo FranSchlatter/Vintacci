@@ -1,25 +1,26 @@
-// Filters/index.js
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveFilters } from '../../../redux/actions/filterActions';
 import PriceRange from './PriceRange';
 import CategoryFilter from './CategoryFilter';
 import TagFilter from './TagFilter';
+import VariantOptionsFilter from './VariantOptionsFilter';
 import ActiveFilters from './ActiveFilters';
+import SearchBar from './SearchBar';
 
-// Componente principal de filtros que orquesta todos los tipos de filtros
 const Filters = () => {
   const dispatch = useDispatch();
   const activeFilters = useSelector(state => state.filters.activeFilters);
   const categories = useSelector(state => state.categories.categories);
   const tags = useSelector(state => state.tags.tags);
 
-  // Limpia todos los filtros activos
   const handleClearAll = () => {
     dispatch(setActiveFilters({
       category: [],
-      brand: [],
-      priceRange: { min: 0, max: 999999 }
+      tags: [],
+      priceRange: { min: 0, max: 999999 },
+      variantOptions: {}, // Agregamos esto al clear
+      search: '' // Agregamos esto al clear
     }));
   };
 
@@ -35,6 +36,9 @@ const Filters = () => {
           Limpiar todo
         </button>
       </div>
+
+      {/* SearchBar - Nuevo componente */}
+      <SearchBar />
 
       {/* Filtros activos */}
       <ActiveFilters />
@@ -52,6 +56,8 @@ const Filters = () => {
           tags={tags}
           activeTags={activeFilters.tags || []}
         />
+
+        <VariantOptionsFilter />
       </div>
     </div>
   );

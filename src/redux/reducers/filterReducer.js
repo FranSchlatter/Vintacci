@@ -1,20 +1,25 @@
 // src/redux/reducers/filterReducer.js
 const initialState = {
-  activeFilters: {
-      category: [], // Solo categorías y subcategorías
-      tags: [], // Tags del producto
-      priceRange: { min: 0, max: 999999 }
-  },
-  sortBy: 'newest' // Mantenemos el ordenamiento
-};
+    activeFilters: {
+      category: [],
+      tags: [],
+      priceRange: { min: 0, max: 999999 },
+      variantOptions: {},
+      search: ''
+    },
+    sortBy: 'newest'
+  };
 
 const filterReducer = (state = initialState, action) => {
   switch (action.type) {
-      case 'SET_ACTIVE_FILTERS':
-          return {
-              ...state,
-              activeFilters: action.payload
-          };
+    case 'SET_ACTIVE_FILTERS':
+        return {
+          ...state,
+          activeFilters: {
+            ...state.activeFilters,
+            ...action.payload
+          }
+        };
       case 'UPDATE_FILTER':
           const { filterType, value, isChecked } = action.payload;
           return {

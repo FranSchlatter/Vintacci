@@ -15,6 +15,29 @@ const ListView = ({ products }) => {
     }).format(price);
   };
 
+  const getProductPriceRange = (product) => {
+    const activeVariants = product.ProductVariants.filter(v => 
+      v.status === 'active' && v.stock > 0
+    );
+  
+    if (!activeVariants.length) return null;
+  
+    const prices = activeVariants.map(variant => {
+      const currentDate = new Date();
+      const hasValidDiscount = variant.discountPrice && 
+        new Date(variant.discountStart) <= currentDate &&
+        new Date(variant.discountEnd) >= currentDate;
+  
+      return hasValidDiscount ? Number(variant.discountPrice) : Number(variant.price);
+    });
+  
+    return {
+      min: Math.min(...prices),
+      max: Math.max(...prices),
+      hasMultiplePrices: Math.min(...prices) !== Math.max(...prices)
+    };
+  };
+
   const getDisplayPrice = (product) => {
     const mainVariant = product.ProductVariants[0];
     if (!mainVariant) return null;
@@ -96,7 +119,12 @@ const ListView = ({ products }) => {
                         </span>
                       )}
                       <span className={`text-xl font-medium ${priceInfo?.hasDiscount ? 'text-red-600' : 'text-gray-900'}`}>
-                        {formatPrice(priceInfo?.currentPrice)}
+                        {(() => {
+                          const priceRange = getProductPriceRange(product);
+                          if (!priceRange) return 'No disponible';
+                          if (!priceRange.hasMultiplePrices) return formatPrice(priceRange.min);
+                          return `${formatPrice(priceRange.min)} - ${formatPrice(priceRange.max)}`;
+                        })()}
                       </span>
                     </div>
                     <div className="text-sm text-gray-500">

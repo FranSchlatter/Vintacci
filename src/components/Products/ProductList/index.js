@@ -22,7 +22,7 @@ const ProductList = () => {
         if (!allProducts?.length) return [];
 
         return allProducts.map(product => {
-            // Encontrar la variante activa con el precio más bajo
+            // Encontrar las variantes activas
             const activeVariants = product.ProductVariants.filter(variant => 
                 variant.status === 'active' && variant.stock > 0
             );
@@ -35,13 +35,21 @@ const ProductList = () => {
                 return prevPrice < currentPrice ? prev : current;
             });
 
+            const highestPriceVariant = activeVariants.reduce((prev, current) => {
+                const prevPrice = Number(prev.discountPrice || prev.price);
+                const currentPrice = Number(current.discountPrice || current.price);
+                return prevPrice > currentPrice ? prev : current;
+            });
+
             return {
                 ...product,
-                price: Number(lowestPriceVariant.discountPrice || lowestPriceVariant.price),
+                minPrice: Number(lowestPriceVariant.discountPrice || lowestPriceVariant.price),
+                maxPrice: Number(highestPriceVariant.discountPrice || highestPriceVariant.price),
                 image_url: lowestPriceVariant.image_url,
-                stock: activeVariants.reduce((sum, variant) => sum + variant.stock, 0)
+                stock: activeVariants.reduce((sum, variant) => sum + variant.stock, 0),
+                activeVariants
             };
-        }).filter(Boolean); // Eliminar productos sin variantes activas
+        }).filter(Boolean);
     }, [allProducts]);
 
     // Aplicar filtros a los productos
@@ -49,6 +57,16 @@ const ProductList = () => {
         if (!processedProducts?.length) return [];
 
         return processedProducts.filter(product => {
+            // Filtro por búsqueda
+            if (activeFilters.search) {
+                const searchTerm = activeFilters.search.toLowerCase();
+                const searchMatch = 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm) ||
+                    product.brand.toLowerCase().includes(searchTerm);
+                if (!searchMatch) return false;
+            }
+
             // Filtro por categoría
             if (activeFilters.category?.length > 0) {
                 if (!activeFilters.category.includes(product.categoryId)) {
@@ -69,8 +87,28 @@ const ProductList = () => {
                 const minPrice = Number(activeFilters.priceRange.min) || 0;
                 const maxPrice = Number(activeFilters.priceRange.max) || Infinity;
                 
-                if (product.price < minPrice || product.price > maxPrice) {
-                    return false;
+                // Un producto coincide si alguna de sus variantes está en el rango
+                const priceInRange = product.activeVariants.some(variant => {
+                    const price = Number(variant.discountPrice || variant.price);
+                    return price >= minPrice && price <= maxPrice;
+                });
+
+                if (!priceInRange) return false;
+            }
+
+            // Filtro por opciones de variante
+            if (activeFilters.variantOptions) {
+                for (const [type, selectedOptions] of Object.entries(activeFilters.variantOptions)) {
+                    if (selectedOptions.length === 0) continue;
+
+                    // Verificar si alguna variante activa tiene la opción seleccionada
+                    const hasMatchingOption = product.activeVariants.some(variant =>
+                        variant.ProductOptions.some(option =>
+                            option.type === type && selectedOptions.includes(option.id)
+                        )
+                    );
+
+                    if (!hasMatchingOption) return false;
                 }
             }
 
@@ -86,9 +124,9 @@ const ProductList = () => {
         
         switch (sortBy) {
             case 'price-low':
-                return sorted.sort((a, b) => a.price - b.price);
+                return sorted.sort((a, b) => a.minPrice - b.minPrice);
             case 'price-high':
-                return sorted.sort((a, b) => b.price - a.price);
+                return sorted.sort((a, b) => b.maxPrice - a.maxPrice);
             case 'newest':
                 return sorted.sort((a, b) => {
                     const dateA = new Date(a.createdAt);

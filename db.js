@@ -28,8 +28,13 @@ module.exports = sequelize;
 
 
 // After:
-// Remaster, productos, detailproduct con talles mas fotos zoom. Prod relacionados. Etc
-// Array imgs en variants.
+// Prod relacionados, complementarios, demas.
+// Array de img en variantes, (cuando se crea la var, se pueden visualizar y eliminar) en detail aparecen como en mercado libre, zoom
+// Filtro por precio no anda. Mostrar precio var mas barata - var mas cara... 
+// En detail, resaltar variante con descuento de alguna manera, ordernar talles de mayor a menor. 
+// Favs no andan
+// Probar comprar, no deberia andar. 
+// Arreglar carrito con nuevos products.
 
 
 
@@ -80,17 +85,3 @@ module.exports = sequelize;
 // Customización de productos
 // Opciones especiales
 // Features premium específicas
-
-
-
-// Mejoro pero sigue funcionando mal
-
-// Los filtros siguen con errores.
-
-// El filtro de tags esta equivocado, los tags no se dividen en categorias... Style Activity Season, no existe... Deberias buscar todos los tags disponibles y mostrarlos.
-
-// El filtro de categoria funciona bien
-
-// El filtro de precio no anda
-
-// El ordenamiento no funciona correctamente, solo ordena por precio de menor a mayor, de mayor a menor no pasa nada. 

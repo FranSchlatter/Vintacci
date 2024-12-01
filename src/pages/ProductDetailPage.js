@@ -36,6 +36,40 @@ const ProductDetailPage = () => {
     );
   }, [product]);
 
+  // Calcular información de precios y descuentos
+  const getPriceInfo = useMemo(() => {
+    if (!activeVariants.length) return null;
+
+    const prices = activeVariants.map(variant => ({
+      regular: Number(variant.price),
+      discount: variant.discountPrice ? Number(variant.discountPrice) : null,
+      hasValidDiscount: variant.discountPrice && 
+        new Date(variant.discountStart) <= new Date() &&
+        new Date(variant.discountEnd) >= new Date()
+    }));
+
+    const minRegularPrice = Math.min(...prices.map(p => p.regular));
+    const maxRegularPrice = Math.max(...prices.map(p => p.regular));
+    const discountedVariants = prices.filter(p => p.hasValidDiscount);
+    
+    return {
+      priceRange: {
+        min: minRegularPrice.toFixed(2),
+        max: maxRegularPrice.toFixed(2),
+        hasRange: minRegularPrice !== maxRegularPrice
+      },
+      discounts: {
+        available: discountedVariants.length > 0,
+        count: discountedVariants.length,
+        maxDiscount: discountedVariants.length > 0 
+          ? Math.max(...discountedVariants.map(p => 
+              ((p.regular - p.discount) / p.regular) * 100
+            ))
+          : 0
+      }
+    };
+  }, [activeVariants]);
+
   // Organizar las opciones disponibles
   const { availableColors, availableSizes, optionsByColor, optionsBySize } = useMemo(() => {
     const colorMap = new Map();
@@ -48,18 +82,14 @@ const ProductDetailPage = () => {
       const sizeOption = variant.ProductOptions.find(opt => opt.type === 'size');
 
       if (colorOption && sizeOption) {
-        // Agregar a colores disponibles
         colorMap.set(colorOption.id, colorOption);
-        // Agregar a tallas disponibles
         sizeMap.set(sizeOption.id, sizeOption);
 
-        // Agrupar por color
         if (!byColor.has(colorOption.id)) {
           byColor.set(colorOption.id, new Set());
         }
         byColor.get(colorOption.id).add(sizeOption.id);
 
-        // Agrupar por talla
         if (!bySize.has(sizeOption.id)) {
           bySize.set(sizeOption.id, new Set());
         }
@@ -106,10 +136,19 @@ const ProductDetailPage = () => {
     }
   }, [availableColors, optionsByColor, availableSizes, selectedColor]);
 
-  // Handlers para selección de opciones
+  const handleVariantSelect = (variant) => {
+    if (!variant) return;
+
+    const colorOption = variant.ProductOptions.find(opt => opt.type === 'color');
+    const sizeOption = variant.ProductOptions.find(opt => opt.type === 'size');
+
+    // Actualizamos ambos estados a la vez
+    setSelectedColor(colorOption?.id || null);
+    setSelectedSize(sizeOption?.id || null);
+  };
+  
   const handleColorSelect = (colorId) => {
     setSelectedColor(colorId);
-    // Si la talla actual no está disponible para este color, seleccionar la primera disponible
     const availableSizesForColor = optionsByColor.get(colorId);
     if (!availableSizesForColor?.has(selectedSize)) {
       const firstAvailableSize = availableSizes.find(size => 
@@ -121,7 +160,6 @@ const ProductDetailPage = () => {
 
   const handleSizeSelect = (sizeId) => {
     setSelectedSize(sizeId);
-    // Si el color actual no está disponible para esta talla, seleccionar el primero disponible
     const availableColorsForSize = optionsBySize.get(sizeId);
     if (!availableColorsForSize?.has(selectedColor)) {
       const firstAvailableColor = availableColors.find(color => 
@@ -195,20 +233,56 @@ const ProductDetailPage = () => {
 
           {/* Información del producto */}
           <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold">{product.name}</h1>
-              {selectedVariant && (
+            <div className="flex justify-between items-start">
+              <div>
+                <h1 className="text-3xl font-bold">{product.name}</h1>
                 <div className="mt-2">
-                  {selectedVariant.discountPrice ? (
+                  {selectedVariant && selectedVariant.discountPrice && 
+                  new Date(selectedVariant.discountStart) <= new Date() && 
+                  new Date(selectedVariant.discountEnd) >= new Date() ? (
                     <div className="flex items-center gap-2">
-                      <p className="text-xl font-semibold text-red-600">${selectedVariant.discountPrice}</p>
-                      <p className="text-lg text-gray-500 line-through">${selectedVariant.price}</p>
+                      <p className="text-xl font-semibold text-red-600">
+                        ${selectedVariant.discountPrice}
+                      </p>
+                      <p className="text-lg text-gray-500 line-through">
+                        ${selectedVariant.price}
+                      </p>
                     </div>
                   ) : (
-                    <p className="text-xl font-semibold">${selectedVariant.price}</p>
+                    <p className="text-xl font-semibold">${selectedVariant?.price}</p>
                   )}
                 </div>
-              )}
+              </div>
+
+              {/* Badges de descuentos en otras variantes */}
+              <div className="flex flex-col gap-2">
+                {activeVariants.map(variant => {
+                  if (variant.id === selectedVariant?.id) return null;
+                  if (!variant.discountPrice) return null;
+                  
+                  const currentDate = new Date();
+                  const discountStart = new Date(variant.discountStart);
+                  const discountEnd = new Date(variant.discountEnd);
+                  if (currentDate < discountStart || currentDate > discountEnd) return null;
+
+                  const colorOption = variant.ProductOptions.find(opt => opt.type === 'color');
+                  const sizeOption = variant.ProductOptions.find(opt => opt.type === 'size');
+                  const discount = Math.round(((variant.price - variant.discountPrice) / variant.price) * 100);
+
+                  return (
+                    <Badge
+                      key={variant.id}
+                      variant="outline"
+                      className="bg-red-50 border-red-200 whitespace-nowrap cursor-pointer hover:bg-red-100"
+                      onClick={() => handleVariantSelect(variant)}
+                    >
+                      <span className="text-red-600">
+                        {colorOption?.name} - {sizeOption?.value} • {discount}% OFF
+                      </span>
+                    </Badge>
+                  );
+                })}
+              </div>
             </div>
 
             <p className="text-gray-600">{product.description}</p>
@@ -303,6 +377,8 @@ const ProductDetailPage = () => {
                   toast.error('Producto sin stock disponible');
                   return;
                 }
+                // ... continuación del return anterior
+
                 dispatch(addToCart({
                   ...selectedVariant,
                   productName: product.name,
