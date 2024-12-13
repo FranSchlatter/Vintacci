@@ -16,6 +16,7 @@ const emailRoutes = require('./src/routes/emailRoutes')
 const categoryRoutes = require('./src/routes/categoryRoutes');
 const tagRoutes = require('./src/routes/tagRoutes');
 const productOptionRoutes = require('./src/routes/productOptionRoutes');
+const dbInitRoutes = require('./src/routes/dbInitRoutes');
 
 const app = express();
 const PORT = 5000;
@@ -35,6 +36,7 @@ app.use('/email', emailRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/tags', tagRoutes);
 app.use('/product-options', productOptionRoutes);
+app.use('/db', dbInitRoutes);
 
 // Manejo de errores global
 app.use((err, req, res, next) => {

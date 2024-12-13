@@ -1,0 +1,371 @@
+{
+    "categories": [
+        {
+            "id": "af882d93-cdd0-44a7-bdb7-4337dee89423",
+            "name": "Remeras",
+            "description": "Todo tipo de remeras y camisetas",
+            "subcategories": [
+                {
+                    "id": "1b6de7b4-17a9-4d18-9c09-72286274f6e0",
+                    "name": "Remeras Manga Corta",
+                    "description": "Remeras de manga corta para toda ocasión"
+                },
+                {
+                    "id": "2c7ef8b5-28a0-4e29-ad19-83397385f7d1",
+                    "name": "Remeras Deportivas",
+                    "description": "Remeras técnicas para deporte y actividad física"
+                },
+                {
+                    "id": "3d8f09c6-39b1-4f30-be20-94408496e8e2",
+                    "name": "Remeras Estampadas",
+                    "description": "Remeras con diseños y estampados únicos"
+                },
+                {
+                    "id": "4e9f0ad7-40c2-4f31-cf21-05519507f9f3",
+                    "name": "Remeras Básicas",
+                    "description": "Remeras lisas de uso cotidiano"
+                }
+            ]
+        },
+        {
+            "id": "5f0f1be8-51d3-4f32-df22-16620618f0f4",
+            "name": "Pantalones",
+            "description": "Variedad de pantalones para todas las ocasiones",
+            "subcategories": [
+                {
+                    "id": "6f1f2cf9-62e4-4f33-ef23-27731729f1f5",
+                    "name": "Jeans",
+                    "description": "Jeans y pantalones de mezclilla"
+                },
+                {
+                    "id": "7f2f3df0-73f5-4f34-ff24-38842830f2f6",
+                    "name": "Pantalones Deportivos",
+                    "description": "Pantalones para actividad física y deporte"
+                },
+                {
+                    "id": "8f3f4ef1-84f6-4f35-af25-49953941f3f7",
+                    "name": "Shorts",
+                    "description": "Pantalones cortos y bermudas"
+                }
+            ]
+        },
+        {
+            "id": "9f4f5ff2-95f7-4f36-bf26-50064052f4f8",
+            "name": "Calzado",
+            "description": "Todo tipo de calzado",
+            "subcategories": [
+                {
+                    "id": "aa5f6af3-06f8-4f37-cf27-61175163f5f9",
+                    "name": "Zapatillas Deportivas",
+                    "description": "Calzado para deporte y actividad física"
+                },
+                {
+                    "id": "bb6f7bf4-17f9-4f38-df28-72286274f6fa",
+                    "name": "Zapatos Casuales",
+                    "description": "Calzado para uso diario"
+                },
+                {
+                    "id": "cc7f8cf5-28fa-4f39-ef29-83397385f7fb",
+                    "name": "Sandalias",
+                    "description": "Calzado abierto y sandalias"
+                }
+            ]
+        }
+    ],
+    "tags": [
+        {
+            "id": "dd8f9df6-39fb-4f40-ff30-94408496f8fc",
+            "name": "Verano",
+            "type": "temporada"
+        },
+        {
+            "id": "ee9faef7-40fc-4f41-af31-05519507f9fd",
+            "name": "Invierno",
+            "type": "temporada"
+        },
+        {
+            "id": "ffafbff8-51fd-4f42-bf32-16620618fafe",
+            "name": "Otoño",
+            "type": "temporada"
+        },
+        {
+            "id": "aabfcaf9-62fe-4f43-cf33-27731729fbff",
+            "name": "Primavera",
+            "type": "temporada"
+        },
+        {
+            "id": "bbcfdafa-73ff-4f44-df34-38842830fcfa",
+            "name": "Casual",
+            "type": "estilo"
+        },
+        {
+            "id": "ccdfeafb-84a0-4f45-ef35-49953941fdfb",
+            "name": "Formal",
+            "type": "estilo"
+        },
+        {
+            "id": "ddefebfc-95a1-4f46-ff36-50064052fefc",
+            "name": "Deportivo",
+            "type": "estilo"
+        }
+    ],
+    "productOptions": [
+        {
+            "id": "eeffecfd-06a2-4f47-af37-61175163fffd",
+            "name": "Small",
+            "type": "size",
+            "value": "S"
+        },
+        {
+            "id": "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
+            "name": "Medium",
+            "type": "size",
+            "value": "M"
+        },
+        {
+            "id": "aafbfef1-28a4-4f49-cf39-83397385f1ff",
+            "name": "Large",
+            "type": "size",
+            "value": "L"
+        },
+        {
+            "id": "bbfcfff2-39a5-4f50-df40-94408496f2fa",
+            "name": "Extra Large",
+            "type": "size",
+            "value": "XL"
+        },
+        {
+            "id": "ccfdaaf3-40a6-4f51-ef41-05519507f3fb",
+            "name": "Blanco",
+            "type": "color",
+            "value": "#FFFFFF"
+        },
+        {
+            "id": "ddfebbf4-51a7-4f52-ff42-16620618f4fc",
+            "name": "Negro",
+            "type": "color",
+            "value": "#000000"
+        },
+        {
+            "id": "eeffccf5-62a8-4f53-af43-27731729f5fd",
+            "name": "Azul",
+            "type": "color",
+            "value": "#0000FF"
+        },
+        {
+            "id": "ffeaddf6-73a9-4f54-bf44-38842830f6fe",
+            "name": "Rojo",
+            "type": "color",
+            "value": "#FF0000"
+        }
+    ],
+    "products": [
+        {
+            "id": "aafbeef7-84aa-4f55-cf45-49953941f7ff",
+            "name": "Remera Deportiva DryFit",
+            "description": "Remera técnica de alto rendimiento con tecnología de secado rápido",
+            "brand": "Nike",
+            "categoryId": "2c7ef8b5-28a0-4e29-ad19-83397385f7d1",
+            "status": "active",
+            "tags": [
+                "ddefebfc-95a1-4f46-ff36-50064052fefc",
+                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
+            ],
+            "variants": [
+                {
+                    "price": 29.99,
+                    "stock": 100,
+                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/7c2fff38-9f89-40f1-8aed-682ac6ef0d17/dri-fit-mens-training-t-shirt-PCJXND.png",
+                    "status": "active",
+                    "options": [
+                        "eeffecfd-06a2-4f47-af37-61175163fffd",
+                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
+                    ]
+                },
+                {
+                    "price": 29.99,
+                    "stock": 100,
+                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/98689c2c-8a7c-4e0e-8168-1e17c37e5a12/dri-fit-mens-training-t-shirt-PCJXND.png",
+                    "status": "active",
+                    "options": [
+                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
+                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "bbfcfff8-95ab-4f56-df46-50064052f8fa",
+            "name": "Jean Skinny Premium",
+            "description": "Jean de corte skinny con tecnología stretch para mayor comodidad",
+            "brand": "Levis",
+            "categoryId": "6f1f2cf9-62e4-4f33-ef23-27731729f1f5",
+            "status": "active",
+            "tags": [
+                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
+                "ccdfeafb-84a0-4f45-ef35-49953941fdfb"
+            ],
+            "variants": [
+                {
+                    "price": 79.99,
+                    "stock": 50,
+                    "image_url": "https://levi.com.ar/on/demandware.static/-/Sites-LeviMX-Library/default/dw31604478/images/easyzoom/A0499-0002_FRONT.jpg",
+                    "status": "active",
+                    "discountPrice": 69.99,
+                    "discountStart": "2024-12-01T00:00:00.000Z",
+                    "discountEnd": "2024-12-31T23:59:59.999Z",
+                    "options": [
+                        "eeffecfd-06a2-4f47-af37-61175163fffd",
+                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
+                    ]
+                },
+                {
+                    "price": 79.99,
+                    "stock": 50,
+                    "image_url": "https://levi.com.ar/on/demandware.static/-/Sites-LeviMX-Library/default/dw31604478/images/easyzoom/A0499-0002_FRONT.jpg",
+                    "status": "active",
+                    "options": [
+                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
+                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ccfdfff9-06ac-4f57-ef47-61175163f9fb",
+            "name": "Zapatillas Classic Urban",
+            "description": "Zapatillas clásicas de diseño urbano y gran comodidad",
+            "brand": "Adidas",
+            "categoryId": "bb6f7bf4-17f9-4f38-df28-72286274f6fa",
+            "status": "active",
+            "tags": [
+                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
+                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
+            ],
+            "variants": [
+                {
+                    "price": 89.99,
+                    "stock": 30,
+                    "image_url": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/09c5ea6df1bd4be6baaaac5e003e7047_9366/Zapatillas_Forum_Low_Blanco_FY7756_01_standard.jpg",
+                    "status": "active",
+                    "options": [
+                        "eeffecfd-06a2-4f47-af37-61175163fffd",
+                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
+                    ]
+                },
+                {
+                    "price": 89.99,
+                    "stock": 30,
+                    "image_url": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/09c5ea6df1bd4be6baaaac5e003e7047_9366/Zapatillas_Forum_Low_Blanco_FY7756_01_standard.jpg",
+                    "status": "active",
+                    "options": [
+                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
+                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ddfeaafa-17ad-4f58-ff48-72286274fafb",
+            "name": "Pantalón Cargo Militar",
+            "description": "Pantalón cargo con múltiples bolsillos y diseño militar",
+            "brand": "Columbia",
+            "categoryId": "7f2f3df0-73f5-4f34-ff24-38842830f2f6",
+            "status": "active",
+            "tags": [
+                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
+                "ffafbff8-51fd-4f42-bf32-16620618fafe"
+            ],
+            "variants": [
+                {
+                    "price": 69.99,
+                    "stock": 40,
+                    "image_url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/1994911_365_f?wid=768&hei=806&v=1695688051",
+                    "status": "active",
+                    "options": [
+                        "eeffecfd-06a2-4f47-af37-61175163fffd",
+                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
+                    ]
+                },
+                {
+                    "price": 69.99,
+                    "stock": 40,
+                    "image_url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/1994911_365_f?wid=768&hei=806&v=1695688051",
+                    "status": "active",
+                    "options": [
+                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
+                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "eefebafb-28ae-4f59-af49-83397385fbfc",
+            "name": "Remera Estampada Artística",
+            "description": "Remera con estampado artístico exclusivo",
+            "brand": "Zara",
+            "categoryId": "3d8f09c6-39b1-4f30-be20-94408496e8e2",
+            "status": "active",
+            "tags": [
+                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
+                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
+            ],
+            "variants": [
+                {
+                    "price": 34.99,
+                    "stock": 60,
+                    "image_url": "https://static.zara.net/photos///2024/V/0/2/p/0962/410/800/2/w/563/0962410800_2_1_1.jpg",
+                    "status": "active",
+                    "options": [
+                        "eeffecfd-06a2-4f47-af37-61175163fffd",
+                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
+                    ]
+                },
+                {
+                    "price": 34.99,
+                    "stock": 60,
+                    "image_url": "https://static.zara.net/photos///2024/V/0/2/p/0962/410/800/2/w/563/0962410800_2_1_1.jpg",
+                    "status": "active",
+                    "options": [
+                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
+                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ffecbbfc-39af-4f60-bf50-94408496fcfd",
+            "name": "Short Deportivo Pro",
+            "description": "Short deportivo con tecnología de secado rápido",
+            "brand": "Nike",
+            "categoryId": "8f3f4ef1-84f6-4f35-af25-49953941f3f7",
+            "status": "active",
+            "tags": [
+                "ddefebfc-95a1-4f46-ff36-50064052fefc",
+                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
+            ],
+            "variants": [
+                {
+                    "price": 39.99,
+                    "stock": 80,
+                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/00f79d75-1056-435c-a065-c5a28c9dfc4b/dri-fit-challenger-mens-7-2-in-1-running-shorts-mRSgSF.png",
+                    "status": "active",
+                    "options": [
+                        "eeffecfd-06a2-4f47-af37-61175163fffd",
+                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
+                    ]
+                },
+                {
+                    "price": 39.99,
+                    "stock": 80,
+                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/00f79d75-1056-435c-a065-c5a28c9dfc4b/dri-fit-challenger-mens-7-2-in-1-running-shorts-mRSgSF.png",
+                    "status": "active",
+                    "options": [
+                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
+                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
+                    ]
+                }
+            ]
+        }
+    ]
+}

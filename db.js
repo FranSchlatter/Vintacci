@@ -22,6 +22,14 @@ module.exports = sequelize;
 
 // psql -U postgres > Emailer: FAN5743FNP4AXV6S7GYVQ73N
 // TODO Pendientes:
+
+// Fixs:
+// Favs no andan
+// Probar comprar, no deberia andar. 
+// Arreglar carrito con nuevos products.
+// Create via postman bull
+
+// After:
 // Panel de admin/user facturas. Que hace, descargar?
 // Historial de compras x user > panel admin
 // Implemetar maps en info contacto.
@@ -30,11 +38,7 @@ module.exports = sequelize;
 // After:
 // Prod relacionados, complementarios, demas.
 // Array de img en variantes, (cuando se crea la var, se pueden visualizar y eliminar) en detail aparecen como en mercado libre, zoom
-// Filtro por precio no anda. Mostrar precio var mas barata - var mas cara... 
-// En detail, resaltar variante con descuento de alguna manera, ordernar talles de mayor a menor. 
-// Favs no andan
-// Probar comprar, no deberia andar. 
-// Arreglar carrito con nuevos products.
+
 
 
 
