@@ -11,7 +11,7 @@ const Product = sequelize.define('Product', {
     productCode: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true, // Podría ser algo como "REM001", "CAM001", etc.
+        unique: true,
     },
     name: {
         type: DataTypes.STRING,
@@ -20,20 +20,18 @@ const Product = sequelize.define('Product', {
     description: {
         type: DataTypes.TEXT,
     },
-    brand: {
-        type: DataTypes.STRING,
+    price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+    },
+    image_url: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: true,
+        defaultValue: [],
     },
     status: {
         type: DataTypes.ENUM('active', 'inactive', 'draft'),
         defaultValue: 'active'
-    },
-    categoryId: {
-        type: DataTypes.UUID,
-        references: {
-            model: 'categories',
-            key: 'id'
-        },
-        allowNull: false
     }
 }, {
     timestamps: true,

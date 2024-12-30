@@ -12,7 +12,7 @@ const Order = sequelize.define('Order', {
     type: DataTypes.UUID,
     allowNull: true,
     references: {
-        model: 'user',
+        model: 'users',
         key: 'id'
     }
   },
@@ -55,7 +55,7 @@ const Order = sequelize.define('Order', {
 }, {
   timestamps: true,
   underscored: true,
-  tableName: 'order'
+  tableName: 'orders'
 });
 
 module.exports = Order;

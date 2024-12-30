@@ -1,5 +1,5 @@
 // src/controllers/tagController.js
-const { Tag, Product } = require('../models');
+const { Tag, Product, Category } = require('../models');
 
 const tagController = {
     getAllTags: async (req, res) => {
@@ -7,6 +7,13 @@ const tagController = {
             const tags = await Tag.findAll({
                 include: [{
                     model: Product,
+                    as: "AssociatedToProd",
+                    through: { attributes: [] },
+                    attributes: ['id', 'name']
+                },
+                {
+                    model: Category,
+                    as: "AssociatedToCat",
                     through: { attributes: [] },
                     attributes: ['id', 'name']
                 }]
@@ -18,8 +25,20 @@ const tagController = {
         }
     },
 
-    createTag: async (req, res) => {
-        const { name, type } = req.body;
+    getAllTagsSimple: async (req, res) => {
+        try {
+            const tags = await Tag.findAll({
+                attributes: ['name', 'type']
+            });
+            res.json(tags);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Error al obtener tags');
+        }
+    },
+
+    createTag: async (req, res) => { // TODO revisar category si no existe no crear tag.
+        const { name, type, categoryPath } = req.body;
 
         if (!name || !type) {
             return res.status(400).send('Nombre y tipo son obligatorios');
@@ -32,6 +51,10 @@ const tagController = {
                 type,
                 slug
             });
+
+            for (let i = 0; i < categoryPath.length; i++) {
+                await newTag.addAssociatedToCat(categoryPath[i])
+            }
             res.status(201).json(newTag);
         } catch (err) {
             console.error(err.message);
@@ -39,7 +62,7 @@ const tagController = {
         }
     },
 
-    updateTag: async (req, res) => {
+    updateTag: async (req, res) => { // TODO Puede cambiar de categories asociadas?
         const { id } = req.params;
         const { name, type } = req.body;
 

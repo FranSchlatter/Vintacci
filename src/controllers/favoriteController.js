@@ -1,5 +1,5 @@
 // src/controllers/favoriteController.js
-const { Favorite, Product, User } = require('../models');
+const { Asociacion_Users_Products, Product, User } = require('../models');
 
 const favoriteController = {
     // Obtener favoritos de un usuario
@@ -10,9 +10,9 @@ const favoriteController = {
             const user = await User.findByPk(userId, {
                 include: [{
                     model: Product,
-                    as: 'favoriteProducts',
+                    as: 'AssociatedToProd',
                     through: { attributes: [] }, // Esto evita incluir datos de la tabla intermedia
-                    attributes: ['id', 'name', 'price', 'image_url', 'stock', 'brand', 'category']
+                    attributes: ['id', 'name', 'price', 'image_url']
                 }]
             });
 
@@ -20,7 +20,8 @@ const favoriteController = {
                 return res.status(404).json({ error: 'Usuario no encontrado' });
             }
 
-            res.json(user.favoriteProducts);
+            console.log(user)
+            res.json(user.AssociatedToProd);
         } catch (err) {
             console.error('Error getting favorites:', err);
             res.status(500).json({ error: 'Error al obtener favoritos' });
@@ -51,7 +52,7 @@ const favoriteController = {
             }
     
             // Verificar si ya existe el favorito
-            const existingFavorite = await Favorite.findOne({
+            const existingFavorite = await Asociacion_Users_Products.findOne({
                 where: { user_id: userId, product_id: productId }
             });
 
@@ -64,7 +65,7 @@ const favoriteController = {
             }
     
             // Crear el favorito
-            const favorite = await Favorite.create({
+            const favorite = await Asociacion_Users_Products.create({
                 user_id: userId,
                 product_id: productId
             });
@@ -78,8 +79,7 @@ const favoriteController = {
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    image_url: product.image_url,
-                    stock: product.stock
+                    image_url: product.image_url
                 }
             });
     
@@ -99,7 +99,7 @@ const favoriteController = {
         try {
             const { userId, productId } = req.params;
             
-            const favorite = await Favorite.findOne({
+            const favorite = await Asociacion_Users_Products.findOne({
                 where: { user_id: userId, product_id: productId }
             });
 
@@ -109,7 +109,7 @@ const favoriteController = {
                 });
             }
 
-            await favorite.destroy();
+            await Asociacion_Users_Products.destroy();
             res.status(204).send();
         } catch (err) {
             console.error('Error removing from favorites:', err);
@@ -122,7 +122,7 @@ const favoriteController = {
         try {
             const { userId, productId } = req.params;
             
-            const favorite = await Favorite.findOne({
+            const favorite = await Asociacion_Users_Products.findOne({
                 where: { user_id: userId, product_id: productId }
             });
 

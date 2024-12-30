@@ -1,371 +1,1607 @@
 {
-    "categories": [
-        {
-            "id": "af882d93-cdd0-44a7-bdb7-4337dee89423",
-            "name": "Remeras",
-            "description": "Todo tipo de remeras y camisetas",
-            "subcategories": [
-                {
-                    "id": "1b6de7b4-17a9-4d18-9c09-72286274f6e0",
-                    "name": "Remeras Manga Corta",
-                    "description": "Remeras de manga corta para toda ocasión"
-                },
-                {
-                    "id": "2c7ef8b5-28a0-4e29-ad19-83397385f7d1",
-                    "name": "Remeras Deportivas",
-                    "description": "Remeras técnicas para deporte y actividad física"
-                },
-                {
-                    "id": "3d8f09c6-39b1-4f30-be20-94408496e8e2",
-                    "name": "Remeras Estampadas",
-                    "description": "Remeras con diseños y estampados únicos"
-                },
-                {
-                    "id": "4e9f0ad7-40c2-4f31-cf21-05519507f9f3",
-                    "name": "Remeras Básicas",
-                    "description": "Remeras lisas de uso cotidiano"
-                }
-            ]
-        },
-        {
-            "id": "5f0f1be8-51d3-4f32-df22-16620618f0f4",
-            "name": "Pantalones",
-            "description": "Variedad de pantalones para todas las ocasiones",
-            "subcategories": [
-                {
-                    "id": "6f1f2cf9-62e4-4f33-ef23-27731729f1f5",
-                    "name": "Jeans",
-                    "description": "Jeans y pantalones de mezclilla"
-                },
-                {
-                    "id": "7f2f3df0-73f5-4f34-ff24-38842830f2f6",
-                    "name": "Pantalones Deportivos",
-                    "description": "Pantalones para actividad física y deporte"
-                },
-                {
-                    "id": "8f3f4ef1-84f6-4f35-af25-49953941f3f7",
-                    "name": "Shorts",
-                    "description": "Pantalones cortos y bermudas"
-                }
-            ]
-        },
-        {
-            "id": "9f4f5ff2-95f7-4f36-bf26-50064052f4f8",
-            "name": "Calzado",
-            "description": "Todo tipo de calzado",
-            "subcategories": [
-                {
-                    "id": "aa5f6af3-06f8-4f37-cf27-61175163f5f9",
-                    "name": "Zapatillas Deportivas",
-                    "description": "Calzado para deporte y actividad física"
-                },
-                {
-                    "id": "bb6f7bf4-17f9-4f38-df28-72286274f6fa",
-                    "name": "Zapatos Casuales",
-                    "description": "Calzado para uso diario"
-                },
-                {
-                    "id": "cc7f8cf5-28fa-4f39-ef29-83397385f7fb",
-                    "name": "Sandalias",
-                    "description": "Calzado abierto y sandalias"
-                }
-            ]
+    "newProducts": [
+      {
+        "name": "2024-25 RMA Black Special Edition Player Version Soccer Jersey #广告/龙头",
+        "description": "Edicion Especial Version Jugador Real Madrid 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 16,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/c/1/c110610273c42b4a.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/5/3/538f114d802ed1a6.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/f/0/f0ffdb0abd771053.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/2/2/22a6aa8e79c2d9d4.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/8/4/84f98d0249d615f7.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/c/7/c7229791c3dcc4b0.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/1/4/1492b28eb7a1cd6a.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/4/7/47d07a9fa2f77e05.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/29/7/3/739fd8f7352b9005.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/06/07/d/d/dd1fe2ade3196bec.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "version",
+            "name": "Version Jugador"
+          },
+          {
+            "type": "edicion",
+            "name": "Edicion Especial"
+          },
+          {
+            "type": "equipo",
+            "name": "Real Madrid"
+          },
+          {
+            "type": "color",
+            "name": "Negro"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/29/4/7/47d07a9fa2f77e05.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "La Liga 23/24 (Roja +45) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/29/7/3/739fd8f7352b9005.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UCL (15) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/06/07/d/d/dd1fe2ade3196bec.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal UCL fonts",
+              "type": "customize",
+              "price": 3
+            }
+          ]
         }
+      },
+      {
+        "name": "2024-25 RMA Blue Special Edition Player Version Soccer Jersey 黄马龙头",
+        "description": "Edicion Especial Version Jugador Real Madrid 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 16,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/4/d/4dded42b38f978a3.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/f/f/ff4c2c5a4875cb91.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/d/c/dcc80ad5f074c452.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/f/b/fb4b94e6bc9f0b9f.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/9/6/962b53498be2e471.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/f/5/f589e375893d2551.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/d/b/db216ff28490ef48.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/06/07/d/d/dd1fe2ade3196bec.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "version",
+            "name": "Version Jugador"
+          },
+          {
+            "type": "edicion",
+            "name": "Edicion Especial"
+          },
+          {
+            "type": "equipo",
+            "name": "Real Madrid"
+          },
+          {
+            "type": "color",
+            "name": "Azul"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/11/f/5/f589e375893d2551.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "La Liga 23/24 (Roja +45) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/11/d/b/db216ff28490ef48.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UCL (15) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/06/07/d/d/dd1fe2ade3196bec.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal UCL fonts",
+              "type": "customize",
+              "price": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 RMA Black Special Edition Player Version Soccer Jersey 龙头",
+        "description": "Edicion Especial Version Jugador Real Madrid 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 16,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/f/8/f8e8ebeb9dceca0e.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/4/4/44f8610d623fa987.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/5/4/545fd945e3a8b4ce.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/3/b/3b960b3e7b1c961b.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/f/4/f4012a0e9bd672b8.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/b/9/b9ee62cf491f18fa.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/3/0/30abd673ef7194c3.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/6/2/6201c2da43c5e9ac.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/11/d/b/db216ff28490ef48.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/06/07/d/d/dd1fe2ade3196bec.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "version",
+            "name": "Version Jugador"
+          },
+          {
+            "type": "edicion",
+            "name": "Edicion Especial"
+          },
+          {
+            "type": "equipo",
+            "name": "Real Madrid"
+          },
+          {
+            "type": "color",
+            "name": "Negro"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/11/6/2/6201c2da43c5e9ac.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "La Liga 23/24 (Roja +45) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/11/d/b/db216ff28490ef48.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UCL (15) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/06/07/d/d/dd1fe2ade3196bec.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal UCL fonts",
+              "type": "customize",
+              "price": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 RMA Away Women Soccer Jersey (女)",
+        "description": "Visitante Mujer Real Madrid 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 15,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/28/d/4/d4b79c037534053b.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/28/0/e/0e003581aff4b0ff.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/28/f/1/f16870d977dc94dd.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/28/e/7/e7e668607199dc95.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/28/2/8/284cae7b4eda3f0f.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/05/b/7/b755b510a4b73eee.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Real Madrid"
+          },
+          {
+            "type": "version",
+            "name": "Mujer"
+          },
+          {
+            "type": "edicion",
+            "name": "Visitante"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/28/2/8/284cae7b4eda3f0f.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "La Liga (45)",
+              "type": "badge",
+              "price": 1,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/05/b/7/b755b510a4b73eee.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal UCL fonts",
+              "type": "customize",
+              "price": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 RMA Home Women Soccer Jersey (女)",
+        "description": "Local Mujer Real Madrid 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 15,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/19/b/7/b7b3f51b56989ef0.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/19/7/e/7e5a5560d28dbfef.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/19/3/9/39e53a2ecf8bdcaa.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/06/05/7/b/7b57537c7abf0e24.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/19/0/b/0b315466227f8978.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/05/b/7/b755b510a4b73eee.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Real Madrid"
+          },
+          {
+            "type": "version",
+            "name": "Mujer"
+          },
+          {
+            "type": "edicion",
+            "name": "Local"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [],
+          "badges": [
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/03/19/0/b/0b315466227f8978.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "La Liga (45)",
+              "type": "badge",
+              "price": 1,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/05/b/7/b755b510a4b73eee.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal UCL fonts",
+              "type": "customize",
+              "price": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 RMA Y-3 Purple Socks",
+        "description": "Local Version Fanatico Real Madrid 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 6,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/09/03/0/e/0ed43be2477380f8.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Productos/Accesorios/Medias"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Real Madrid"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [],
+          "badges": [],
+          "customize": []
+        }
+      },
+      {
+        "name": "2024-25 Marseille Home Shorts Pants",
+        "description": "Local Version Fanatico Marseille 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 10,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/06/f/b/fbf678cacb7b6647.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Marseille"
+          },
+          {
+            "type": "edicion",
+            "name": "Local"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [],
+          "customize": []
+        }
+      },
+      {
+        "name": "2024-25 Lyon Home Shorts Pants",
+        "description": "Local Version Fanatico Lyon 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 10,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/06/8/f/8f5980f0219bb38f.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Lyon"
+          },
+          {
+            "type": "edicion",
+            "name": "Local"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [],
+          "customize": []
+        }
+      },
+      {
+        "name": "2024-25 Marseille Away Shorts Pants",
+        "description": "Visitante Version Fanatico Marseille 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 10,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/27/3/5/357923c8cd51c709.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/27/9/2/92a68e12fdad644c.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Marseille"
+          },
+          {
+            "type": "edicion",
+            "name": "Visitante"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [],
+          "customize": []
+        }
+      },
+      {
+        "name": "2024-25 CHE Third Player Version Soccer Jersey",
+        "description": "Alternativa Version Jugador Chelsea 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 20,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/b/a/ba84c802437950cd.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/4/8/48a4144a760282eb.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/31/a/b/ab026d45975e9237.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/31/b/5/b5101e57136fcfd3.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/09/07/d/9/d91b10ae2411c324.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/0/8/0807214be21d8963.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/0/a/0a38e40d2bca5160.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/1/9/19c19a19f433c3d3.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/2/4/244230d81c3e1462.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/7/8/7899a9ea14ca9fac.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/1/7/17d33145a07028b5.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/3/5/356189421801613d.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/7/9/793a2c84e6225dcb.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/19/0/0/00d878b54fb01785.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/20/f/1/f113e0722ce5a674.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/c/7/c7ddfc25fc108f5e.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/3/7/37cd5f4b07861655.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/f/b/fb94ac29f8e682e5.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "version",
+            "name": "Version Jugador"
+          },
+          {
+            "type": "equipo",
+            "name": "Chelsea"
+          },
+          {
+            "type": "edicion",
+            "name": "Alternativa"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [
+            {
+              "name": "Premier League + No rac",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/19/3/5/356189421801613d.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UECL (45) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/19/7/9/793a2c84e6225dcb.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Fever",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/c/7/c7ddfc25fc108f5e.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UECL + Fever",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/3/7/37cd5f4b07861655.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Fever + Flor",
+              "type": "badge",
+              "price": 4,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/f/b/fb94ac29f8e682e5.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Flor",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/19/0/0/00d878b54fb01785.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Carabao Cup",
+              "type": "badge",
+              "price": 1,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/20/f/1/f113e0722ce5a674.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/19/7/8/7899a9ea14ca9fac.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal PreLeague fonts",
+              "type": "customize",
+              "price": 3
+            },
+            {
+              "name": "Con dorsal Copa fonts",
+              "type": "customize",
+              "price": 4
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 CHE Home Player Version Soccer Jersey *前带广告",
+        "description": "Local Version Jugador Chelsea 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 20,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/31/4/1/41c72a88711c758b.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/31/7/b/7b6c806602ea7641.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/31/2/8/2899d6d317e391f3.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/31/1/1/115c6b5ae2ea63c0.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/31/4/6/46e8f0ec1012eaa1.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/03/1/b/1bb27d83c530dc89.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/03/b/0/b01f294d8e125945.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/31/d/5/d5fedacc5bec6736.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/31/f/c/fca2afca6fcdef33.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/09/07/d/6/d66057f27cfe4a27.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/03/5/f/5fe29896551280be.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/03/d/e/def83251b185e2c6.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/03/c/a/caba0b1c146e5c88.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/03/d/a/dab093ff876da04a.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/03/c/f/cffc505ac3c7b424.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/20/f/1/f113e0722ce5a674.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/2/5/255151f561f9db87.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/7/2/72cb51a4c4418e01.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/1/9/19f6575e5478d351.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "version",
+            "name": "Version Jugador"
+          },
+          {
+            "type": "equipo",
+            "name": "Chelsea"
+          },
+          {
+            "type": "edicion",
+            "name": "Local"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [
+            {
+              "name": "Premier League + No rac",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/31/2/8/2899d6d317e391f3.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UECL (45) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/31/1/1/115c6b5ae2ea63c0.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Fever",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/2/5/255151f561f9db87.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UECL + Fever",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/1/9/19f6575e5478d351.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Fever + Flor",
+              "type": "badge",
+              "price": 4,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/7/2/72cb51a4c4418e01.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Flor",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/31/4/6/46e8f0ec1012eaa1.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Carabao Cup",
+              "type": "badge",
+              "price": 1,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/20/f/1/f113e0722ce5a674.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/31/4/1/41c72a88711c758b.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal PreLeague fonts",
+              "type": "customize",
+              "price": 3
+            },
+            {
+              "name": "Con dorsal Copa fonts",
+              "type": "customize",
+              "price": 4
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 CHE Home Player Version Soccer Jersey",
+        "description": "Local Version Jugador Chelsea 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 20,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/20/f/6/f621f89805b1baa0.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/20/f/0/f07d5f2afa4eb182.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/20/c/1/c16f1caf3cb8faf2.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/20/a/6/a6d23c077d3b4ced.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/20/1/0/10d7dc280febd9cd.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/20/f/1/f113e0722ce5a674.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/25/0/8/08642acb88652f77.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/14/1/f/1f9a316e7b2679ae.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/14/e/7/e7e674e65e86c49f.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/20/1/1/11c2f89f6e53322b.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/07/20/5/d/5d352d6e4070a1a1.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/09/07/d/6/d66057f27cfe4a27.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/14/5/9/5939197f78889553.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/14/7/4/74380d7f0ba7e95d.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/14/0/e/0ed23f7710eaf918.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/14/1/c/1cb872ecff2cc363.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/2/5/255151f561f9db87.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/1/9/19f6575e5478d351.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/08/29/7/2/72cb51a4c4418e01.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "version",
+            "name": "Version Jugador"
+          },
+          {
+            "type": "equipo",
+            "name": "Chelsea"
+          },
+          {
+            "type": "edicion",
+            "name": "Local"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "3XL",
+              "type": "size",
+              "price": 1
+            }
+          ],
+          "badges": [
+            {
+              "name": "Premier League + No rac",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/20/c/1/c16f1caf3cb8faf2.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UECL (45) MD",
+              "type": "badge",
+              "price": 2,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/20/a/6/a6d23c077d3b4ced.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Fever",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/2/5/255151f561f9db87.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "UECL + Fever",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/1/9/19f6575e5478d351.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Fever + Flor",
+              "type": "badge",
+              "price": 4,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/7/2/72cb51a4c4418e01.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Premier League + No rac + Flor",
+              "type": "badge",
+              "price": 3,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/20/1/0/10d7dc280febd9cd.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Carabao Cup",
+              "type": "badge",
+              "price": 1,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/20/f/1/f113e0722ce5a674.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            },
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/20/f/6/f621f89805b1baa0.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal PreLeague fonts",
+              "type": "customize",
+              "price": 3
+            },
+            {
+              "name": "Con dorsal Copa fonts",
+              "type": "customize",
+              "price": 4
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 Cruzeiro Away Fans Soccer Jersey",
+        "description": "Visitante Version Fanatico Cruzeiro 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 15,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/03/a/4/a44e34ea781b116d.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/03/b/d/bd1b36cec33128aa.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/28/6/8/681e6897a80f0e48.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/28/e/4/e4187d5585bae80b.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/28/f/2/f2c2531e42ba12fd.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/28/6/c/6c4112d8d8dd5780.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/28/8/4/844820fe90696908.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/05/28/c/1/c10228fedabf0a99.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Cruzeiro"
+          },
+          {
+            "type": "version",
+            "name": "Version Fanatico"
+          },
+          {
+            "type": "edicion",
+            "name": "Visitante"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "3XL",
+              "type": "size",
+              "price": 1
+            },
+            {
+              "name": "4XL",
+              "type": "size",
+              "price": 1
+            }
+          ],
+          "badges": [
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/03/a/4/a44e34ea781b116d.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal",
+              "type": "customize",
+              "price": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 Cruzeiro Home 1:1 Fans Soccer Jersey",
+        "description": "Local Version Fanatico Cruzeiro 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 15,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/29/9/e/9e3bf2df00b79b19.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/29/4/9/49e5c1193accf6e5.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/15/7/a/7aaa28aabbb6620b.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/15/0/d/0df69aff892ebf13.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/10/0/d/0dcb62589a41ee86.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/10/1/e/1e7ce1c7c0fd1f14.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/10/5/a/5a9647c245b6bf42.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/10/b/0/b0b1238a17436f75.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/10/d/c/dc793a33d1a3eeef.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Deportes/Fútbol",
+          "Productos/Camisetas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Cruzeiro"
+          },
+          {
+            "type": "version",
+            "name": "Version Fanatico"
+          },
+          {
+            "type": "edicion",
+            "name": "Local"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "3XL",
+              "type": "size",
+              "price": 1
+            },
+            {
+              "name": "4XL",
+              "type": "size",
+              "price": 1
+            }
+          ],
+          "badges": [
+            {
+              "name": "Sin insignia",
+              "type": "badge",
+              "price": 0,
+              "images": "https://us03-imgcdn.ymcart.com/97006/2024/03/29/9/e/9e3bf2df00b79b19.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+            }
+          ],
+          "customize": [
+            {
+              "name": "Sin dorsal",
+              "type": "customize",
+              "price": 0
+            },
+            {
+              "name": "Con dorsal",
+              "type": "customize",
+              "price": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "2024-25 Cruzeiro Green Polo Short Sleeve",
+        "description": "Local Version Fanatico Cruzeiro 2024-25 Manga Corta. Producto de alta calidad con tecnología de secado rápido y materiales premium.",
+        "price": 16,
+        "images": [
+          "https://us03-imgcdn.ymcart.com/97006/2024/04/17/c/0/c0eb66a61daefb97.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/28/8/6/867e396e00645848.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/28/9/0/90cd4054be2f03f4.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/28/9/6/960161be6dbd26dc.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/28/2/c/2c10c7297c6051c2.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/28/e/d/ed76e6bdf8a14e3a.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/28/1/d/1d735ecf5dec9023.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp",
+          "https://us03-imgcdn.ymcart.com/97006/2024/03/28/b/9/b93c63f54aa196ba.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        ],
+        "status": "active",
+        "categoryIds": [
+          "Productos/Casual/Chombas"
+        ],
+        "tagIds": [
+          {
+            "type": "temporada",
+            "name": "2024-25"
+          },
+          {
+            "type": "equipo",
+            "name": "Cruzeiro"
+          },
+          {
+            "type": "color",
+            "name": "Verde"
+          },
+          {
+            "type": "caracteristica",
+            "name": "Manga Corta"
+          }
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "S",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "M",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "L",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "XL",
+              "type": "size",
+              "price": 0
+            },
+            {
+              "name": "2XL",
+              "type": "size",
+              "price": 0
+            }
+          ],
+          "badges": [],
+          "customize": []
+        }
+      }
     ],
-    "tags": [
-        {
-            "id": "dd8f9df6-39fb-4f40-ff30-94408496f8fc",
-            "name": "Verano",
-            "type": "temporada"
-        },
-        {
-            "id": "ee9faef7-40fc-4f41-af31-05519507f9fd",
-            "name": "Invierno",
-            "type": "temporada"
-        },
-        {
-            "id": "ffafbff8-51fd-4f42-bf32-16620618fafe",
-            "name": "Otoño",
-            "type": "temporada"
-        },
-        {
-            "id": "aabfcaf9-62fe-4f43-cf33-27731729fbff",
-            "name": "Primavera",
-            "type": "temporada"
-        },
-        {
-            "id": "bbcfdafa-73ff-4f44-df34-38842830fcfa",
-            "name": "Casual",
-            "type": "estilo"
-        },
-        {
-            "id": "ccdfeafb-84a0-4f45-ef35-49953941fdfb",
-            "name": "Formal",
-            "type": "estilo"
-        },
-        {
-            "id": "ddefebfc-95a1-4f46-ff36-50064052fefc",
-            "name": "Deportivo",
-            "type": "estilo"
-        }
+    "newCategories": [
+      {
+        "path": [
+          "Productos",
+          "Accesorios",
+          "Medias"
+        ],
+        "name": "Medias",
+        "description": "Accesorios medias deportivas"
+      },
+      {
+        "path": [
+          "Productos",
+          "Casual",
+          "Chombas"
+        ],
+        "name": "Chombas",
+        "description": "Indumentaria Chombas casual"
+      }
     ],
-    "productOptions": [
-        {
-            "id": "eeffecfd-06a2-4f47-af37-61175163fffd",
-            "name": "Small",
-            "type": "size",
-            "value": "S"
-        },
-        {
-            "id": "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
-            "name": "Medium",
-            "type": "size",
-            "value": "M"
-        },
-        {
-            "id": "aafbfef1-28a4-4f49-cf39-83397385f1ff",
-            "name": "Large",
-            "type": "size",
-            "value": "L"
-        },
-        {
-            "id": "bbfcfff2-39a5-4f50-df40-94408496f2fa",
-            "name": "Extra Large",
-            "type": "size",
-            "value": "XL"
-        },
-        {
-            "id": "ccfdaaf3-40a6-4f51-ef41-05519507f3fb",
-            "name": "Blanco",
-            "type": "color",
-            "value": "#FFFFFF"
-        },
-        {
-            "id": "ddfebbf4-51a7-4f52-ff42-16620618f4fc",
-            "name": "Negro",
-            "type": "color",
-            "value": "#000000"
-        },
-        {
-            "id": "eeffccf5-62a8-4f53-af43-27731729f5fd",
-            "name": "Azul",
-            "type": "color",
-            "value": "#0000FF"
-        },
-        {
-            "id": "ffeaddf6-73a9-4f54-bf44-38842830f6fe",
-            "name": "Rojo",
-            "type": "color",
-            "value": "#FF0000"
-        }
+    "newTags": [
+      {
+        "name": "Lyon",
+        "type": "equipo",
+        "categoryPath": [
+          "Deportes",
+          "Fútbol",
+          "Clubes",
+          "Ligue 1"
+        ]
+      },
+      {
+        "name": "Cruzeiro",
+        "type": "equipo",
+        "categoryPath": [
+          "Deportes",
+          "Fútbol",
+          "Clubes",
+          "Brasileiro Série A"
+        ]
+      }
     ],
-    "products": [
+    "newProductOptions": {
+      "badges": [
         {
-            "id": "aafbeef7-84aa-4f55-cf45-49953941f7ff",
-            "name": "Remera Deportiva DryFit",
-            "description": "Remera técnica de alto rendimiento con tecnología de secado rápido",
-            "brand": "Nike",
-            "categoryId": "2c7ef8b5-28a0-4e29-ad19-83397385f7d1",
-            "status": "active",
-            "tags": [
-                "ddefebfc-95a1-4f46-ff36-50064052fefc",
-                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
-            ],
-            "variants": [
-                {
-                    "price": 29.99,
-                    "stock": 100,
-                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/7c2fff38-9f89-40f1-8aed-682ac6ef0d17/dri-fit-mens-training-t-shirt-PCJXND.png",
-                    "status": "active",
-                    "options": [
-                        "eeffecfd-06a2-4f47-af37-61175163fffd",
-                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
-                    ]
-                },
-                {
-                    "price": 29.99,
-                    "stock": 100,
-                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/98689c2c-8a7c-4e0e-8168-1e17c37e5a12/dri-fit-mens-training-t-shirt-PCJXND.png",
-                    "status": "active",
-                    "options": [
-                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
-                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
-                    ]
-                }
-            ]
+          "name": "La Liga (45)",
+          "type": "badge",
+          "price": 1,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/05/b/7/b755b510a4b73eee.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
         },
         {
-            "id": "bbfcfff8-95ab-4f56-df46-50064052f8fa",
-            "name": "Jean Skinny Premium",
-            "description": "Jean de corte skinny con tecnología stretch para mayor comodidad",
-            "brand": "Levis",
-            "categoryId": "6f1f2cf9-62e4-4f33-ef23-27731729f1f5",
-            "status": "active",
-            "tags": [
-                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
-                "ccdfeafb-84a0-4f45-ef35-49953941fdfb"
-            ],
-            "variants": [
-                {
-                    "price": 79.99,
-                    "stock": 50,
-                    "image_url": "https://levi.com.ar/on/demandware.static/-/Sites-LeviMX-Library/default/dw31604478/images/easyzoom/A0499-0002_FRONT.jpg",
-                    "status": "active",
-                    "discountPrice": 69.99,
-                    "discountStart": "2024-12-01T00:00:00.000Z",
-                    "discountEnd": "2024-12-31T23:59:59.999Z",
-                    "options": [
-                        "eeffecfd-06a2-4f47-af37-61175163fffd",
-                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
-                    ]
-                },
-                {
-                    "price": 79.99,
-                    "stock": 50,
-                    "image_url": "https://levi.com.ar/on/demandware.static/-/Sites-LeviMX-Library/default/dw31604478/images/easyzoom/A0499-0002_FRONT.jpg",
-                    "status": "active",
-                    "options": [
-                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
-                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
-                    ]
-                }
-            ]
+          "name": "Premier League + No rac",
+          "type": "badge",
+          "price": 2,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/19/3/5/356189421801613d.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
         },
         {
-            "id": "ccfdfff9-06ac-4f57-ef47-61175163f9fb",
-            "name": "Zapatillas Classic Urban",
-            "description": "Zapatillas clásicas de diseño urbano y gran comodidad",
-            "brand": "Adidas",
-            "categoryId": "bb6f7bf4-17f9-4f38-df28-72286274f6fa",
-            "status": "active",
-            "tags": [
-                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
-                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
-            ],
-            "variants": [
-                {
-                    "price": 89.99,
-                    "stock": 30,
-                    "image_url": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/09c5ea6df1bd4be6baaaac5e003e7047_9366/Zapatillas_Forum_Low_Blanco_FY7756_01_standard.jpg",
-                    "status": "active",
-                    "options": [
-                        "eeffecfd-06a2-4f47-af37-61175163fffd",
-                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
-                    ]
-                },
-                {
-                    "price": 89.99,
-                    "stock": 30,
-                    "image_url": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/09c5ea6df1bd4be6baaaac5e003e7047_9366/Zapatillas_Forum_Low_Blanco_FY7756_01_standard.jpg",
-                    "status": "active",
-                    "options": [
-                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
-                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
-                    ]
-                }
-            ]
+          "name": "Premier League + No rac + Fever",
+          "type": "badge",
+          "price": 3,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/c/7/c7ddfc25fc108f5e.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
         },
         {
-            "id": "ddfeaafa-17ad-4f58-ff48-72286274fafb",
-            "name": "Pantalón Cargo Militar",
-            "description": "Pantalón cargo con múltiples bolsillos y diseño militar",
-            "brand": "Columbia",
-            "categoryId": "7f2f3df0-73f5-4f34-ff24-38842830f2f6",
-            "status": "active",
-            "tags": [
-                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
-                "ffafbff8-51fd-4f42-bf32-16620618fafe"
-            ],
-            "variants": [
-                {
-                    "price": 69.99,
-                    "stock": 40,
-                    "image_url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/1994911_365_f?wid=768&hei=806&v=1695688051",
-                    "status": "active",
-                    "options": [
-                        "eeffecfd-06a2-4f47-af37-61175163fffd",
-                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
-                    ]
-                },
-                {
-                    "price": 69.99,
-                    "stock": 40,
-                    "image_url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/1994911_365_f?wid=768&hei=806&v=1695688051",
-                    "status": "active",
-                    "options": [
-                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
-                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
-                    ]
-                }
-            ]
+          "name": "UECL + Fever",
+          "type": "badge",
+          "price": 3,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/3/7/37cd5f4b07861655.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
         },
         {
-            "id": "eefebafb-28ae-4f59-af49-83397385fbfc",
-            "name": "Remera Estampada Artística",
-            "description": "Remera con estampado artístico exclusivo",
-            "brand": "Zara",
-            "categoryId": "3d8f09c6-39b1-4f30-be20-94408496e8e2",
-            "status": "active",
-            "tags": [
-                "bbcfdafa-73ff-4f44-df34-38842830fcfa",
-                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
-            ],
-            "variants": [
-                {
-                    "price": 34.99,
-                    "stock": 60,
-                    "image_url": "https://static.zara.net/photos///2024/V/0/2/p/0962/410/800/2/w/563/0962410800_2_1_1.jpg",
-                    "status": "active",
-                    "options": [
-                        "eeffecfd-06a2-4f47-af37-61175163fffd",
-                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
-                    ]
-                },
-                {
-                    "price": 34.99,
-                    "stock": 60,
-                    "image_url": "https://static.zara.net/photos///2024/V/0/2/p/0962/410/800/2/w/563/0962410800_2_1_1.jpg",
-                    "status": "active",
-                    "options": [
-                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
-                        "ccfdaaf3-40a6-4f51-ef41-05519507f3fb"
-                    ]
-                }
-            ]
+          "name": "Premier League + No rac + Fever + Flor",
+          "type": "badge",
+          "price": 4,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/29/f/b/fb94ac29f8e682e5.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
         },
         {
-            "id": "ffecbbfc-39af-4f60-bf50-94408496fcfd",
-            "name": "Short Deportivo Pro",
-            "description": "Short deportivo con tecnología de secado rápido",
-            "brand": "Nike",
-            "categoryId": "8f3f4ef1-84f6-4f35-af25-49953941f3f7",
-            "status": "active",
-            "tags": [
-                "ddefebfc-95a1-4f46-ff36-50064052fefc",
-                "dd8f9df6-39fb-4f40-ff30-94408496f8fc"
-            ],
-            "variants": [
-                {
-                    "price": 39.99,
-                    "stock": 80,
-                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/00f79d75-1056-435c-a065-c5a28c9dfc4b/dri-fit-challenger-mens-7-2-in-1-running-shorts-mRSgSF.png",
-                    "status": "active",
-                    "options": [
-                        "eeffecfd-06a2-4f47-af37-61175163fffd",
-                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
-                    ]
-                },
-                {
-                    "price": 39.99,
-                    "stock": 80,
-                    "image_url": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/00f79d75-1056-435c-a065-c5a28c9dfc4b/dri-fit-challenger-mens-7-2-in-1-running-shorts-mRSgSF.png",
-                    "status": "active",
-                    "options": [
-                        "ffeafdf0-17a3-4f48-bf38-72286274f0fe",
-                        "ddfebbf4-51a7-4f52-ff42-16620618f4fc"
-                    ]
-                }
-            ]
+          "name": "Premier League + No rac + Flor",
+          "type": "badge",
+          "price": 3,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/19/0/0/00d878b54fb01785.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        },
+        {
+          "name": "Carabao Cup",
+          "type": "badge",
+          "price": 1,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/20/f/1/f113e0722ce5a674.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
         }
-    ]
-}
+      ],
+      "customize": [
+        {
+          "name": "Con dorsal UCL fonts",
+          "type": "customize",
+          "price": 3
+        },
+        {
+          "name": "Con dorsal PreLeague fonts",
+          "type": "customize",
+          "price": 3
+        },
+        {
+          "name": "Con dorsal Copa fonts",
+          "type": "customize",
+          "price": 4
+        }
+      ],
+      "sizes": []
+    },
+    "unrecognizedTerms": [
+      "#广告/龙头",
+      "黄马龙头",
+      "(女)",
+      "Purple",
+      "*前带广告",
+      "1:1"
+    ],
+    "unmappedOptions": {
+      "badges": [
+        {
+          "matches": [
+            "Premier league (34英超普)"
+          ],
+          "itemName": "2024-25 CHE Third Player Version Soccer Jersey",
+          "type": "badge",
+          "price": 1,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/08/19/1/7/17d33145a07028b5.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        },
+        {
+          "matches": [
+            "Premier league (34英超普)"
+          ],
+          "itemName": "2024-25 CHE Home Player Version Soccer Jersey *前带广告",
+          "type": "badge",
+          "price": 1,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/31/7/b/7b6c806602ea7641.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        },
+        {
+          "matches": [
+            "Premier league (34英超普)"
+          ],
+          "itemName": "2024-25 CHE Home Player Version Soccer Jersey",
+          "type": "badge",
+          "price": 1,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/07/20/f/0/f07d5f2afa4eb182.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        },
+        {
+          "matches": [
+            "Brasileirao A2024(巴甲)"
+          ],
+          "itemName": "2024-25 Cruzeiro Away Fans Soccer Jersey",
+          "type": "badge",
+          "price": 1,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/05/03/b/d/bd1b36cec33128aa.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        },
+        {
+          "matches": [
+            "Brasileirao A2024(巴甲)"
+          ],
+          "itemName": "2024-25 Cruzeiro Home 1:1 Fans Soccer Jersey",
+          "type": "badge",
+          "price": 1,
+          "images": "https://us03-imgcdn.ymcart.com/97006/2024/03/29/4/9/49e5c1193accf6e5.png?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_1500,h_1500/format,webp"
+        }
+      ],
+      "customize": [],
+      "sizes": []
+    },
+    "statistics": {
+      "processedPages": 5,
+      "processedProducts": 15,
+      "newProductsFound": 15,
+      "newCategoriesFound": 2,
+      "newTagsFound": 2,
+      "newOptionsFound": {
+        "badges": 7,
+        "customize": 3,
+        "sizes": 0
+      },
+      "unrecognizedTermsFound": 6,
+      "unmappedOptionsFound": {
+        "badges": 5,
+        "customize": 0,
+        "sizes": 0
+      }
+    }
+  }

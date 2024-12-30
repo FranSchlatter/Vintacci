@@ -1,18 +1,19 @@
-// models/Favorite.js
+// src/models/Asociacion_Products_Categories.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
-const Favorite = sequelize.define('Favorite', {
+// Tabla intermedia para Variants-Options
+const Asociacion_Products_Categories = sequelize.define('Asociacion_Products_Categories', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
+        primaryKey: true,
     },
-    user_id: {
+    category_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'user',
+            model: 'categories',
             key: 'id'
         }
     },
@@ -20,14 +21,14 @@ const Favorite = sequelize.define('Favorite', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'product',
+            model: 'products',
             key: 'id'
         }
     }
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'favorite'
+    tableName: 'asociacion_products_categories'
 });
 
-module.exports = Favorite;
+module.exports = Asociacion_Products_Categories;

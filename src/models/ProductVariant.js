@@ -8,6 +8,14 @@ const ProductVariant = sequelize.define('ProductVariant', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
+    product_id: {
+        type: DataTypes.UUID,
+        references: {
+            model: 'products',
+            key: 'id'
+        },
+        allowNull: false
+    },
     sku: {
         type: DataTypes.STRING,
         unique: true,
@@ -36,17 +44,6 @@ const ProductVariant = sequelize.define('ProductVariant', {
     status: {
         type: DataTypes.ENUM('active', 'inactive'),
         defaultValue: 'active'
-    },
-    image_url: {
-        type: DataTypes.STRING,
-    },
-    productId: {
-        type: DataTypes.UUID,
-        references: {
-            model: 'products',
-            key: 'id'
-        },
-        allowNull: false
     }
 }, {
     timestamps: true,

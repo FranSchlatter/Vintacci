@@ -12,7 +12,7 @@ const Address = sequelize.define('Address', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'user',
+            model: 'users',
             key: 'id'
         }
     },
@@ -66,7 +66,7 @@ const Address = sequelize.define('Address', {
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'address'
+    tableName: 'addresses'
 });
 
 module.exports = Address;

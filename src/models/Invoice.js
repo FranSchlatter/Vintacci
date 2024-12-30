@@ -12,7 +12,7 @@ const Invoice = sequelize.define('Invoice', {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-          model: 'order',
+          model: 'orders',
           key: 'id'
       }
     },  
@@ -30,7 +30,7 @@ const Invoice = sequelize.define('Invoice', {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
-    tax: {
+    ship: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
@@ -41,7 +41,7 @@ const Invoice = sequelize.define('Invoice', {
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'invoice'
+    tableName: 'invoices'
   });
 
 module.exports = Invoice;

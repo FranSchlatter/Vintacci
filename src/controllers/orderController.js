@@ -1,5 +1,6 @@
 // src/controllers/orderController.js
-const { Order, OrderItem, Product, Invoice, User } = require('../models');
+// TODO
+const { Order, OrderItem, Product, ProductVariant, Invoice, User } = require('../models');
 const sequelize = require('../../db');
 
 const orderController = {
@@ -9,15 +10,14 @@ const orderController = {
                 include: [
                     {
                         model: User,
-                        as: 'user',
                         attributes: ['id', 'first_name', 'last_name', 'email', 'dni']
                     },
                     {
                         model: OrderItem,
-                        as: 'items',
+                        as: 'item',
                         include: [{
                             model: Product,
-                            attributes: ['id', 'name', 'price', 'image_url', 'size', 'serial_number']
+                            attributes: ['id', 'name', 'price', 'image_url']
                         }]
                     },
                     {
@@ -34,7 +34,7 @@ const orderController = {
         }
     },
 
-    createOrder: async (req, res) => {
+    createOrder: async (req, res) => { // TODO
         const { items, shipping, billing, total, shipping_method, shipping_cost, payment_method } = req.body;
 
         if (!shipping_method || !shipping_cost) {
@@ -58,21 +58,26 @@ const orderController = {
                     payment_method: payment_method || 'credit_card'
                 }, { transaction: t });
 
-                // 2. Crear items y actualizar stock
+                // 2. Crear items // TODO actualizar stock
                 const orderItems = await Promise.all(
                     items.map(async (item) => {
-                        const product = await Product.findByPk(item.id, { transaction: t });
-                        if (!product || product.stock < item.quantity) {
-                            throw new Error(`Stock insuficiente para ${product.name}`);
+                        const product = await Product.findByPk(item.product_id, { transaction: t });
+                        const variant = await ProductVariant.findByPk(item.variant_id, { transaction: t });
+                        if (!product) {
+                            throw new Error(`No se encontro el producto ${product.name}`);
+                        }
+                        if (!variant) {
+                            throw new Error(`No se encontro la variante de ${product.name}`);
                         }
 
-                        await product.update({
-                            stock: product.stock - item.quantity
-                        }, { transaction: t });
+                        // await variant.update({
+                        //     stock: product.stock - item.quantity
+                        // }, { transaction: t });
 
                         return OrderItem.create({
                             order_id: order.id,
-                            product_id: item.id,
+                            product_id: item.product_id,
+                            variant_id: item.variant_id,
                             quantity: item.quantity,
                             price: item.price
                         }, { transaction: t });
@@ -85,7 +90,7 @@ const orderController = {
                     invoice_number: `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
                     date: new Date(),
                     subtotal: total - shipping_cost,
-                    tax: (total - shipping_cost) * 0.21,
+                    ship: shipping_cost,
                     total: total
                 }, { transaction: t });
 
@@ -112,17 +117,17 @@ const orderController = {
         try {
             const order = await Order.findByPk(id, {
                 include: [
-                    {
-                        model: User,
-                        as: 'user',
+                    // Relacion es 1:N > Lado del 1: Sin parametro alias. Lado del N: Va con el alias (as)
+                    {   
+                        model: User, 
                         attributes: ['id', 'first_name', 'last_name', 'email', 'dni']
                     },
                     {
                         model: OrderItem,
-                        as: 'items',
+                        as: 'item',
                         include: [{
                             model: Product,
-                            attributes: ['id', 'name', 'price', 'image_url', 'size', 'serial_number']
+                            attributes: ['id', 'name', 'price', 'image_url']
                         }]
                     },
                     {
@@ -196,7 +201,7 @@ const orderController = {
                 include: [
                     {
                         model: OrderItem,
-                        as: 'items',
+                        as: 'item',
                         include: [Product]
                     },
                     {

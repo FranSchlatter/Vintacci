@@ -1,37 +1,34 @@
-// models/CartItem.js
+// src/models/Asociacion_Tags_Categories.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
-const CartItem = sequelize.define('CartItem', {
+// Tabla intermedia para Variants-Options
+const Asociacion_Tags_Categories = sequelize.define('Asociacion_Tags_Categories', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
+        primaryKey: true,
     },
-    user_id: {
+    category_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'users',
+            model: 'categories',
             key: 'id'
         }
     },
-    product_id: {
+    tag_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'products',
+            model: 'tag',
             key: 'id'
         }
-    },
-    quantity: {
-        type: DataTypes.INTEGER,
-        defaultValue: 1
     }
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'cart_items'
+    tableName: 'asociacion_tags_categories'
 });
 
-module.exports = CartItem;
+module.exports = Asociacion_Tags_Categories;

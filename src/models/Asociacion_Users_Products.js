@@ -1,8 +1,8 @@
-// models/CartItem.js
+// models/Asociacion_Users_Products.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
-const CartItem = sequelize.define('CartItem', {
+const Asociacion_Users_Products = sequelize.define('Asociacion_Users_Products', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -23,15 +23,11 @@ const CartItem = sequelize.define('CartItem', {
             model: 'products',
             key: 'id'
         }
-    },
-    quantity: {
-        type: DataTypes.INTEGER,
-        defaultValue: 1
     }
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'cart_items'
+    tableName: 'asociacion_users_products'
 });
 
-module.exports = CartItem;
+module.exports = Asociacion_Users_Products;

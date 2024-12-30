@@ -12,10 +12,10 @@ const productOptionController = {
         }
     },
 
-    createOption: async (req, res) => {
-        const { name, type, value } = req.body;
+    createOption: async (req, res) => { // TODO parseint en price?
+        const { name, type, price, image } = req.body;
 
-        if (!name || !type || !value) {
+        if (!name || !type || !price) {
             return res.status(400).send('Nombre, tipo y valor son obligatorios');
         }
 
@@ -23,7 +23,8 @@ const productOptionController = {
             const newOption = await ProductOption.create({
                 name,
                 type,
-                value
+                price,
+                image
             });
             res.status(201).json(newOption);
         } catch (err) {
@@ -34,7 +35,7 @@ const productOptionController = {
 
     updateOption: async (req, res) => {
         const { id } = req.params;
-        const { name, type, value } = req.body;
+        const { name, type, price } = req.body;
 
         try {
             const option = await ProductOption.findByPk(id);
@@ -45,7 +46,7 @@ const productOptionController = {
             const updatedOption = await option.update({
                 name: name || option.name,
                 type: type || option.type,
-                value: value || option.value
+                price: price || option.price
             });
 
             res.json(updatedOption);

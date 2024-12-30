@@ -8,33 +8,30 @@ const Category = sequelize.define('Category', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    slug: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    description: {
-        type: DataTypes.TEXT,
-    },
-    parentId: {
+    parent_id: {
         type: DataTypes.UUID,
         references: {
             model: 'categories',
             key: 'id'
         },
         allowNull: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    description: {
+        type: DataTypes.TEXT,
+    },
+    slug: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
     }
 }, {
     timestamps: true,
     underscored: true,
     tableName: 'categories'
 });
-// Auto-referencial para subcategorías
-// Category.belongsTo(Category, { as: 'parent', foreignKey: 'parentId' });
-// Category.hasMany(Category, { as: 'subcategories', foreignKey: 'parentId' });
 
 module.exports = Category;

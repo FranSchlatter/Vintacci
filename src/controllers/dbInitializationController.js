@@ -1,4 +1,5 @@
 // src/controllers/dbInitializationController.js
+// TODO remake
 const { 
     Category, 
     Tag, 
@@ -83,17 +84,17 @@ const dbInitializationController = {
             // Crear productos y sus variantes
             for (const productData of initialData.products) {
                 // Obtener la categoría para el prefijo
-                const category = await Category.findByPk(productData.categoryId, { transaction });
+                const category = await Category.findByPk(productData.categoryIds, { transaction });
                 const prefix = category.name.substring(0, 3).toUpperCase();
                 const productCode = await generateProductCode(prefix, transaction);
 
                 const product = await Product.upsert({
                     id: productData.id,
-                    productCode, // Agregamos el productCode
+                    productCode,
                     name: productData.name,
                     description: productData.description,
-                    brand: productData.brand,
-                    categoryId: productData.categoryId,
+                    image_url: productData.image_url,
+                    categoryIds: productData.categoryIds,
                     status: productData.status
                 }, { transaction });
 
@@ -109,10 +110,9 @@ const dbInitializationController = {
 
                     const variant = await ProductVariant.create({
                         sku,
-                        productId: product[0].id,
+                        product_id: product[0].id,
                         price: variantData.price,
                         stock: variantData.stock,
-                        image_url: variantData.image_url,
                         status: variantData.status,
                         discountPrice: variantData.discountPrice,
                         discountStart: variantData.discountStart,

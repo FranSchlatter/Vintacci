@@ -135,7 +135,7 @@ const userController = {
         try {
             const user = await User.findByPk(id, {
                 attributes: { exclude: ['password'] },
-                include: ['orders']
+                include: ['order']
             });
             
             if (!user) {

@@ -1,4 +1,5 @@
 // src/controllers/productController.js
+// TODO
 const { Product, Category, Tag, ProductVariant, ProductOption } = require('../models');
 const { Op } = require('sequelize');
 
@@ -68,18 +69,22 @@ const productController = {
                 include: [
                     {
                         model: Category,
+                        through: { attributes: [] },
+                        as: 'AssociatedToCat',
                         attributes: ['id', 'name']
                     },
                     {
                         model: Tag,
                         through: { attributes: [] },
+                        as: 'AssociatedToTag',
                         attributes: ['id', 'name', 'type']
                     },
                     {
                         model: ProductVariant,
+                        attributes: ['id', 'sku', 'price'],
                         include: [{
                             model: ProductOption,
-                            through: { attributes: [] }
+                            through: { attributes: [] },
                         }]
                     }
                 ]
@@ -95,14 +100,15 @@ const productController = {
         const { 
             name, 
             description, 
-            brand,
-            categoryId,
-            tags,
-            variants,
-            status = 'active'
+            price,
+            image_url,
+            status = 'active',
+            categoryIds,
+            tagIds,
+            variants
         } = req.body;
 
-        if (!name || !description || !categoryId || !variants || variants.length === 0) {
+        if (!name || !description || !price || !categoryIds || !tagIds || !variants || variants.length === 0) {
             return res.status(400).send('Faltan campos obligatorios');
         }
 
@@ -110,28 +116,35 @@ const productController = {
             // Validar combinaciones únicas de opciones
             await validateUniqueOptionCombination(variants);
 
+            // TODO cambio en cats, no va a funcionar pq tiene muchas. Revisar
             // Generar código de producto
-            const category = await Category.findByPk(categoryId);
-            if (!category) {
-                return res.status(404).send('Categoría no encontrada');
-            }
+            // const category = await Category.findByPk(categoryIds);
+            // if (!category) {
+            //     return res.status(404).send('Categoría no encontrada');
+            // }
             
-            const prefix = category.name.substring(0, 3).toUpperCase();
-            const productCode = await generateProductCode(prefix);
+            // const prefix = category.name.substring(0, 3).toUpperCase();
+            // const productCode = await generateProductCode(prefix); 
+            const productCode = 'Test01' // TODO
 
             // Crear el producto base
             const newProduct = await Product.create({
                 productCode,
                 name,
                 description,
-                brand,
-                categoryId,
+                price,
+                image_url,
                 status
             });
 
-            // Asociar tags si existen
-            if (tags && tags.length > 0) {
-                await newProduct.setTags(tags);
+            // Asociar categories si existen
+            if (categoryIds && categoryIds.length > 0) {
+                await newProduct.setAssociatedToCat(categoryIds);
+            }
+
+            // Asociar tagIds si existen
+            if (tagIds && tagIds.length > 0) {
+                await newProduct.setAssociatedToTag(tagIds);
             }
 
             // Crear variantes
@@ -152,14 +165,13 @@ const productController = {
 
                     const newVariant = await ProductVariant.create({
                         sku,
-                        price: variant.price,
+                        price: variant.price, // TODO
                         stock: variant.stock,
-                        image_url: variant.image_url,
                         status: variant.status || 'active',
                         discountPrice: variant.discountPrice,
                         discountStart: variant.discountStart,
                         discountEnd: variant.discountEnd,
-                        productId: newProduct.id
+                        product_id: newProduct.id
                     });
 
                     await newVariant.setProductOptions(variant.options);
@@ -175,11 +187,14 @@ const productController = {
                 include: [
                     {
                         model: Category,
+                        as: 'AssociatedToCat',
                         attributes: ['id', 'name']
                     },
                     {
                         model: Tag,
-                        through: { attributes: [] }
+                        through: { attributes: [] },
+                        as: 'AssociatedToTag',
+                        attributes: ['id', 'name', 'type']
                     },
                     {
                         model: ProductVariant,
@@ -201,13 +216,14 @@ const productController = {
     updateProduct: async (req, res) => {
         const { id } = req.params;
         const { 
-            name, 
-            description, 
-            brand,
-            categoryId,
-            tags,
-            variants,
-            status 
+            name,
+            description,
+            price,
+            image_url,
+            status,
+            categoryIds,
+            tagIds,
+            variants
         } = req.body;
 
         try {
@@ -224,21 +240,22 @@ const productController = {
             await product.update({
                 name,
                 description,
-                brand,
-                categoryId,
+                price,
+                image_url,
+                categoryIds,
                 status
             });
 
-            // Actualizar tags
-            if (tags) {
-                await product.setTags(tags);
+            // Actualizar tagIds
+            if (tagIds) {
+                await product.setAssociatedToTag(tagIds);
             }
 
             // Actualizar variantes
             if (variants) {
                 // Eliminar variantes existentes que no están en la nueva lista
                 const existingVariants = await ProductVariant.findAll({
-                    where: { productId: id }
+                    where: { product_id: id }
                 });
 
                 const existingVariantIds = existingVariants.map(v => v.id);
@@ -257,7 +274,6 @@ const productController = {
                             await existingVariant.update({
                                 price: variant.price,
                                 stock: variant.stock,
-                                image_url: variant.image_url,
                                 status: variant.status || existingVariant.status,
                                 discountPrice: variant.discountPrice,
                                 discountStart: variant.discountStart,
@@ -285,12 +301,11 @@ const productController = {
                             sku,
                             price: variant.price,
                             stock: variant.stock,
-                            image_url: variant.image_url,
                             status: variant.status || 'active',
                             discountPrice: variant.discountPrice,
                             discountStart: variant.discountStart,
                             discountEnd: variant.discountEnd,
-                            productId: id
+                            product_id: id
                         });
                         
                         await newVariant.setProductOptions(variant.options);
@@ -376,13 +391,14 @@ const productController = {
             res.status(500).send('Error al obtener el producto');
         }
     },
+
     createVariant: async (req, res) => {
-        const { productId } = req.params;
+        const { product_id } = req.params;
         const variantData = req.body;
     
         try {
             // Verificar que el producto existe
-            const product = await Product.findByPk(productId);
+            const product = await Product.findByPk(product_id);
             if (!product) {
                 return res.status(404).send('Producto no encontrado');
             }
@@ -400,7 +416,7 @@ const productController = {
     
             // Validar que no exista la misma combinación de opciones
             const existingVariants = await ProductVariant.findAll({
-                where: { productId },
+                where: { product_id },
                 include: [{
                     model: ProductOption,
                     through: { attributes: [] }
@@ -425,12 +441,11 @@ const productController = {
                 sku,
                 price: variantData.price,
                 stock: variantData.stock,
-                image_url: variantData.image_url,
                 status: variantData.status || 'active',
                 discountPrice: variantData.discountPrice,
                 discountStart: variantData.discountStart,
                 discountEnd: variantData.discountEnd,
-                productId
+                product_id
             });
     
             // Asociar las opciones
@@ -450,13 +465,14 @@ const productController = {
             res.status(500).send(err.message);
         }
     },
+
     updateVariant: async (req, res) => {
-        const { productId, variantId } = req.params;
+        const { product_id, variantId } = req.params;
         const updateData = req.body;
     
         try {
             // Verificar que el producto existe
-            const product = await Product.findByPk(productId);
+            const product = await Product.findByPk(product_id);
             if (!product) {
                 return res.status(404).send('Producto no encontrado');
             }
@@ -465,7 +481,7 @@ const productController = {
             const variant = await ProductVariant.findOne({
                 where: { 
                     id: variantId,
-                    productId: productId
+                    product_id: product_id
                 }
             });
     
@@ -491,11 +507,11 @@ const productController = {
         }
     },
     deleteVariant: async (req, res) => {
-        const { productId, variantId } = req.params;
+        const { product_id, variantId } = req.params;
     
         try {
             // Verificar que el producto existe
-            const product = await Product.findByPk(productId);
+            const product = await Product.findByPk(product_id);
             if (!product) {
                 return res.status(404).send('Producto no encontrado');
             }
@@ -504,7 +520,7 @@ const productController = {
             const variant = await ProductVariant.findOne({
                 where: { 
                     id: variantId,
-                    productId: productId
+                    product_id: product_id
                 }
             });
     
@@ -514,7 +530,7 @@ const productController = {
     
             // Asegurarse de que no es la última variante
             const variantCount = await ProductVariant.count({
-                where: { productId: productId }
+                where: { product_id: product_id }
             });
     
             if (variantCount <= 1) {

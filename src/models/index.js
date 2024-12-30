@@ -8,84 +8,21 @@ const Invoice = require('./Invoice');
 const Product = require('./Product');
 const User = require('./User');
 const Address = require('./Address');
-const Favorite = require('./Favorite');
+const Asociacion_Users_Products = require('./Asociacion_Users_Products');
 const CartItem = require('./CartItem');
 const Category = require('./Category');
 const Tag = require('./Tag');
 const ProductOption = require('./ProductOption');
 const ProductVariant = require('./ProductVariant');
-const ProductTag = require('./ProductTag');
-const VariantOption = require('./VariantOption');
+const Asociacion_Products_Tags = require('./Asociacion_Products_Tags');
+const Asociacion_Variants_Options = require('./Asociacion_Variants_Options');
+const Asociacion_Products_Categories = require('./Asociacion_Products_Categories');
+const Asociacion_Tags_Categories = require('./Asociacion_Tags_Categories');
 
 function initializeAssociations() {
-    // User - Orders (1:N)
-    User.hasMany(Order, {
-        foreignKey: 'user_id',
-        as: 'orders',
-        onDelete: 'SET NULL'
-    });
-    Order.belongsTo(User, {
-        foreignKey: 'user_id',
-        as: 'user'
-    });
+    // Asociaciones (1:1)
 
-    // User - Addresses (1:N)
-    User.hasMany(Address, {
-        foreignKey: 'user_id',
-        as: 'addresses',
-        onDelete: 'CASCADE'
-    });
-    Address.belongsTo(User, {
-        foreignKey: 'user_id'
-    });
-
-    // User - Products through Favorites (N:N)
-    User.belongsToMany(Product, {
-        through: Favorite,
-        as: 'favoriteProducts',
-        foreignKey: 'user_id',
-        otherKey: 'product_id',
-        onDelete: 'CASCADE'
-    });
-    
-    Product.belongsToMany(User, {
-        through: Favorite,
-        as: 'favoritedBy',
-        foreignKey: 'product_id',
-        otherKey: 'user_id',
-        onDelete: 'CASCADE'
-    });
-
-    // User - Cart (1:N)
-    User.hasMany(CartItem, {
-        foreignKey: 'user_id',
-        as: 'cartItems',
-        onDelete: 'CASCADE'
-    });
-    CartItem.belongsTo(User, {
-        foreignKey: 'user_id'
-    });
-
-    // Product - CartItem (1:N)
-    Product.hasMany(CartItem, {
-        foreignKey: 'product_id',
-        onDelete: 'CASCADE'
-    });
-    CartItem.belongsTo(Product, {
-        foreignKey: 'product_id'
-    });
-
-    // Order - OrderItems (1:N)
-    Order.hasMany(OrderItem, {
-        foreignKey: 'order_id',
-        as: 'items',
-        onDelete: 'CASCADE'
-    });
-    OrderItem.belongsTo(Order, {
-        foreignKey: 'order_id'
-    });
-
-    // Order - Invoice (1:1)
+    // Order - Invoice
     Order.hasOne(Invoice, {
         foreignKey: 'order_id',
         as: 'invoice',
@@ -94,8 +31,56 @@ function initializeAssociations() {
     Invoice.belongsTo(Order, {
         foreignKey: 'order_id'
     });
+    
 
-    // Product - OrderItem (1:N)
+
+    // Asociaciones (1:N)
+
+    // User - Addresses
+    User.hasMany(Address, {
+        foreignKey: 'user_id',
+        as: 'address',
+        onDelete: 'CASCADE'
+    });
+    Address.belongsTo(User, {
+        foreignKey: 'user_id'
+    });
+    // User - Orders
+    User.hasMany(Order, {
+        foreignKey: 'user_id',
+        as: 'order',
+        onDelete: 'SET NULL'
+    });
+    Order.belongsTo(User, {
+        foreignKey: 'user_id'
+    });
+    // User - Cart
+    User.hasMany(CartItem, {
+        foreignKey: 'user_id',
+        as: 'cart_item',
+        onDelete: 'CASCADE'
+    });
+    CartItem.belongsTo(User, {
+        foreignKey: 'user_id'
+    });
+
+    // Product - ProductVariant
+    Product.hasMany(ProductVariant, {
+        foreignKey: 'product_id',
+        onDelete: 'CASCADE'
+    });
+    ProductVariant.belongsTo(Product, {
+        foreignKey: 'product_id'
+    });
+    // Product - Cart
+    Product.hasMany(CartItem, {
+        foreignKey: 'product_id',
+        onDelete: 'CASCADE'
+    });
+    CartItem.belongsTo(Product, {
+        foreignKey: 'product_id'
+    });
+    // Product - OrderItem
     Product.hasMany(OrderItem, {
         foreignKey: 'product_id',
         onDelete: 'RESTRICT'
@@ -104,53 +89,101 @@ function initializeAssociations() {
         foreignKey: 'product_id'
     });
 
+    // Order - OrderItems
+    Order.hasMany(OrderItem, {
+        foreignKey: 'order_id',
+        as: 'item',
+        onDelete: 'CASCADE'
+    });
+    OrderItem.belongsTo(Order, {
+        foreignKey: 'order_id'
+    });
+
     // Categories (auto-referencial)
-    Category.belongsTo(Category, { 
-        as: 'parent', 
-        foreignKey: 'parentId',
-        onDelete: 'RESTRICT'
-    });
     Category.hasMany(Category, { 
+        foreignKey: 'parent_id',
         as: 'subcategories', 
-        foreignKey: 'parentId',
+        onDelete: 'CASCADE'
+    });
+    Category.belongsTo(Category, { 
+        foreignKey: 'parent_id'
+    });
+
+
+    
+    // Asociaciones (N:N)
+
+    // User - Products > Asociacion_Users_Products
+    User.belongsToMany(Product, {
+        through: Asociacion_Users_Products,
+        as: 'AssociatedToProd', // User.getAssociatedToProd() > Este user tiene favorito el producto: id1, id2
+        foreignKey: 'user_id',
+        otherKey: 'product_id',
+        onDelete: 'CASCADE'
+    });
+    Product.belongsToMany(User, {
+        through: Asociacion_Users_Products,
+        as: 'AssociatedToUser', // Product.getAssociatedToUser() > Este producto es favorito de user: id1, id2
+        foreignKey: 'product_id',
+        otherKey: 'user_id',
         onDelete: 'CASCADE'
     });
 
-    // Product - Category
-    Product.belongsTo(Category, {
-        foreignKey: 'categoryId',
-        onDelete: 'RESTRICT'
-    });
-    Category.hasMany(Product, {
-        foreignKey: 'categoryId'
-    });
-
-    // Product - ProductVariant
-    Product.hasMany(ProductVariant, {
-        foreignKey: 'productId',
+    // Product - Category > Asociacion_Products_Categories
+    Product.belongsToMany(Category, { 
+        through: Asociacion_Products_Categories,
+        as: 'AssociatedToCat', // Product.getAssociatedToCat() > Este producto tiene estas categoria: id1, id2
+        foreignKey: 'product_id',
+        otherKey: 'category_id',
         onDelete: 'CASCADE'
     });
-    ProductVariant.belongsTo(Product, {
-        foreignKey: 'productId'
+    Category.belongsToMany(Product, { 
+        through: Asociacion_Products_Categories,
+        as: 'AssociatedToProd', // Category.getAssociatedToProd() > Esta categoria tiene estos producto: id1, id2
+        foreignKey: 'category_id',
+        otherKey: 'product_id',
+        onDelete: 'CASCADE'
     });
 
-    // Product - Tags
+    // Tag - Category > Asociacion_Tags_Categories
+    Tag.belongsToMany(Category, { 
+        through: Asociacion_Tags_Categories,
+        as: 'AssociatedToCat', // Tag.getAssociatedToCat() > Este tag existe en la categoria: id1, id2
+        foreignKey: 'tag_id',
+        otherKey: 'category_id',
+        onDelete: 'CASCADE'
+    });
+    Category.belongsToMany(Tag, { 
+        through: Asociacion_Tags_Categories,
+        as: 'AssociatedToTag', // Category.getAssociatedToTag() > Esta categoria contiene al tag: id1, id2
+        foreignKey: 'category_id',
+        otherKey: 'tag_id',
+        onDelete: 'CASCADE'
+    });
+
+    // Products - Tags > Asociacion_Products_Tags
     Product.belongsToMany(Tag, { 
-        through: ProductTag,
+        through: Asociacion_Products_Tags,
+        as: 'AssociatedToTag', // Category.getAssociatedToTag() > Esta producto contiene al tag: id1, id2
+        foreignKey: 'product_id',
+        otherKey: 'tag_id',
         onDelete: 'CASCADE'
     });
     Tag.belongsToMany(Product, { 
-        through: ProductTag,
+        through: Asociacion_Products_Tags,
+        as: 'AssociatedToProd', // Category.getAssociatedToProd() > Este tag existe en el producto: id1, id2
+        foreignKey: 'tag_id',
+        otherKey: 'product_id',
         onDelete: 'CASCADE'
     });
 
-    // ProductVariant - ProductOption
+    // Variants - Options > Asociacion_Variants_Options
     ProductVariant.belongsToMany(ProductOption, { 
-        through: VariantOption,
+        through: Asociacion_Variants_Options,
         onDelete: 'CASCADE'
     });
     ProductOption.belongsToMany(ProductVariant, { 
-        through: VariantOption,
+        through: Asociacion_Variants_Options,
         onDelete: 'CASCADE'
     });
 }
@@ -167,12 +200,12 @@ module.exports = {
     OrderItem,
     Invoice,
     Address,
-    Favorite,
+    Asociacion_Users_Products,
     CartItem,
     Category,
     Tag,
     ProductOption,
     ProductVariant,
-    ProductTag,
-    VariantOption
+    Asociacion_Products_Tags,
+    Asociacion_Variants_Options
 };

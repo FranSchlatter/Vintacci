@@ -1,9 +1,9 @@
-// src/models/VariantOption.js
+// src/models/Asociacion_Variants_Options.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
 // Tabla intermedia para Variants-Options
-const VariantOption = sequelize.define('VariantOption', {
+const Asociacion_Variants_Options = sequelize.define('Asociacion_Variants_Options', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -12,7 +12,7 @@ const VariantOption = sequelize.define('VariantOption', {
 }, {
     timestamps: true,
     underscored: true,
-    tableName: 'variant_options'
+    tableName: 'asociacion_variants_options'
 });
 
-module.exports = VariantOption;
+module.exports = Asociacion_Variants_Options;

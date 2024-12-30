@@ -13,12 +13,15 @@ const ProductOption = sequelize.define('ProductOption', {
         allowNull: false,
     },
     type: {
-        type: DataTypes.STRING, // 'color', 'size', etc.
-        allowNull: false,
-    },
-    value: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+    },
+    image_url: {
+        type: DataTypes.STRING,
     }
 }, {
     timestamps: true,

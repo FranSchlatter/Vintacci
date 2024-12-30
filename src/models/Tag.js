@@ -12,14 +12,14 @@ const Tag = sequelize.define('Tag', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     slug: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-    },
-    type: {
-        type: DataTypes.STRING, // 'descriptive', 'functional', 'occasion', 'season', etc.
-        allowNull: false,
     }
 }, {
     timestamps: true,
