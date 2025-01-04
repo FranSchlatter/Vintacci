@@ -13,10 +13,10 @@ const productOptionController = {
     },
 
     createOption: async (req, res) => { // TODO parseint en price?
-        const { name, type, price, image } = req.body;
-
-        if (!name || !type || !price) {
-            return res.status(400).send('Nombre, tipo y valor son obligatorios');
+        const { name, type, price, image_url } = req.body;
+        
+        if (!name || !type ) {
+            return res.status(400).send('Nombre, tipo son obligatorios');
         }
 
         try {
@@ -24,7 +24,7 @@ const productOptionController = {
                 name,
                 type,
                 price,
-                image
+                image_url
             });
             res.status(201).json(newOption);
         } catch (err) {

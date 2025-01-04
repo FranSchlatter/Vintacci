@@ -26,7 +26,7 @@ const Category = sequelize.define('Category', {
     slug: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        // unique: true,
     }
 }, {
     timestamps: true,

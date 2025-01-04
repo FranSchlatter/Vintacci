@@ -113,19 +113,43 @@ const productController = {
         }
 
         try {
-            // Validar combinaciones únicas de opciones
-            await validateUniqueOptionCombination(variants);
+            // Obtener todas las opciones y clasificarlas por tipo
+            const allOptions = await ProductOption.findAll({
+                where: {
+                    id: variants[0].options
+                },
+                attributes: ['id', 'name', 'type', 'price']
+            });
 
-            // TODO cambio en cats, no va a funcionar pq tiene muchas. Revisar
-            // Generar código de producto
-            // const category = await Category.findByPk(categoryIds);
-            // if (!category) {
-            //     return res.status(404).send('Categoría no encontrada');
-            // }
-            
-            // const prefix = category.name.substring(0, 3).toUpperCase();
-            // const productCode = await generateProductCode(prefix); 
-            const productCode = 'Test01' // TODO
+            // Agrupar opciones por tipo
+            const optionsByType = allOptions.reduce((acc, option) => {
+                if (!acc[option.type]) {
+                    acc[option.type] = [];
+                }
+                acc[option.type].push(option);
+                return acc;
+            }, {});
+
+            // Validar que tenemos al menos una opción de cada tipo requerido
+            const requiredTypes = ['size', 'badge', 'customize'];
+            for (const type of requiredTypes) {
+                if (!optionsByType[type] || optionsByType[type].length === 0) {
+                    throw new Error(`Falta al menos una opción del tipo: ${type}`);
+                }
+            }
+
+            // Generar todas las combinaciones posibles
+            const combinations = [];
+            for (const size of optionsByType.size) {
+                for (const badge of optionsByType.badge) {
+                    for (const customize of optionsByType.customize) {
+                        combinations.push([size.id, badge.id, customize.id]);
+                    }
+                }
+            }
+
+            // Generar código de producto (mantenemos el TODO por ahora)
+            const productCode = 'Test12'; // TODO
 
             // Crear el producto base
             const newProduct = await Product.create({
@@ -137,46 +161,41 @@ const productController = {
                 status
             });
 
-            // Asociar categories si existen
+            // Asociar categories
             if (categoryIds && categoryIds.length > 0) {
                 await newProduct.setAssociatedToCat(categoryIds);
             }
 
-            // Asociar tagIds si existen
+            // Asociar tags
             if (tagIds && tagIds.length > 0) {
                 await newProduct.setAssociatedToTag(tagIds);
             }
 
-            // Crear variantes
-            for (const variant of variants) {
+            // Crear variantes para cada combinación
+            for (const combination of combinations) {
                 try {
-                    // Obtener las opciones completas para generar el SKU
-                    const optionsData = await ProductOption.findAll({
-                        where: {
-                            id: variant.options
-                        }
-                    });
-
-                    if (optionsData.length !== variant.options.length) {
-                        throw new Error('Algunas opciones especificadas no existen');
-                    }
-
+                    const optionsData = allOptions.filter(opt => combination.includes(opt.id));
+                    
+                    // Calcular precio de la variante
+                    const variantPrice = optionsData.reduce((sum, option) => sum + Number(option.price), 0);
+                    
+                    // Generar SKU
                     const sku = await generateSKU(productCode, optionsData);
 
+                    // Crear la variante
                     const newVariant = await ProductVariant.create({
                         sku,
-                        price: variant.price, // TODO
-                        stock: variant.stock,
-                        status: variant.status || 'active',
-                        discountPrice: variant.discountPrice,
-                        discountStart: variant.discountStart,
-                        discountEnd: variant.discountEnd,
+                        price: price + variantPrice,
+                        stock: 0,
+                        status: 'active',
+                        discountPrice: null,
+                        discountStart: null,
+                        discountEnd: null,
                         product_id: newProduct.id
                     });
 
-                    await newVariant.setProductOptions(variant.options);
+                    await newVariant.setProductOptions(combination);
                 } catch (variantError) {
-                    // Si hay un error creando una variante, eliminamos el producto y todas las variantes creadas
                     await newProduct.destroy();
                     throw new Error(`Error creando variante: ${variantError.message}`);
                 }
@@ -366,17 +385,22 @@ const productController = {
                 include: [
                     {
                         model: Category,
-                        attributes: ['id', 'name']
+                        through: { attributes: [] },
+                        as: 'AssociatedToCat',
+                        // attributes: ['id', 'name']
                     },
                     {
                         model: Tag,
-                        through: { attributes: [] }
+                        through: { attributes: [] },
+                        as: 'AssociatedToTag',
+                        // attributes: ['id', 'name', 'type']
                     },
                     {
                         model: ProductVariant,
+                        // attributes: ['id', 'sku', 'price'],
                         include: [{
                             model: ProductOption,
-                            through: { attributes: [] }
+                            through: { attributes: [] },
                         }]
                     }
                 ]

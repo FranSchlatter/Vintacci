@@ -17,40 +17,43 @@ const ProductList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage] = useState(12);
 
+    console.log(allProducts)
+
     // Procesamos los productos para tener una versión simplificada con el precio más bajo
-    const processedProducts = useMemo(() => {
-        if (!allProducts?.length) return [];
+        const processedProducts = allProducts
+    //     const processedProducts = useMemo(() => {
+    //     if (!allProducts?.length) return [];
 
-        return allProducts.map(product => {
-            // Encontrar las variantes activas
-            const activeVariants = product.ProductVariants.filter(variant => 
-                variant.status === 'active' && variant.stock > 0
-            );
+    //     return allProducts.map(product => {
+    //         // Encontrar las variantes activas
+    //         const activeVariants = product.ProductVariants.filter(variant => 
+    //             variant.status === 'active' && variant.stock > 0
+    //         );
 
-            if (activeVariants.length === 0) return null;
+    //         if (activeVariants.length === 0) return null;
 
-            const lowestPriceVariant = activeVariants.reduce((prev, current) => {
-                const prevPrice = Number(prev.discountPrice || prev.price);
-                const currentPrice = Number(current.discountPrice || current.price);
-                return prevPrice < currentPrice ? prev : current;
-            });
+    //         const lowestPriceVariant = activeVariants.reduce((prev, current) => {
+    //             const prevPrice = Number(prev.discountPrice || prev.price);
+    //             const currentPrice = Number(current.discountPrice || current.price);
+    //             return prevPrice < currentPrice ? prev : current;
+    //         });
 
-            const highestPriceVariant = activeVariants.reduce((prev, current) => {
-                const prevPrice = Number(prev.discountPrice || prev.price);
-                const currentPrice = Number(current.discountPrice || current.price);
-                return prevPrice > currentPrice ? prev : current;
-            });
+    //         const highestPriceVariant = activeVariants.reduce((prev, current) => {
+    //             const prevPrice = Number(prev.discountPrice || prev.price);
+    //             const currentPrice = Number(current.discountPrice || current.price);
+    //             return prevPrice > currentPrice ? prev : current;
+    //         });
 
-            return {
-                ...product,
-                minPrice: Number(lowestPriceVariant.discountPrice || lowestPriceVariant.price),
-                maxPrice: Number(highestPriceVariant.discountPrice || highestPriceVariant.price),
-                image_url: lowestPriceVariant.image_url,
-                stock: activeVariants.reduce((sum, variant) => sum + variant.stock, 0),
-                activeVariants
-            };
-        }).filter(Boolean);
-    }, [allProducts]);
+    //         return {
+    //             ...product,
+    //             minPrice: Number(lowestPriceVariant.discountPrice || lowestPriceVariant.price),
+    //             maxPrice: Number(highestPriceVariant.discountPrice || highestPriceVariant.price),
+    //             image_url: lowestPriceVariant.image_url,
+    //             stock: activeVariants.reduce((sum, variant) => sum + variant.stock, 0),
+    //             activeVariants
+    //         };
+    //     }).filter(Boolean);
+    // }, [allProducts]);
 
     // Aplicar filtros a los productos
     const filteredProducts = useMemo(() => {
@@ -88,7 +91,7 @@ const ProductList = () => {
                 const maxPrice = Number(activeFilters.priceRange.max) || Infinity;
                 
                 // Un producto coincide si alguna de sus variantes está en el rango
-                const priceInRange = product.activeVariants.some(variant => {
+                const priceInRange = product.ProductVariants.some(variant => {
                     const price = Number(variant.discountPrice || variant.price);
                     return price >= minPrice && price <= maxPrice;
                 });

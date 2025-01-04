@@ -1,5 +1,4 @@
 // src/controllers/dbInitializationController.js
-// TODO remake
 const { 
     Category, 
     Tag, 
@@ -10,6 +9,19 @@ const {
 const initialData = require('../data/initial-data.json');
 const sequelize = require('../../db');
 const { Op } = require('sequelize');
+
+// Función auxiliar para procesar precios
+const processPrice = (price) => {
+    if (typeof price === 'string') {
+        const cleanPrice = price.replace(/[^\d.]/g, '');
+        const parts = cleanPrice.split('.');
+        if (parts.length > 2) {
+            return parseFloat(parts[0] + '.' + parts[1]);
+        }
+        return parseFloat(cleanPrice);
+    }
+    return parseFloat(price || 0);
+};
 
 // Función auxiliar para generar el siguiente código de producto
 const generateProductCode = async (prefix = 'PROD', transaction) => {
@@ -32,95 +44,194 @@ const generateProductCode = async (prefix = 'PROD', transaction) => {
     return `${prefix}${nextNumber.toString().padStart(3, '0')}`;
 };
 
+// Función recursiva para procesar categorías y subcategorías
+const processCategories = async (categories, parent_id = null, transaction) => {
+    try {
+        for (const category of categories) {
+            const slug = category.name.toLowerCase().replace(/\s+/g, '-');
+            
+            // Usar upsert para mantener el ID original
+            await Category.upsert({
+                id: category.id, // Mantener el ID original
+                name: category.name,
+                description: category.description,
+                parent_id: parent_id,
+                slug: slug
+            }, { transaction });
+
+            // Procesar subcategorías si existen
+            if (category.subcategories && category.subcategories.length > 0) {
+                await processCategories(category.subcategories, category.id, transaction);
+            }
+        }
+    } catch (error) {
+        throw new Error(`Error procesando categorías: ${error.message}`);
+    }
+};
+
+const processTag = async (tagData, transaction) => {
+    try {
+        const slug = tagData.name.toLowerCase().replace(/\s+/g, '-');
+        
+        // Usar upsert para mantener el ID original
+        await Tag.upsert({
+            id: tagData.id, // Mantener el ID original
+            name: tagData.name,
+            type: tagData.type,
+            slug
+        }, { transaction });
+
+        // Obtener el tag creado
+        const tag = await Tag.findByPk(tagData.id, { transaction });
+
+        // Asociar con las categorías usando los IDs originales
+        if (tagData.categoryPath && tagData.categoryPath.length > 0) {
+            for (const categoryId of tagData.categoryPath) {
+                await tag.addAssociatedToCat(categoryId, { transaction });
+            }
+        }
+
+        return tag;
+    } catch (error) {
+        throw new Error(`Error procesando tag ${tagData.name}: ${error.message}`);
+    }
+};
+
+const processProductOption = async (optionData, transaction) => {
+    try {
+        await ProductOption.upsert({
+            id: optionData.id,
+            name: optionData.name,
+            type: optionData.type,
+            price: processPrice(optionData.price) || 0,
+            image_url: optionData.image_url
+        }, { transaction });
+    } catch (error) {
+        throw new Error(`Error procesando opción de producto ${optionData.name}: ${error.message}`);
+    }
+};
+
+const processProduct = async (productData, transaction) => {
+    try {
+        // Obtener la categoría principal para el prefijo del código
+        const mainCategory = await Category.findByPk(productData.categoryIds[0], { 
+            transaction 
+        });
+        
+        if (!mainCategory) {
+            throw new Error(`No se encontró la categoría principal para el producto ${productData.name}`);
+        }
+
+        // Generar el código de producto usando el prefijo de la categoría
+        const prefix = mainCategory.name.substring(0, 3).toUpperCase();
+        const productCode = await generateProductCode(prefix, transaction);
+
+        // Crear el producto base
+        const product = await Product.upsert({
+            id: productData.id,
+            productCode,
+            name: productData.name,
+            description: productData.description,
+            price: processPrice(productData.price),
+            image_url: productData.image_url,
+            status: productData.status || 'active'
+        }, { transaction });
+
+        // Obtener la instancia del producto
+        const productInstance = await Product.findByPk(productData.id, { transaction });
+
+        // Asociar categorías y tags
+        if (productData.categoryIds && productData.categoryIds.length > 0) {
+            await productInstance.setAssociatedToCat(productData.categoryIds, { transaction });
+        }
+
+        if (productData.tagIds && productData.tagIds.length > 0) {
+            await productInstance.setAssociatedToTag(productData.tagIds, { transaction });
+        }
+
+        // Obtener todas las opciones y clasificarlas por tipo
+        const allOptions = await ProductOption.findAll({
+            where: {
+                id: productData.variants[0].options
+            },
+            attributes: ['id', 'name', 'type', 'price'],
+            transaction
+        });
+
+        // Agrupar opciones por tipo
+        const optionsByType = allOptions.reduce((acc, option) => {
+            if (!acc[option.type]) {
+                acc[option.type] = [];
+            }
+            acc[option.type].push(option);
+            return acc;
+        }, {});
+
+        // Generar todas las combinaciones posibles
+        const combinations = [];
+        for (const size of (optionsByType.size || [])) {
+            for (const badge of (optionsByType.badge || [])) {
+                for (const customize of (optionsByType.customize || [])) {
+                    combinations.push([size.id, badge.id, customize.id]);
+                }
+            }
+        }
+
+        // Crear variantes para cada combinación
+        for (const combination of combinations) {
+            const optionsData = allOptions.filter(opt => combination.includes(opt.id));
+            
+            // Calcular precio de la variante
+            const variantPrice = optionsData.reduce((sum, option) => 
+                sum + processPrice(option.price), 0
+            );
+            
+            // Generar SKU usando el nuevo productCode
+            const sku = `${productCode}-${combination.join('-')}`;
+
+            // Crear la variante
+            const variant = await ProductVariant.create({
+                sku,
+                price: processPrice(productData.price) + variantPrice,
+                stock: 0,
+                status: 'active',
+                discountPrice: null,
+                discountStart: null,
+                discountEnd: null,
+                product_id: productInstance.id
+            }, { transaction });
+
+            // Asociar opciones a la variante
+            await variant.setProductOptions(combination, { transaction });
+        }
+
+        return product;
+    } catch (error) {
+        throw new Error(`Error procesando producto ${productData.name}: ${error.message}`);
+    }
+};
+
 const dbInitializationController = {
     initializeDatabase: async (req, res) => {
         const transaction = await sequelize.transaction();
 
         try {
-            // Crear categorías
-            for (const category of initialData.categories) {
-                const { subcategories, ...categoryData } = category;
-                await Category.upsert({
-                    id: categoryData.id,
-                    name: categoryData.name,
-                    description: categoryData.description,
-                    parentId: categoryData.parentId || null,
-                    slug: categoryData.name.toLowerCase().replace(/\s+/g, '-')
-                }, { transaction });
+            // 1. Crear categorías
+            await processCategories(initialData.categories, null, transaction);
 
-                if (subcategories) {
-                    for (const subCategory of subcategories) {
-                        await Category.upsert({
-                            id: subCategory.id,
-                            name: subCategory.name,
-                            description: subCategory.description,
-                            parentId: category.id,
-                            slug: subCategory.name.toLowerCase().replace(/\s+/g, '-')
-                        }, { transaction });
-                    }
-                }
-            }
-
-            // Crear tags
+            // 2. Crear tags
             for (const tag of initialData.tags) {
-                await Tag.upsert({
-                    id: tag.id,
-                    name: tag.name,
-                    type: tag.type,
-                    slug: tag.name.toLowerCase().replace(/\s+/g, '-')
-                }, { transaction });
+                await processTag(tag, transaction);
             }
 
-            // Crear opciones de producto
+            // 3. Crear opciones de producto
             for (const option of initialData.productOptions) {
-                await ProductOption.upsert({
-                    id: option.id,
-                    name: option.name,
-                    type: option.type,
-                    value: option.value
-                }, { transaction });
+                await processProductOption(option, transaction);
             }
 
-            // Crear productos y sus variantes
-            for (const productData of initialData.products) {
-                // Obtener la categoría para el prefijo
-                const category = await Category.findByPk(productData.categoryIds, { transaction });
-                const prefix = category.name.substring(0, 3).toUpperCase();
-                const productCode = await generateProductCode(prefix, transaction);
-
-                const product = await Product.upsert({
-                    id: productData.id,
-                    productCode,
-                    name: productData.name,
-                    description: productData.description,
-                    image_url: productData.image_url,
-                    categoryIds: productData.categoryIds,
-                    status: productData.status
-                }, { transaction });
-
-                // Asociar tags
-                if (productData.tags) {
-                    await product[0].setTags(productData.tags, { transaction });
-                }
-
-                // Crear variantes
-                for (const variantData of productData.variants) {
-                    // Generar SKU
-                    const sku = `${productCode}-${variantData.options.join('-')}`;
-
-                    const variant = await ProductVariant.create({
-                        sku,
-                        product_id: product[0].id,
-                        price: variantData.price,
-                        stock: variantData.stock,
-                        status: variantData.status,
-                        discountPrice: variantData.discountPrice,
-                        discountStart: variantData.discountStart,
-                        discountEnd: variantData.discountEnd
-                    }, { transaction });
-
-                    await variant.setProductOptions(variantData.options, { transaction });
-                }
+            // 4. Crear productos y sus variantes
+            for (const product of initialData.products) {
+                await processProduct(product, transaction);
             }
 
             await transaction.commit();

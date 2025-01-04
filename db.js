@@ -24,28 +24,18 @@ module.exports = sequelize;
 // TODO Pendientes:
 
 // Fixs:
-// Favs no andan
-// Probar comprar, no deberia andar. 
-// Arreglar carrito con nuevos products.
-// Create via postman bull
+// prod img se traspapelan con las de las badges
+// precio de prodOption abajo chiquito
+// filtros no andan
+// Testear tutti di presto
+
 
 // After:
 // Panel de admin/user facturas. Que hace, descargar?
 // Historial de compras x user > panel admin
 // Implemetar maps en info contacto.
 
-
-// After:
-// Prod relacionados, complementarios, demas.
-// Array de img en variantes, (cuando se crea la var, se pueden visualizar y eliminar) en detail aparecen como en mercado libre, zoom
-
-
-
-
-
-
 // Paycheck real, o mercado pago fake.
-// Separar front y back. 2 package.json
 // Revisar mercado pago, nike, etc para sacar + funcionalidades.
 // Permanecer conectado. No cerrar sesion con reload.
 // Sesion de invitado, q puede hacer? Puede comprar? Forzar a login?

@@ -69,16 +69,16 @@ const ListView = ({ products }) => {
               <div className="relative w-48 h-48 flex-shrink-0">
                 <Link to={`/products/${product.id}`}>
                   <img
-                    src={mainVariant?.image_url}
+                    src={product.image_url[0]}
                     alt={product.name}
                     className="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-200"
                   />
                 </Link>
-                {priceInfo?.hasDiscount && (
+                {/* {priceInfo?.hasDiscount && (
                   <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-medium rounded">
                     Oferta
                   </div>
-                )}
+                )} */}
               </div>
 
               {/* Información del producto */}
@@ -113,7 +113,10 @@ const ListView = ({ products }) => {
                 <div className="flex items-center justify-between pt-3">
                   <div className="space-y-1">
                     <div className="flex items-baseline space-x-2">
-                      {priceInfo?.hasDiscount && (
+                    <span className="text-sm text-gray-500">
+                      {formatPrice(product.price)}
+                    </span>
+                      {/* {priceInfo?.hasDiscount && (
                         <span className="text-sm text-gray-500 line-through">
                           {formatPrice(priceInfo.originalPrice)}
                         </span>
@@ -121,15 +124,15 @@ const ListView = ({ products }) => {
                       <span className={`text-xl font-medium ${priceInfo?.hasDiscount ? 'text-red-600' : 'text-gray-900'}`}>
                         {(() => {
                           const priceRange = getProductPriceRange(product);
-                          if (!priceRange) return 'No disponible';
+                          if (!priceRange) return 'Encargar';
                           if (!priceRange.hasMultiplePrices) return formatPrice(priceRange.min);
                           return `${formatPrice(priceRange.min)} - ${formatPrice(priceRange.max)}`;
                         })()}
-                      </span>
+                      </span> */}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    {/* <div className="text-sm text-gray-500">
                       {product.ProductVariants.length} variantes disponibles
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="flex gap-2">

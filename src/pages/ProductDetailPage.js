@@ -3,11 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
 import { fetchProductById } from '../redux/actions/productActions';
-import { Package, ShoppingCart, Tag } from 'lucide-react';
-import { Card, CardContent } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
+import { Heart, ShoppingCart } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { Heart } from 'lucide-react';
 import { addToFavorites, removeFromFavorites } from '../redux/actions/favoriteActions';
 
 const ProductDetailPage = () => {
@@ -18,9 +15,16 @@ const ProductDetailPage = () => {
   const favorites = useSelector(state => state.favorites.items);
   const isFavorite = favorites.some(fav => fav.product_id === product?.id);
 
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState({});
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [hoveredBadge, setHoveredBadge] = useState(null);
+
+  // Normalizar el array de imágenes
+  const images = useMemo(() => {
+    if (!product?.image_url) return [];
+    return Array.isArray(product.image_url) ? product.image_url : [product.image_url];
+  }, [product]);
 
   useEffect(() => {
     if (id) {
@@ -28,350 +32,223 @@ const ProductDetailPage = () => {
     }
   }, [id, dispatch]);
 
-  // Obtener todas las variantes activas
-  const activeVariants = useMemo(() => {
-    if (!product?.ProductVariants) return [];
-    return product.ProductVariants.filter(variant => 
-      variant.status === 'active' && variant.stock > 0
-    );
+  // Agrupar y deduplicar opciones por tipo
+  const optionsByType = useMemo(() => {
+    if (!product?.ProductVariants) return {};
+    
+    return product.ProductVariants.reduce((acc, variant) => {
+      variant.ProductOptions.forEach(option => {
+        if (!acc[option.type]) {
+          acc[option.type] = new Map();
+        }
+        acc[option.type].set(option.id, option);
+      });
+      return acc;
+    }, {});
   }, [product]);
 
-  // Organizar las opciones disponibles
-  const { availableColors, availableSizes, optionsByColor, optionsBySize } = useMemo(() => {
-    const colorMap = new Map();
-    const sizeMap = new Map();
-    const byColor = new Map();
-    const bySize = new Map();
+  // Convertir Map a Array para renderizado
+  const uniqueOptionsByType = useMemo(() => {
+    return Object.entries(optionsByType).reduce((acc, [type, optionsMap]) => {
+      acc[type] = Array.from(optionsMap.values());
+      return acc;
+    }, {});
+  }, [optionsByType]);
 
-    activeVariants.forEach(variant => {
-      const colorOption = variant.ProductOptions.find(opt => opt.type === 'color');
-      const sizeOption = variant.ProductOptions.find(opt => opt.type === 'size');
+  // Actualizar variante seleccionada cuando cambian las opciones
+  useEffect(() => {
+    if (!product?.ProductVariants) return;
 
-      if (colorOption && sizeOption) {
-        colorMap.set(colorOption.id, colorOption);
-        sizeMap.set(sizeOption.id, sizeOption);
-
-        if (!byColor.has(colorOption.id)) {
-          byColor.set(colorOption.id, new Set());
-        }
-        byColor.get(colorOption.id).add(sizeOption.id);
-
-        if (!bySize.has(sizeOption.id)) {
-          bySize.set(sizeOption.id, new Set());
-        }
-        bySize.get(sizeOption.id).add(colorOption.id);
-      }
+    const variant = product.ProductVariants.find(v => {
+      return v.ProductOptions.every(opt => 
+        selectedOptions[opt.type] === opt.id
+      );
     });
 
-    return {
-      availableColors: Array.from(colorMap.values()),
-      availableSizes: Array.from(sizeMap.values()),
-      optionsByColor: byColor,
-      optionsBySize: bySize
-    };
-  }, [activeVariants]);
+    setSelectedVariant(variant || null);
+  }, [selectedOptions, product]);
 
-  // Encontrar la variante correspondiente a las opciones seleccionadas
+  // Preseleccionar primera opción de cada tipo
   useEffect(() => {
-    if (selectedColor && selectedSize) {
-      const variant = activeVariants.find(v => 
-        v.ProductOptions.some(opt => opt.id === selectedColor) &&
-        v.ProductOptions.some(opt => opt.id === selectedSize)
-      );
-      setSelectedVariant(variant || null);
-    } else {
-      setSelectedVariant(null);
-    }
-  }, [selectedColor, selectedSize, activeVariants]);
-
-  // Preseleccionar la primera variante disponible
-  useEffect(() => {
-    if (availableColors.length && !selectedColor) {
-      const firstColor = availableColors[0];
-      setSelectedColor(firstColor.id);
-      
-      if (optionsByColor.get(firstColor.id)) {
-        const availableSizesForColor = optionsByColor.get(firstColor.id);
-        const firstAvailableSize = availableSizes.find(size => 
-          availableSizesForColor.has(size.id)
-        );
-        if (firstAvailableSize) {
-          setSelectedSize(firstAvailableSize.id);
+    if (Object.keys(uniqueOptionsByType).length > 0) {
+      const initialSelections = {};
+      Object.entries(uniqueOptionsByType).forEach(([type, options]) => {
+        if (options.length > 0) {
+          initialSelections[type] = options[0].id;
         }
-      }
+      });
+      setSelectedOptions(initialSelections);
     }
-  }, [availableColors, optionsByColor, availableSizes, selectedColor]);
+  }, [uniqueOptionsByType]);
 
-  const handleVariantSelect = (variant) => {
-    if (!variant) return;
-
-    const colorOption = variant.ProductOptions.find(opt => opt.type === 'color');
-    const sizeOption = variant.ProductOptions.find(opt => opt.type === 'size');
-
-    // Actualizamos ambos estados a la vez
-    setSelectedColor(colorOption?.id || null);
-    setSelectedSize(sizeOption?.id || null);
-  };
-
-  const handleColorSelect = (colorId) => {
-    setSelectedColor(colorId);
-    const availableSizesForColor = optionsByColor.get(colorId);
-    if (!availableSizesForColor?.has(selectedSize)) {
-      const firstAvailableSize = availableSizes.find(size => 
-        availableSizesForColor.has(size.id)
-      );
-      setSelectedSize(firstAvailableSize?.id || null);
-    }
-  };
-
-  const handleSizeSelect = (sizeId) => {
-    setSelectedSize(sizeId);
-    const availableColorsForSize = optionsBySize.get(sizeId);
-    if (!availableColorsForSize?.has(selectedColor)) {
-      const firstAvailableColor = availableColors.find(color => 
-        availableColorsForSize.has(color.id)
-      );
-      setSelectedColor(firstAvailableColor?.id || null);
-    }
+  const handleOptionSelect = (type, optionId) => {
+    setSelectedOptions(prev => ({
+      ...prev,
+      [type]: optionId
+    }));
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin" />
+    </div>;
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-red-600">Error al cargar el producto: {error}</div>
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600">No se encontró el producto</div>
-      </div>
-    );
+  if (error || !product) {
+    return <div className="min-h-screen flex items-center justify-center text-gray-600">
+      {error || 'Producto no encontrado'}
+    </div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Imagen del producto */}
-          <div className="relative group">
-            <div className="aspect-square overflow-hidden rounded-xl bg-gray-100">
-              <img
-                src={selectedVariant?.image_url || activeVariants[0]?.image_url}
-                alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
+    <div className="min-h-screen bg-white py-8 px-4">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Sección de imágenes con layout ajustado */}
+        <div className="relative">
+          {/* Contenedor principal de imágenes con flex */}
+          <div className="flex gap-4">
+            {/* Miniaturas verticales con altura máxima y scroll */}
+            <div className="flex flex-col gap-2 max-h-[500px] overflow-y-auto">
+              {images.map((img, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImageIndex(index)}
+                  className={`w-16 h-16 flex-shrink-0 border-2 rounded overflow-hidden transition-colors ${
+                    selectedImageIndex === index 
+                      ? 'border-black' 
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <img
+                    src={img}
+                    alt={`${product.name} - vista ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
             </div>
-            <button 
-              onClick={() => {
-                if (!currentUser) {
-                  toast.error('Debes iniciar sesión para agregar favoritos');
-                  return;
-                }
-                if (isFavorite) {
-                  dispatch(removeFromFavorites(currentUser.id, product.id));
-                } else {
-                  dispatch(addToFavorites(currentUser.id, product.id));
-                }
-              }}
-              className="absolute top-4 left-4 p-3 bg-white/80 rounded-full hover:bg-white transition-colors shadow-sm"
-            >
-              <Heart 
-                className={`h-6 w-6 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} 
-              />
-            </button>
-            {selectedVariant?.stock < 5 && selectedVariant?.stock > 0 && (
-              <Badge variant="destructive" className="absolute top-4 right-4">
-                ¡Últimas {selectedVariant.stock} unidades!
-              </Badge>
-            )}
+
+            {/* Imagen principal con tamaño fijo */}
+            <div className="relative flex-1">
+              <div className="aspect-square w-full">
+                <img
+                  src={images[selectedImageIndex]}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+                <button 
+                  onClick={() => {
+                    if (!currentUser) {
+                      toast.error('Debes iniciar sesión para agregar favoritos');
+                      return;
+                    }
+                    if (isFavorite) {
+                      dispatch(removeFromFavorites(currentUser.id, product.id));
+                    } else {
+                      dispatch(addToFavorites(currentUser.id, product.id));
+                    }
+                  }}
+                  className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-sm"
+                >
+                  <Heart className={`h-5 w-5 ${isFavorite ? 'fill-black' : ''}`} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Información del producto */}
+        <div className="flex flex-col space-y-6">
+          <div>
+            <h1 className="text-2xl font-semibold mb-2">{product.name}</h1>
+            <p className="text-xl font-medium">${Number(product.price).toLocaleString()}</p>
           </div>
 
-          {/* Información del producto */}
+          <div className="prose prose-sm">
+            <p className="whitespace-pre-line">{product.description}</p>
+          </div>
+
+          {/* Selectores de opciones */}
           <div className="space-y-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <h1 className="text-3xl font-bold">{product.name}</h1>
-                <div className="mt-2">
-                  {selectedVariant && selectedVariant.discountPrice && 
-                  new Date(selectedVariant.discountStart) <= new Date() && 
-                  new Date(selectedVariant.discountEnd) >= new Date() ? (
-                    <div className="flex items-center gap-2">
-                      <p className="text-xl font-semibold text-red-600">
-                        ${selectedVariant.discountPrice}
-                      </p>
-                      <p className="text-lg text-gray-500 line-through">
-                        ${selectedVariant.price}
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-xl font-semibold">${selectedVariant?.price}</p>
+            {Object.entries(uniqueOptionsByType).map(([type, options]) => (
+              <div key={type}>
+                <div className="flex justify-between items-baseline mb-2">
+                  <label className="text-sm font-medium capitalize">{type}</label>
+                  {options.find(opt => opt.id === selectedOptions[type])?.price > 0 && (
+                    <span className="text-sm text-gray-500">
+                      +${Number(options.find(opt => opt.id === selectedOptions[type])?.price).toLocaleString()}
+                    </span>
                   )}
                 </div>
+                <div className="flex flex-wrap gap-2">
+                  {options.map(option => (
+                    <div key={option.id} className="relative">
+                      <button
+                        onClick={() => handleOptionSelect(type, option.id)}
+                        onMouseEnter={() => option.type === 'badge' && setHoveredBadge(option)}
+                        onMouseLeave={() => setHoveredBadge(null)}
+                        className={`px-4 py-2 text-sm rounded-full transition-colors flex items-center gap-2 ${
+                          selectedOptions[type] === option.id
+                            ? 'bg-black text-white'
+                            : 'bg-gray-100 hover:bg-gray-200'
+                        }`}
+                      >
+                        {option.type === 'badge' && option.image_url && (
+                          <img 
+                            src={option.image_url} 
+                            alt={option.name}
+                            className="w-6 h-6 object-cover rounded-full"
+                          />
+                        )}
+                        {option.name}
+                      </button>
+                      
+                      {/* Preview ampliada al hacer hover */}
+                      {hoveredBadge?.id === option.id && option.type === 'badge' && option.image_url && (
+                        <div className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg p-2">
+                          <img 
+                            src={option.image_url} 
+                            alt={option.name}
+                            className="w-32 h-32 object-cover rounded-lg"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              {/* Badges de descuentos en otras variantes */}
-              <div className="flex flex-col gap-2">
-                {activeVariants.map(variant => {
-                  if (variant.id === selectedVariant?.id) return null;
-                  if (!variant.discountPrice) return null;
-                  
-                  const currentDate = new Date();
-                  const discountStart = new Date(variant.discountStart);
-                  const discountEnd = new Date(variant.discountEnd);
-                  if (currentDate < discountStart || currentDate > discountEnd) return null;
-
-                  const colorOption = variant.ProductOptions.find(opt => opt.type === 'color');
-                  const sizeOption = variant.ProductOptions.find(opt => opt.type === 'size');
-                  const discount = Math.round(((variant.price - variant.discountPrice) / variant.price) * 100);
-
-                  return (
-                    <Badge
-                      key={variant.id}
-                      variant="outline"
-                      className="bg-red-50 border-red-200 whitespace-nowrap cursor-pointer hover:bg-red-100"
-                      onClick={() => handleVariantSelect(variant)}
-                    >
-                      <span className="text-red-600">
-                        {colorOption?.name} - {sizeOption?.value} • {discount}% OFF
-                      </span>
-                    </Badge>
-                  );
-                })}
-              </div>
-            </div>
-
-            <p className="text-gray-600">{product.description}</p>
-
-            {/* Selector de Color */}
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Color</label>
-              <div className="flex gap-2">
-                {availableColors.map(color => {
-                  const isAvailable = !selectedSize || optionsBySize.get(selectedSize)?.has(color.id);
-                  return (
-                    <button
-                      key={color.id}
-                      onClick={() => isAvailable && handleColorSelect(color.id)}
-                      className={`w-8 h-8 rounded-full border-2 transition-all duration-200 ${
-                        selectedColor === color.id 
-                          ? 'border-black ring-2 ring-black ring-offset-2' 
-                          : 'border-transparent'
-                      } ${
-                        !isAvailable 
-                          ? 'opacity-30 cursor-not-allowed' 
-                          : 'hover:border-gray-400'
-                      }`}
-                      style={{ backgroundColor: color.value }}
-                      title={color.name}
-                      disabled={!isAvailable}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Selector de Talla */}
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Talla</label>
-              <div className="flex gap-2">
-                {availableSizes.map(size => {
-                  const isAvailable = !selectedColor || optionsByColor.get(selectedColor)?.has(size.id);
-                  return (
-                    <button
-                      key={size.id}
-                      onClick={() => isAvailable && handleSizeSelect(size.id)}
-                      className={`px-3 py-2 border rounded-md transition-all duration-200 ${
-                        selectedSize === size.id 
-                          ? 'border-black bg-black text-white' 
-                          : 'border-gray-300'
-                      } ${
-                        !isAvailable 
-                          ? 'opacity-30 cursor-not-allowed' 
-                          : 'hover:border-gray-400'
-                      }`}
-                      disabled={!isAvailable}
-                    >
-                      {size.value}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Card>
-                <CardContent className="flex items-center gap-2 p-4">
-                  <Package className="h-5 w-5 text-gray-500" />
-                  <div>
-                    <p className="text-sm text-gray-500">Marca</p>
-                    <p className="font-medium">{product.brand}</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="flex items-center gap-2 p-4">
-                  <Tag className="h-5 w-5 text-gray-500" />
-                  <div>
-                    <p className="text-sm text-gray-500">Tags</p>
-                    <p className="font-medium">
-                      {product.Tags.map(tag => tag.name).join(', ')}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <button
-              onClick={() => {
-                if (!selectedVariant) {
-                  toast.error('Por favor selecciona color y talla');
-                  return;
-                }
-                if (selectedVariant.stock === 0) {
-                  toast.error('Producto sin stock disponible');
-                  return;
-                }
-                // ... continuación del return anterior
-
-                dispatch(addToCart({
-                  ...selectedVariant,
-                  productName: product.name,
-                  productId: product.id
-                }));
-                toast.success('¡Producto agregado al carrito!', {
-                  position: "bottom-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  style: { background: '#4B5563', color: 'white' }
-                });
-              }}
-              disabled={!selectedVariant || selectedVariant.stock === 0}
-              className={`w-full py-4 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors ${
-                !selectedVariant || selectedVariant.stock === 0
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-black hover:bg-gray-800 text-white'
-              }`}
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {selectedVariant?.stock === 0 ? 'Sin stock' : 'Agregar al carrito'}
-            </button>
+            ))}
           </div>
+
+          {/* Botón de compra */}
+          <button
+            onClick={() => {
+              if (!selectedVariant) return;
+              
+              const cartItem = {
+                ...selectedVariant,
+                productName: product.name,
+                productId: product.id,
+                selectedOptions: Object.entries(selectedOptions).map(([type, optionId]) => ({
+                  type,
+                  name: uniqueOptionsByType[type].find(opt => opt.id === optionId).name,
+                  price: uniqueOptionsByType[type].find(opt => opt.id === optionId).price,
+                  image: uniqueOptionsByType[type].find(opt => opt.id === optionId).image
+                })),
+                finalPrice: selectedVariant.price
+              };
+
+              dispatch(addToCart(cartItem));
+              toast.success('¡Agregado al carrito!');
+            }}
+            disabled={!selectedVariant}
+            className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
+              selectedVariant ? 'bg-black text-white hover:bg-gray-900' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            <ShoppingCart className="h-4 w-4" />
+            {selectedVariant ? `Agregar - $${Number(selectedVariant.price).toLocaleString()}` : 'Selecciona las opciones'}
+          </button>
         </div>
       </div>
     </div>
