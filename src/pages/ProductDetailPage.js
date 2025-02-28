@@ -19,6 +19,7 @@ const ProductDetailPage = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [hoveredBadge, setHoveredBadge] = useState(null);
+  const [customText, setCustomText] = useState("");
 
   // Normalizar el array de imágenes
   const images = useMemo(() => {
@@ -55,6 +56,48 @@ const ProductDetailPage = () => {
     }, {});
   }, [optionsByType]);
 
+  // Traducir tipos de opciones
+  const getTranslatedType = (type) => {
+    const translations = {
+      size: 'Talle',
+      badge: 'Parche',
+      customize: 'Dorsal'
+    };
+    return translations[type] || type;
+  };
+
+  // Ordenar talles correctamente
+  const sortSizes = (sizes) => {
+    const sizeOrder = ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'];
+    const kidSizeOrder = ['2', '4', '6', '8', '10', '12', '14', '16'];
+    
+    return [...sizes].sort((a, b) => {
+      // Primero verificamos si son talles de adultos
+      const aAdultIndex = sizeOrder.indexOf(a.name);
+      const bAdultIndex = sizeOrder.indexOf(b.name);
+      
+      // Si ambos son talles de adultos, ordenamos por la lista sizeOrder
+      if (aAdultIndex !== -1 && bAdultIndex !== -1) {
+        return aAdultIndex - bAdultIndex;
+      }
+      
+      // Si solo uno es talle de adulto, este va después del talle de niño
+      if (aAdultIndex !== -1) return 1;
+      if (bAdultIndex !== -1) return -1;
+      
+      // Si llegamos aquí, asumimos que son talles de niños
+      const aKidIndex = kidSizeOrder.indexOf(a.name);
+      const bKidIndex = kidSizeOrder.indexOf(b.name);
+      
+      if (aKidIndex !== -1 && bKidIndex !== -1) {
+        return aKidIndex - bKidIndex;
+      }
+      
+      // Si no podemos determinar el orden, mantenemos el orden original
+      return 0;
+    });
+  };
+
   // Actualizar variante seleccionada cuando cambian las opciones
   useEffect(() => {
     if (!product?.ProductVariants) return;
@@ -72,11 +115,20 @@ const ProductDetailPage = () => {
   useEffect(() => {
     if (Object.keys(uniqueOptionsByType).length > 0) {
       const initialSelections = {};
-      Object.entries(uniqueOptionsByType).forEach(([type, options]) => {
-        if (options.length > 0) {
+      
+      // Definir el orden de selección de opciones (primero size, luego badge, luego customize)
+      const typeOrder = ['size', 'badge', 'customize'];
+      
+      typeOrder.forEach(type => {
+        if (uniqueOptionsByType[type]?.length > 0) {
+          const options = type === 'size' 
+            ? sortSizes(uniqueOptionsByType[type])
+            : uniqueOptionsByType[type];
+            
           initialSelections[type] = options[0].id;
         }
       });
+      
       setSelectedOptions(initialSelections);
     }
   }, [uniqueOptionsByType]);
@@ -87,6 +139,21 @@ const ProductDetailPage = () => {
       [type]: optionId
     }));
   };
+
+  // Determinar qué tipos de opciones mostrar (solo aquellos con más de una opción)
+  const typesToShow = useMemo(() => {
+    return Object.entries(uniqueOptionsByType)
+      .filter(([_, options]) => options.length > 1)
+      .map(([type]) => type);
+  }, [uniqueOptionsByType]);
+
+  // Ordenar los tipos según el orden requerido
+  const orderedTypes = useMemo(() => {
+    const typeOrder = ['size', 'badge', 'customize'];
+    return typesToShow.sort((a, b) => {
+      return typeOrder.indexOf(a) - typeOrder.indexOf(b);
+    });
+  }, [typesToShow]);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">
@@ -122,7 +189,7 @@ const ProductDetailPage = () => {
                   <img
                     src={img}
                     alt={`${product.name} - vista ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </button>
               ))}
@@ -134,7 +201,7 @@ const ProductDetailPage = () => {
                 <img
                   src={images[selectedImageIndex]}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
                 <button 
                   onClick={() => {
@@ -168,56 +235,75 @@ const ProductDetailPage = () => {
             <p className="whitespace-pre-line">{product.description}</p>
           </div>
 
-          {/* Selectores de opciones */}
+          {/* Selectores de opciones (solo mostrando los que tienen más de una opción) */}
           <div className="space-y-6">
-            {Object.entries(uniqueOptionsByType).map(([type, options]) => (
-              <div key={type}>
-                <div className="flex justify-between items-baseline mb-2">
-                  <label className="text-sm font-medium capitalize">{type}</label>
-                  {options.find(opt => opt.id === selectedOptions[type])?.price > 0 && (
-                    <span className="text-sm text-gray-500">
-                      +${Number(options.find(opt => opt.id === selectedOptions[type])?.price).toLocaleString()}
-                    </span>
+            {orderedTypes.map(type => {
+              const options = type === 'size' 
+                ? sortSizes(uniqueOptionsByType[type]) 
+                : uniqueOptionsByType[type];
+              
+              return (
+                <div key={type}>
+                  <div className="flex justify-between items-baseline mb-2">
+                    <label className="text-sm font-medium capitalize">{getTranslatedType(type)}</label>
+                    {options.find(opt => opt.id === selectedOptions[type])?.price > 0 && (
+                      <span className="text-sm text-gray-500">
+                        +${Number(options.find(opt => opt.id === selectedOptions[type])?.price).toLocaleString()}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {options.map(option => (
+                      <div key={option.id} className="relative">
+                        <button
+                          onClick={() => handleOptionSelect(type, option.id)}
+                          onMouseEnter={() => type === 'badge' && setHoveredBadge(option)}
+                          onMouseLeave={() => setHoveredBadge(null)}
+                          className={`px-4 py-2 text-sm rounded-full transition-colors flex items-center gap-2 ${
+                            selectedOptions[type] === option.id
+                              ? 'bg-black text-white'
+                              : 'bg-gray-100 hover:bg-gray-200'
+                          }`}
+                        >
+                          {type === 'badge' && option.image_url && (
+                            <img 
+                              src={option.image_url} 
+                              alt={option.name}
+                              className="w-6 h-6 object-contain rounded-full"
+                            />
+                          )}
+                          {option.name}
+                        </button>
+                        
+                        {/* Preview ampliada al hacer hover */}
+                        {hoveredBadge?.id === option.id && type === 'badge' && option.image_url && (
+                          <div className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg p-2">
+                            <img 
+                              src={option.image_url} 
+                              alt={option.name}
+                              className="w-32 h-32 object-contain rounded-lg"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Campo de texto para customización */}
+                  {type === 'customize' && (
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        value={customText}
+                        onChange={(e) => setCustomText(e.target.value)}
+                        placeholder="Ejemplo: #10 Messi"
+                        className="w-full px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {options.map(option => (
-                    <div key={option.id} className="relative">
-                      <button
-                        onClick={() => handleOptionSelect(type, option.id)}
-                        onMouseEnter={() => option.type === 'badge' && setHoveredBadge(option)}
-                        onMouseLeave={() => setHoveredBadge(null)}
-                        className={`px-4 py-2 text-sm rounded-full transition-colors flex items-center gap-2 ${
-                          selectedOptions[type] === option.id
-                            ? 'bg-black text-white'
-                            : 'bg-gray-100 hover:bg-gray-200'
-                        }`}
-                      >
-                        {option.type === 'badge' && option.image_url && (
-                          <img 
-                            src={option.image_url} 
-                            alt={option.name}
-                            className="w-6 h-6 object-cover rounded-full"
-                          />
-                        )}
-                        {option.name}
-                      </button>
-                      
-                      {/* Preview ampliada al hacer hover */}
-                      {hoveredBadge?.id === option.id && option.type === 'badge' && option.image_url && (
-                        <div className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg p-2">
-                          <img 
-                            src={option.image_url} 
-                            alt={option.name}
-                            className="w-32 h-32 object-cover rounded-lg"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Botón de compra */}
@@ -235,6 +321,7 @@ const ProductDetailPage = () => {
                   price: uniqueOptionsByType[type].find(opt => opt.id === optionId).price,
                   image: uniqueOptionsByType[type].find(opt => opt.id === optionId).image
                 })),
+                customText: orderedTypes.includes('customize') ? customText : null,
                 finalPrice: selectedVariant.price
               };
 

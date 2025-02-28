@@ -71,7 +71,7 @@ const ListView = ({ products }) => {
                   <img
                     src={product.image_url[0]}
                     alt={product.name}
-                    className="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-200"
+                    className="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-200"
                   />
                 </Link>
                 {/* {priceInfo?.hasDiscount && (

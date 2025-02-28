@@ -22,6 +22,9 @@ module.exports = sequelize;
 
 // psql -U postgres > Emailer: FAN5743FNP4AXV6S7GYVQ73N
 // TODO Pendientes:
+// Crear versionado sin user-login, sin carrito, only catalogo con mensaje a wsp con la info cargada. Cambiar logo, colores, nombre. Crear apartado FAQ, about us, etc. 
+// Revisar todo, cargar all products y subir a prod
+
 
 // Fixs:
 // prod img se traspapelan con las de las badges
