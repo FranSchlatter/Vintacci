@@ -1,10 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveFilters } from '../../../redux/actions/filterActions';
-import PriceRange from './PriceRange';
 import CategoryFilter from './CategoryFilter';
 import TagFilter from './TagFilter';
-import VariantOptionsFilter from './VariantOptionsFilter';
 import ActiveFilters from './ActiveFilters';
 import SearchBar from './SearchBar';
 
@@ -45,7 +43,6 @@ const Filters = () => {
 
       {/* Secciones de filtros */}
       <div className="space-y-6">
-        <PriceRange />
         
         <CategoryFilter 
           categories={categories}
@@ -57,7 +54,6 @@ const Filters = () => {
           activeTags={activeFilters.tags || []}
         />
 
-        <VariantOptionsFilter />
       </div>
     </div>
   );

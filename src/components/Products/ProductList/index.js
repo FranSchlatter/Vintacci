@@ -17,44 +17,8 @@ const ProductList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage] = useState(12);
 
-    console.log(allProducts)
-
-    // Procesamos los productos para tener una versión simplificada con el precio más bajo
-        const processedProducts = allProducts
-    //     const processedProducts = useMemo(() => {
-    //     if (!allProducts?.length) return [];
-
-    //     return allProducts.map(product => {
-    //         // Encontrar las variantes activas
-    //         const activeVariants = product.ProductVariants.filter(variant => 
-    //             variant.status === 'active' && variant.stock > 0
-    //         );
-
-    //         if (activeVariants.length === 0) return null;
-
-    //         const lowestPriceVariant = activeVariants.reduce((prev, current) => {
-    //             const prevPrice = Number(prev.discountPrice || prev.price);
-    //             const currentPrice = Number(current.discountPrice || current.price);
-    //             return prevPrice < currentPrice ? prev : current;
-    //         });
-
-    //         const highestPriceVariant = activeVariants.reduce((prev, current) => {
-    //             const prevPrice = Number(prev.discountPrice || prev.price);
-    //             const currentPrice = Number(current.discountPrice || current.price);
-    //             return prevPrice > currentPrice ? prev : current;
-    //         });
-
-    //         return {
-    //             ...product,
-    //             minPrice: Number(lowestPriceVariant.discountPrice || lowestPriceVariant.price),
-    //             maxPrice: Number(highestPriceVariant.discountPrice || highestPriceVariant.price),
-    //             image_url: lowestPriceVariant.image_url,
-    //             stock: activeVariants.reduce((sum, variant) => sum + variant.stock, 0),
-    //             activeVariants
-    //         };
-    //     }).filter(Boolean);
-    // }, [allProducts]);
-
+    const processedProducts = allProducts
+    
     // Aplicar filtros a los productos
     const filteredProducts = useMemo(() => {
         if (!processedProducts?.length) return [];
@@ -78,10 +42,26 @@ const ProductList = () => {
 
             // Filtro por tags
             if (activeFilters.tags?.length > 0) {
-                const productTagIds = product?.AssociatedToTag?.map(tag => tag.id);
-                if (!activeFilters.tags.some(tagId => productTagIds.includes(tagId))) {
-                    return false;
-                }
+                const tagsByType = {};
+                product.AssociatedToTag?.forEach(tag => {
+                    if (!tagsByType[tag.type]) tagsByType[tag.type] = [];
+                    tagsByType[tag.type].push(tag.id);
+                });
+
+                const selectedTagsByType = {};
+                activeFilters.tags.forEach(tagId => {
+                    const tag = allProducts.flatMap(p => p.AssociatedToTag).find(t => t.id === tagId);
+                    if (tag) {
+                        if (!selectedTagsByType[tag.type]) selectedTagsByType[tag.type] = [];
+                        selectedTagsByType[tag.type].push(tagId);
+                    }
+                });
+
+                const allTypesMatch = Object.keys(selectedTagsByType).every(type =>
+                    selectedTagsByType[type].some(tagId => tagsByType[type]?.includes(tagId))
+                );
+
+                if (!allTypesMatch) return false;
             }
 
             // Filtro por rango de precio
@@ -116,7 +96,7 @@ const ProductList = () => {
 
             return true;
         });
-    }, [processedProducts, activeFilters]);
+    }, [allProducts, processedProducts, activeFilters]);
 
     // Ordenar productos
     const sortedProducts = useMemo(() => {
