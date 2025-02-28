@@ -64,22 +64,21 @@ const ProductList = () => {
             if (activeFilters.search) {
                 const searchTerm = activeFilters.search.toLowerCase();
                 const searchMatch = 
-                    product.name.toLowerCase().includes(searchTerm) ||
-                    product.description.toLowerCase().includes(searchTerm) ||
-                    product.brand.toLowerCase().includes(searchTerm);
+                    product.name.toLowerCase().includes(searchTerm)
                 if (!searchMatch) return false;
             }
 
-            // Filtro por categoría
+            // Filtro por category
             if (activeFilters.category?.length > 0) {
-                if (!activeFilters.category.includes(product.categoryId)) {
+                const productCategoryIds = product?.AssociatedToCat?.map(category => category.id);
+                if (!activeFilters.category.some(categoryId => productCategoryIds.includes(categoryId))) {
                     return false;
                 }
             }
 
             // Filtro por tags
             if (activeFilters.tags?.length > 0) {
-                const productTagIds = product.Tags.map(tag => tag.id);
+                const productTagIds = product?.AssociatedToTag?.map(tag => tag.id);
                 if (!activeFilters.tags.some(tagId => productTagIds.includes(tagId))) {
                     return false;
                 }
