@@ -106,9 +106,9 @@ const ProductList = () => {
         
         switch (sortBy) {
             case 'price-low':
-                return sorted.sort((a, b) => a.minPrice - b.minPrice);
+                return sorted.sort((a, b) => a.price - b.price);
             case 'price-high':
-                return sorted.sort((a, b) => b.maxPrice - a.maxPrice);
+                return sorted.sort((a, b) => b.price - a.price);
             case 'newest':
                 return sorted.sort((a, b) => {
                     const dateA = new Date(a.createdAt);
