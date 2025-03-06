@@ -44,7 +44,7 @@ const TagFilter = ({ tags, activeTags }) => {
         let selecciones = {};
     
         // Orden predefinido para clubes y selecciones
-        const CLUB_ORDER = ["Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "MLS", "Primera División", "Chile Primera División", "Liga MX", "Otros"];
+        const CLUB_ORDER = ["Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Primera División", 'Eredivise', 'Primeira Liga', "MLS", "Chile Primera División", "Liga MX", "Otros"];
         const NATIONAL_ORDER = ["Euro", "Copa America", "Otras"];
     
         filteredTags.forEach(tag => {
@@ -110,7 +110,7 @@ const TagFilter = ({ tags, activeTags }) => {
                 />
             </div>
             
-            <FilterSection title="Equipo" defaultExpanded={true}>
+            <FilterSection title="Equipo" defaultExpanded={false}>
                 <FilterSection title="Clubes" defaultExpanded={false}>
                     {Object.entries(groupedTeams.clubes).map(([league, teams]) => (
                         <FilterSection key={league} title={league} defaultExpanded={false}>

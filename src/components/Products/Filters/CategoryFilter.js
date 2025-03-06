@@ -22,7 +22,16 @@ const CategoryFilter = ({ categories, activeCategories }) => {
   const renderCategories = (categories, level = 0) => {
     return categories.map(category => (
       <div key={category.id}>
-        <div 
+        {!category.parent_id ? <div 
+          className={`flex items-center pl-${level * 4}`}
+        >
+          <label
+            htmlFor={`category-${category.id}`}
+            className="ml-2 text-sm text-gray-600 hover:text-gray-900"
+          >
+            {category.name}
+          </label>
+        </div> : <div 
           className={`flex items-center pl-${level * 4}`}
         >
           <input
@@ -38,8 +47,8 @@ const CategoryFilter = ({ categories, activeCategories }) => {
           >
             {category.name}
           </label>
-        </div>
-        
+        </div>}
+
         {/* Renderizar subcategorías si existen */}
         {category.subcategories?.length > 0 && (
           <div className="ml-4 mt-1">

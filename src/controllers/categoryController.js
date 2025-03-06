@@ -8,7 +8,6 @@ const categoryController = {
                 include: [{
                     model: Category,
                     as: 'subcategories',
-                    include: ['subcategories'] // Para categorías anidadas
                 }],
                 where: {
                     parent_id: null // Solo categorías principales (con sus subs). Sino se repiten las subs.
@@ -28,7 +27,15 @@ const categoryController = {
                     model: Category,
                     as: 'subcategories',
                     attributes: ['name', 'description'],
-                    include: ['subcategories'] // Para categorías anidadas
+                    include: [{
+                        model: Category,
+                        as: 'subcategories',
+                        include: [{
+                            model: Category,
+                            as: 'subcategories'
+                            // Puedes seguir anidando si necesitas más niveles
+                        }]
+                    }]
                 }],
                 where: {
                     parent_id: null // Solo categorías principales (con sus subs). Sino se repiten las subs.
