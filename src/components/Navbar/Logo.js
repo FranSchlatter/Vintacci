@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Logo = () => (
   <Link to="/" className="font-bold text-vintage-accent">
-    Archivo Deportivo
+    AD
   </Link>
 );
 

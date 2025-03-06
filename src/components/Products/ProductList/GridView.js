@@ -1,9 +1,10 @@
 import React from 'react';
-import { Heart, ShoppingCart } from 'lucide-react';
+// import { Heart, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addToCart } from '../../../redux/actions/cartActions';
-import { addToFavorites } from '../../../redux/actions/favoriteActions';
+// import { addToFavorites } from '../../../redux/actions/favoriteActions';
 
 const GridView = ({ products }) => {
   const dispatch = useDispatch();
@@ -39,13 +40,13 @@ const GridView = ({ products }) => {
 
               {/* Botones de acción rápida */}
               <div className="absolute top-2 right-2 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <button
+                {/* <button
                   onClick={() => dispatch(addToFavorites(product))}
                   className="p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors"
                   title="Agregar a favoritos"
                 >
                   <Heart className="h-5 w-5 text-gray-600" />
-                </button>
+                </button> */}
                 <button
                   onClick={() => dispatch(addToCart({ product, variant: mainVariant, quantity: 1 }))}
                   className="p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors"

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Heart } from 'lucide-react';
+// import { Heart } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addToCart } from '../../../redux/actions/cartActions';
-import { addToFavorites } from '../../../redux/actions/favoriteActions';
+// import { addToFavorites } from '../../../redux/actions/favoriteActions';
 
 const ListView = ({ products }) => {
   const dispatch = useDispatch();
@@ -97,13 +97,13 @@ const ListView = ({ products }) => {
                   </div>
 
                   <div className="flex gap-2">
-                    <button
+                    {/* <button
                       onClick={() => dispatch(addToFavorites(product))}
                       className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
                       title="Agregar a favoritos"
                     >
                       <Heart className="h-5 w-5 text-gray-600" />
-                    </button>
+                    </button> */}
                     <button
                       onClick={() => dispatch(addToCart({ product, variant: mainVariant, quantity: 1 }))}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"

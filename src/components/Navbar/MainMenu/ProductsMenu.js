@@ -76,7 +76,7 @@ const ProductsMenu = () => {
     return (
       <div className="relative">
         <button className="text-gray-700 hover:text-gray-900 font-medium">
-          Productos
+          Catálogo
         </button>
       </div>
     );
@@ -89,7 +89,7 @@ const ProductsMenu = () => {
       onMouseLeave={() => setIsOpen(false)}
     >
       <button className="text-gray-700 hover:text-gray-900 font-medium">
-        Productos
+        Catálogo 
       </button>
 
       {isOpen && (

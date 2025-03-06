@@ -75,14 +75,14 @@ const ContactPage = () => {
   };
 
   const contactInfo = [
-    { icon: <Mail size={24} />, title: 'Email', details: ['info@archivodepordivo.com', 'soporte@archivodeportivo.com'] },
-    { icon: <Phone size={24} />, title: 'Teléfono', details: ['+54 (11) 1234-5678'] },
-    { icon: <MessageCircle size={24} />, title: 'WhatsApp', details: ['+54 9 11 1234-5678'], isWhatsApp: true },
-    { icon: <Clock size={24} />, title: 'Horario de Atención', details: ['Lunes a Viernes: 9:00 - 20:00', 'Sábados: 10:00 - 15:00'] }
+    { icon: <Mail size={32} />, title: 'Email', details: ['info@archivodepordivo.com'] },
+    { icon: <Phone size={32} />, title: 'Teléfono', details: ['+5493424365585'] },
+    { icon: <MessageCircle size={32} />, title: 'WhatsApp', details: ['+5493424365585'], isWhatsApp: true },
+    { icon: <Clock size={32} />, title: 'Horario de Atención', details: ['Lunes a Viernes: 9:00 - 20:00'] }
   ];
 
   const socialMedia = [
-    { icon: <Instagram size={20} />, name: 'Instagram', url: 'https://instagram.com/archivodeportivo', color: 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500' },
+    { icon: <Instagram size={20} />, name: 'Instagram', url: 'https://www.instagram.com/archivo_deportivo/', color: 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500' },
     { icon: <Twitter size={20} />, name: 'Twitter', url: 'https://twitter.com/archivodeportivo', color: 'bg-blue-400' },
     { icon: <Facebook size={20} />, name: 'Facebook', url: 'https://facebook.com/archivodeportivo', color: 'bg-blue-600' }
   ];
@@ -171,11 +171,23 @@ const ContactPage = () => {
               
               {/* Map placeholder */}
               <div className="rounded-lg overflow-hidden shadow-xl h-64 mb-6">
-                <img 
-                  src="/api/placeholder/400/300" 
-                  alt="Ubicación en mapa" 
-                  className="w-full h-full object-cover"
-                />
+                {/* Google Maps Embed */}
+                <div className="rounded-lg overflow-hidden shadow-xl h-64 mb-6">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1698.1631913916247!2d-60.71065152121207!3d-31.652289189779022!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b5a9a60234c3e3%3A0xfcb880ed7653dd65!2sSan%20Jer%C3%B3nimo%20S%2FN!5e0!3m2!1ses!2sar!4v1741285097649!5m2!1ses!2sar"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Ubicación referencial"
+                  ></iframe>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Nota: Trabajamos únicamente de forma online. La ubicación es referencial.
+                </p>
+
               </div>
               <p className="text-sm text-gray-500">Nota: Trabajamos únicamente de forma online. La ubicación es referencial.</p>
             </div>
@@ -343,7 +355,7 @@ const ContactPage = () => {
           
           <div className="mt-10 inline-block">
             <a 
-              href="https://wa.me/5491112345678"
+              href="https://wa.me/5493424365585"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-500 text-white font-bold py-3 px-8 rounded-full hover:bg-green-600 transition-colors duration-300 shadow-xl hover:shadow-green-500/30 flex items-center justify-center space-x-2 mx-auto"

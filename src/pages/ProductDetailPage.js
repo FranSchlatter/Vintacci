@@ -3,17 +3,18 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/actions/cartActions';
 import { fetchProductById } from '../redux/actions/productActions';
-import { Heart, ShoppingCart } from 'lucide-react';
+// import { Heart, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { addToFavorites, removeFromFavorites } from '../redux/actions/favoriteActions';
+// import { addToFavorites, removeFromFavorites } from '../redux/actions/favoriteActions';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { currentProduct: product, loading, error } = useSelector((state) => state.products);
-  const currentUser = useSelector(state => state.auth.currentUser);
-  const favorites = useSelector(state => state.favorites.items);
-  const isFavorite = favorites.some(fav => fav.product_id === product?.id);
+  // const currentUser = useSelector(state => state.auth.currentUser);
+  // const favorites = useSelector(state => state.favorites.items);
+  // const isFavorite = favorites.some(fav => fav.product_id === product?.id);
 
   const [selectedOptions, setSelectedOptions] = useState({});
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -186,39 +187,42 @@ const ProductDetailPage = () => {
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <img
-                    src={img}
-                    alt={`${product.name} - vista ${index + 1}`}
-                    className="w-full h-full object-contain"
-                  />
+                  <div className="relative w-full h-full">
+                    <img
+                      src={img}
+                      alt={`${product.name} - vista ${index + 1}`}
+                      className="w-full h-full object-contain"
+                    />
+                    {/* Etiqueta para miniaturas */}
+                    {index > 0 && (
+                      <div className="absolute bottom-0 left-0 w-2/5 h-1/5 bg-white/95 backdrop-blur-sm rounded-tr-md shadow-sm flex items-center justify-center">
+                        <p className="text-[6px] font-medium text-gray-800">Importado</p>
+                      </div>
+                    )}
+                  </div>
                 </button>
               ))}
             </div>
 
             {/* Imagen principal con tamaño fijo */}
             <div className="relative flex-1">
-              <div className="aspect-square w-full">
+              <div className="aspect-square w-full relative overflow-hidden">
                 <img
                   src={images[selectedImageIndex]}
                   alt={product.name}
                   className="w-full h-full object-contain"
                 />
-                <button 
-                  onClick={() => {
-                    if (!currentUser) {
-                      toast.error('Debes iniciar sesión para agregar favoritos');
-                      return;
-                    }
-                    if (isFavorite) {
-                      dispatch(removeFromFavorites(currentUser.id, product.id));
-                    } else {
-                      dispatch(addToFavorites(currentUser.id, product.id));
-                    }
-                  }}
-                  className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-sm"
-                >
-                  <Heart className={`h-5 w-5 ${isFavorite ? 'fill-black' : ''}`} />
-                </button>
+                
+                {/* Etiqueta con texto estilizado para la imagen principal */}
+                {selectedImageIndex > 0 && (
+                  <div className="absolute bottom-0 left-0 w-2/5 h-1/5 flex items-center justify-start">
+                    <div className="px-4 py-2 bg-white/95 backdrop-blur-sm rounded-tr-lg shadow-sm w-full h-full flex flex-col justify-center">
+                      <p className="text-sm font-bold text-gray-800 leading-tight">Producto <span className="text-blue-600">IMPORTADO</span></p>
+                      <p className="text-xs font-medium text-gray-700 leading-tight">Calidad <span className="font-extrabold">ORIGINAL</span></p>
+                      <p className="text-xs italic text-gray-600 mt-0.5 leading-tight">Disponible por encargue</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

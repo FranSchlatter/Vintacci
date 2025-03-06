@@ -32,7 +32,7 @@ const HomePage = () => {
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isVisible]);
 
   const categories = [
     { name: 'Jugador', image: player_test },
@@ -147,7 +147,7 @@ const HomePage = () => {
       <section className="py-20 bg-gradient-to-r from-red-600 to-red-800 text-white text-center">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold mb-6">Encuentra Tu Camiseta Perfecta</h2>
-          <p className="text-xl max-w-2xl mx-auto mb-6">Productos premium, envíos a todo el país y la mejor atención.</p>
+          <p className="text-xl max-w-2xl mx-auto mb-8">Productos premium, envíos a todo el país y la mejor atención.</p>
           <Link to="/products" className="bg-white text-red-600 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-all duration-300">
             Ver Catálogo Completo
           </Link>
