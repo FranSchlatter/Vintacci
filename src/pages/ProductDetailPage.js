@@ -315,18 +315,29 @@ const ProductDetailPage = () => {
             onClick={() => {
               if (!selectedVariant) return;
               
-              const cartItem = {
-                ...selectedVariant,
-                productName: product.name,
-                productId: product.id,
-                selectedOptions: Object.entries(selectedOptions).map(([type, optionId]) => ({
+              // Encontramos las opciones seleccionadas con toda su información
+              const selectedOptionsWithDetails = Object.entries(selectedOptions).map(([type, optionId]) => {
+                const option = uniqueOptionsByType[type].find(opt => opt.id === optionId);
+                return {
                   type,
-                  name: uniqueOptionsByType[type].find(opt => opt.id === optionId).name,
-                  price: uniqueOptionsByType[type].find(opt => opt.id === optionId).price,
-                  image: uniqueOptionsByType[type].find(opt => opt.id === optionId).image
-                })),
+                  id: optionId,
+                  name: option.name,
+                  price: option.price,
+                };
+              });
+              
+              // Creamos el objeto para el carrito
+              const cartItem = {
+                id: selectedVariant.id,
+                productId: product.id,
+                name: product.name,
+                description: product.description,
+                image_url: product.image_url,
+                price: selectedVariant.price,
+                quantity: 1,
+                sku: selectedVariant.sku,
+                selectedOptions: selectedOptionsWithDetails,
                 customText: orderedTypes.includes('customize') ? customText : null,
-                finalPrice: selectedVariant.price
               };
 
               dispatch(addToCart(cartItem));
