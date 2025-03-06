@@ -36,12 +36,12 @@ const generateProductCode = async (prefix = 'PROD', transaction) => {
     });
 
     if (!lastProduct) {
-        return `${prefix}001`;
+        return `${prefix}000001`;
     }
 
     const lastNumber = parseInt(lastProduct.productCode.replace(prefix, ''));
     const nextNumber = lastNumber + 1;
-    return `${prefix}${nextNumber.toString().padStart(3, '0')}`;
+    return `${prefix}${nextNumber.toString().padStart(6, '0')}`;
 };
 
 // Función recursiva para procesar categorías y subcategorías
