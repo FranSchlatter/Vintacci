@@ -15,49 +15,10 @@ const ListView = ({ products }) => {
     }).format(price);
   };
 
-  const getProductPriceRange = (product) => {
-    const activeVariants = product.ProductVariants.filter(v => 
-      v.status === 'active' && v.stock > 0
-    );
-  
-    if (!activeVariants.length) return null;
-  
-    const prices = activeVariants.map(variant => {
-      const currentDate = new Date();
-      const hasValidDiscount = variant.discountPrice && 
-        new Date(variant.discountStart) <= currentDate &&
-        new Date(variant.discountEnd) >= currentDate;
-  
-      return hasValidDiscount ? Number(variant.discountPrice) : Number(variant.price);
-    });
-  
-    return {
-      min: Math.min(...prices),
-      max: Math.max(...prices),
-      hasMultiplePrices: Math.min(...prices) !== Math.max(...prices)
-    };
-  };
-
-  const getDisplayPrice = (product) => {
-    const mainVariant = product.ProductVariants[0];
-    if (!mainVariant) return null;
-
-    const hasValidDiscount = mainVariant.discountPrice && 
-                           new Date(mainVariant.discountStart) <= new Date() &&
-                           new Date(mainVariant.discountEnd) >= new Date();
-
-    return {
-      currentPrice: hasValidDiscount ? mainVariant.discountPrice : mainVariant.price,
-      originalPrice: hasValidDiscount ? mainVariant.price : null,
-      hasDiscount: hasValidDiscount
-    };
-  };
-
   return (
     <div className="space-y-4">
       {products.map(product => {
         const mainVariant = product.ProductVariants[0];
-        const priceInfo = getDisplayPrice(product);
 
         return (
           <div 

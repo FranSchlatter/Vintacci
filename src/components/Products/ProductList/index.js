@@ -15,7 +15,7 @@ const ProductList = () => {
     const { activeFilters, sortBy } = useSelector(state => state.filters);
     const [viewMode, setViewMode] = useState('grid');
     const [currentPage, setCurrentPage] = useState(1);
-    const [productsPerPage] = useState(12);
+    const [productsPerPage] = useState(20);
 
     const processedProducts = allProducts
     

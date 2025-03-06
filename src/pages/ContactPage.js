@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Phone, Mail, Clock, Instagram, Twitter, Facebook, MessageCircle } from 'lucide-react';
 import { contactSchema, formatZodErrors } from '../config/validationSchemas';
 import FormInput from '../components/common/FormInput';
 import FormTextArea from '../components/common/FormTextArea';
@@ -16,6 +16,28 @@ const ContactPage = () => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState({});
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('.animate-on-scroll');
+      
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const id = section.id;
+        
+        if (rect.top <= window.innerHeight * 0.8 && rect.bottom >= 0) {
+          setIsVisible(prev => ({ ...prev, [id]: true }));
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Trigger once on mount
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,54 +75,285 @@ const ContactPage = () => {
   };
 
   const contactInfo = [
-    { icon: <MapPin size={24} />, title: 'Ubicación', details: ['123 Calle Principal', 'Ciudad, CP 12345'] },
-    { icon: <Phone size={24} />, title: 'Teléfono', details: ['+54 (11) 1234-5678', '+54 (11) 8765-4321'] },
-    { icon: <Mail size={24} />, title: 'Email', details: ['info@vintacci.com', 'soporte@vintacci.com'] },
-    { icon: <Clock size={24} />, title: 'Horario', details: ['Lunes a Viernes: 9:00 - 20:00', 'Sábados: 10:00 - 15:00'] }
+    { icon: <Mail size={24} />, title: 'Email', details: ['info@archivodepordivo.com', 'soporte@archivodeportivo.com'] },
+    { icon: <Phone size={24} />, title: 'Teléfono', details: ['+54 (11) 1234-5678'] },
+    { icon: <MessageCircle size={24} />, title: 'WhatsApp', details: ['+54 9 11 1234-5678'], isWhatsApp: true },
+    { icon: <Clock size={24} />, title: 'Horario de Atención', details: ['Lunes a Viernes: 9:00 - 20:00', 'Sábados: 10:00 - 15:00'] }
+  ];
+
+  const socialMedia = [
+    { icon: <Instagram size={20} />, name: 'Instagram', url: 'https://instagram.com/archivodeportivo', color: 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500' },
+    { icon: <Twitter size={20} />, name: 'Twitter', url: 'https://twitter.com/archivodeportivo', color: 'bg-blue-400' },
+    { icon: <Facebook size={20} />, name: 'Facebook', url: 'https://facebook.com/archivodeportivo', color: 'bg-blue-600' }
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="relative py-20 bg-gray-900 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Contacto</h1>
-          <p className="text-xl max-w-3xl mx-auto">Estamos aquí para ayudarte. Contáctanos para cualquier consulta sobre nuestros productos o servicios.</p>
+    <div className="min-h-screen bg-white font-sans">
+      {/* Hero Section */}
+      <div className="relative py-28 bg-gradient-to-r from-black via-gray-900 to-black text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-photo/soccer-jersey-mockup_23-2149959541.jpg')] bg-cover bg-center opacity-30"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">Contáctanos</h1>
+          <p className="text-xl max-w-3xl mx-auto">
+            Estamos a tu disposición para resolver cualquier consulta, gestionar pedidos personalizados
+            y asesorarte sobre nuestras camisetas de calidad original.
+          </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-1">
-            <h2 className="text-2xl font-bold mb-6">Información de Contacto</h2>
-            <div className="space-y-6">
-              {contactInfo.map((info) => (
-                <div key={info.title} className="flex items-start">
-                  <div className="text-blue-600 mt-1">{info.icon}</div>
-                  <div className="ml-4">
-                    <h3 className="font-bold">{info.title}</h3>
-                    {info.details.map((detail, index) => (
-                      <p key={index} className="text-gray-600">{detail}</p>
-                    ))}
+      {/* Contact Info & Form Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div 
+            className="grid grid-cols-1 lg:grid-cols-3 gap-12 animate-on-scroll"
+            id="contact-section"
+            style={{ 
+              opacity: isVisible['contact-section'] ? 1 : 0,
+              transform: isVisible['contact-section'] ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'opacity 0.6s ease-out, transform 0.6s ease-out'
+            }}
+          >
+            {/* Contact Info Column */}
+            <div className="lg:col-span-1">
+              <h2 className="text-3xl font-bold mb-8 relative inline-block">
+                Información de Contacto
+                <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-yellow-500"></span>
+              </h2>
+              
+              <div className="space-y-8 mb-12">
+                {contactInfo.map((info) => (
+                  <div key={info.title} className="flex items-start group">
+                    <div className="bg-red-500 text-white p-3 rounded-lg group-hover:bg-red-600 transition-colors duration-300">
+                      {info.icon}
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="font-bold text-lg">{info.title}</h3>
+                      {info.details.map((detail, index) => (
+                        <p key={index} className="text-gray-600 mt-1">
+                          {info.isWhatsApp ? (
+                            <a 
+                              href={`https://wa.me/${detail.replace(/[^0-9]/g, '')}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="hover:text-red-500 transition-colors duration-300"
+                            >
+                              {detail}
+                            </a>
+                          ) : (
+                            detail
+                          )}
+                        </p>
+                      ))}
+                    </div>
                   </div>
+                ))}
+              </div>
+              
+              {/* Social Media */}
+              <h3 className="text-2xl font-bold mb-6 relative inline-block">
+                Síguenos
+                <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-yellow-500"></span>
+              </h3>
+              <div className="flex space-x-4 mb-12">
+                {socialMedia.map((social) => (
+                  <a 
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${social.color} text-white p-3 rounded-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+                    aria-label={social.name}
+                  >
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
+              
+              {/* Map placeholder */}
+              <div className="rounded-lg overflow-hidden shadow-xl h-64 mb-6">
+                <img 
+                  src="/api/placeholder/400/300" 
+                  alt="Ubicación en mapa" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <p className="text-sm text-gray-500">Nota: Trabajamos únicamente de forma online. La ubicación es referencial.</p>
+            </div>
+
+            {/* Contact Form Column */}
+            <div className="lg:col-span-2 bg-white p-8 rounded-xl shadow-xl border-t-4 border-red-500">
+              <h2 className="text-3xl font-bold mb-8 relative inline-block">
+                Envíanos un Mensaje
+                <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-yellow-500"></span>
+              </h2>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormInput 
+                    label="Nombre Completo" 
+                    name="name" 
+                    value={formData.name} 
+                    onChange={handleChange} 
+                    error={errors.name} 
+                    required 
+                    className="bg-gray-50 border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                  />
+                  <FormInput 
+                    label="Email" 
+                    name="email" 
+                    type="email" 
+                    value={formData.email} 
+                    onChange={handleChange} 
+                    error={errors.email} 
+                    required 
+                    className="bg-gray-50 border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                  />
                 </div>
-              ))}
+                
+                <FormInput 
+                  label="Asunto" 
+                  name="subject" 
+                  value={formData.subject} 
+                  onChange={handleChange} 
+                  error={errors.subject} 
+                  required 
+                  className="bg-gray-50 border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                />
+                
+                <FormTextArea 
+                  label="Mensaje" 
+                  name="message" 
+                  value={formData.message} 
+                  onChange={handleChange} 
+                  error={errors.message} 
+                  required 
+                  rows={5} 
+                  className="bg-gray-50 border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                />
+                
+                <button 
+                  type="submit" 
+                  disabled={loading} 
+                  className="bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-3 px-8 rounded-full hover:shadow-lg transition-all duration-300 disabled:opacity-50 hover:shadow-red-500/30 hover:-translate-y-1"
+                >
+                  {loading ? 'Enviando...' : 'Enviar Mensaje'}
+                </button>
+              </form>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold mb-6">Envíanos un Mensaje</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormInput label="Nombre Completo" name="name" value={formData.name} onChange={handleChange} error={errors.name} required />
-                <FormInput label="Email" name="email" type="email" value={formData.email} onChange={handleChange} error={errors.email} required />
+      {/* FAQ section - Quick access to common questions */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div 
+            className="text-center mb-12 animate-on-scroll"
+            id="faq-heading"
+            style={{ 
+              opacity: isVisible['faq-heading'] ? 1 : 0,
+              transform: isVisible['faq-heading'] ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'opacity 0.6s ease-out, transform 0.6s ease-out'
+            }}
+          >
+            <h2 className="text-4xl font-bold mb-6 relative inline-block">
+              Preguntas Frecuentes
+              <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-yellow-500"></span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Consulta algunas de las preguntas más comunes o contáctanos directamente para información específica sobre tu pedido.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { 
+                question: "¿Cómo realizo un pedido?", 
+                answer: "Por el momento, los pedidos se realizan únicamente por mensaje directo. Escríbenos con el modelo, talle y personalización que deseas." 
+              },
+              { 
+                question: "¿Cuánto tarda en llegar mi pedido?", 
+                answer: "El tiempo de entrega estimado es de 20 a 40 días hábiles, ya que cada camiseta se fabrica a pedido." 
+              },
+              { 
+                question: "¿Realizan envíos a todo el país?", 
+                answer: "Sí, enviamos a todo el país con seguimiento. Te mantendremos informado sobre el estado de tu pedido." 
+              },
+              { 
+                question: "¿Qué métodos de pago aceptan?", 
+                answer: "Aceptamos transferencias bancarias, Mercado Pago y efectivo. Al realizar tu pedido te informaremos todas las opciones disponibles." 
+              },
+              { 
+                question: "¿Las camisetas son originales?", 
+                answer: "Nuestras camisetas tienen calidad original, fabricadas con los mismos materiales y tecnologías que las versiones oficiales." 
+              },
+              { 
+                question: "¿Puedo personalizar mi camiseta?", 
+                answer: "¡Absolutamente! Puedes elegir número, nombre y parches oficiales para personalizar tu camiseta según tus preferencias." 
+              }
+            ].map((faq, index) => (
+              <div 
+                key={index} 
+                className="bg-white p-6 rounded-lg shadow-lg border-t-4 border-red-500 hover:shadow-xl transition-all duration-300 animate-on-scroll"
+                id={`faq-item-${index}`}
+                style={{ 
+                  opacity: isVisible[`faq-item-${index}`] ? 1 : 0,
+                  transform: isVisible[`faq-item-${index}`] ? 'translateY(0)' : 'translateY(20px)',
+                  transition: `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`
+                }}
+              >
+                <h3 className="text-xl font-bold mb-3">{faq.question}</h3>
+                <p className="text-gray-600">{faq.answer}</p>
               </div>
-              <FormInput label="Asunto" name="subject" value={formData.subject} onChange={handleChange} error={errors.subject} required />
-              <FormTextArea label="Mensaje" name="message" value={formData.message} onChange={handleChange} error={errors.message} required rows={5} />
-              <button type="submit" disabled={loading} className="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">{loading ? 'Enviando...' : 'Enviar Mensaje'}</button>
-            </form>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-red-600 to-red-800 text-white">
+        <div 
+          className="container mx-auto px-4 text-center animate-on-scroll"
+          id="cta-section"
+          style={{ 
+            opacity: isVisible['cta-section'] ? 1 : 0,
+            transform: isVisible['cta-section'] ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.6s ease-out, transform 0.6s ease-out'
+          }}
+        >
+          <h2 className="text-4xl font-bold mb-6">¿Listo para unirte a nuestra comunidad?</h2>
+          <p className="text-xl max-w-2xl mx-auto mb-10">
+            Síguenos en redes sociales para descubrir nuevos lanzamientos, ofertas exclusivas y contenido especial.
+          </p>
+          
+          <div className="flex justify-center space-x-4">
+            {socialMedia.map((social) => (
+              <a 
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white text-red-600 p-4 rounded-full hover:bg-gray-100 transition-all duration-300 hover:-translate-y-2"
+                aria-label={social.name}
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
+          
+          <div className="mt-10 inline-block">
+            <a 
+              href="https://wa.me/5491112345678"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-500 text-white font-bold py-3 px-8 rounded-full hover:bg-green-600 transition-colors duration-300 shadow-xl hover:shadow-green-500/30 flex items-center justify-center space-x-2 mx-auto"
+            >
+              <MessageCircle size={20} />
+              <span>Contactar por WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

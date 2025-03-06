@@ -8,7 +8,7 @@ const MainMenu = () => {
     <div className="flex items-center space-x-8">
       <MenuLink to="/" label="Inicio" />
       <ProductsMenu />
-      <MenuLink to="/about" label="Sobre Nosotros" />
+      <MenuLink to="/about" label="Nosotros" />
       <MenuLink to="/contact" label="Contacto" />
     </div>
   );
