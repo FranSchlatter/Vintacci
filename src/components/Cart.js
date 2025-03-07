@@ -13,7 +13,7 @@ import {
   Minus,
   ShoppingBag,
   ArrowLeft,
-  CreditCard,
+  MessageCircle,
   Tag,
 } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -26,6 +26,7 @@ const Cart = () => {
   // Constantes
   const SHIPPING_COST = 15000;
   const FREE_SHIPPING_THRESHOLD = 200000;
+  const WHATSAPP_NUMBER = '5493424365585';
 
   const handleRemove = id => {
     dispatch(removeFromCart(id));
@@ -146,7 +147,7 @@ const Cart = () => {
     if (itemCount === 4) return "4x3 - Lleva 4, paga 3";
     if (itemCount === 5) return "5x3 - Lleva 5, paga 3";
     if (itemCount === 6) return "6x4 - Lleva 6, paga 4";
-    if (itemCount >= 7) return "7x4 - Lleva 7 o más, paga solo 4";
+    if (itemCount >= 7) return "7x4 - Lleva 7, paga solo 4";
     return "Promoción especial";
   };
 
@@ -161,20 +162,102 @@ const Cart = () => {
   const total = subtotal + shipping;
 
   // Resumen del carrito para mostrar en el checkout
-  const cartSummary = {
-    originalSubtotal,
-    subtotal,
-    discount,
-    shipping,
-    total,
-    itemCount: cartItems.reduce((count, item) => count + item.quantity, 0),
-    appliedPromotion: promotionResult.appliedPromotion
+  // const cartSummary = {
+  //   originalSubtotal,
+  //   subtotal,
+  //   discount,
+  //   shipping,
+  //   total,
+  //   itemCount: cartItems.reduce((count, item) => count + item.quantity, 0),
+  //   appliedPromotion: promotionResult.appliedPromotion
+  // };
+
+  // Nueva función para crear el mensaje de WhatsApp con el resumen del pedido
+  const createWhatsAppMessage = () => {
+    let message = "¡Hola! Me gustaría realizar el siguiente pedido:\n\n";
+    
+    // Detalles de los productos
+    message += "*Productos:*\n";
+    cartItems.forEach((item) => {
+      const itemName = item.name || item.productName;
+      
+      // Opciones seleccionadas
+      const sizeOption = getOptionByType(item, 'size');
+      const badgeOption = getOptionByType(item, 'badge');
+      const customizeOption = getOptionByType(item, 'customize');
+      
+      let options = [];
+      if (sizeOption) options.push(`Talla: ${sizeOption.name}`);
+      if (badgeOption && (customizeOption?.name !== "Sin parches")) options.push(`Parche: ${badgeOption.name}`);
+      if (customizeOption && customizeOption.name !== "Sin dorsal") {
+        options.push(`Dorsal: ${customizeOption.name} - ${item.customText ? item.customText : "Sin especificar"}`);
+      }
+      
+      // Precios
+      const itemPrice = parseFloat(item.price);
+      const itemTotalPrice = itemPrice * item.quantity;
+      
+      // Encontrar si este item tiene descuento
+      const itemExpandedList = promotionResult.items.filter(expandedItem => 
+        expandedItem.id === item.id
+      );
+      
+      const itemTotalDiscount = itemExpandedList.reduce(
+        (sum, expandedItem) => sum + expandedItem.discount,
+        0
+      );
+      
+      const finalPrice = itemTotalPrice - itemTotalDiscount;
+      
+      // Formatear línea del producto
+      message += `*${itemName}*\n`;
+      message += `Cantidad: ${item.quantity} | ${options.join(' | ')}\n`;
+
+      if (itemTotalDiscount > 0) {
+        message += `Precio original: ~$${itemTotalPrice.toFixed(0)}~ → *$${finalPrice.toFixed(0)}* (Promoción aplicada)\n`;
+      } else {
+        message += `Precio: *$${finalPrice.toFixed(0)}*\n`;
+      }
+
+      message += "\n";
+    });
+    
+    // Resumen del pedido
+    message += "*Resumen de la compra:*\n";
+    message += `Subtotal: $${subtotal.toFixed(0)}\n`;
+    
+    if (discount > 0) {
+      message += `Promoción aplicada: ${promotionResult.appliedPromotion}\n`;
+      message += `Descuento: -$${discount.toFixed(0)}\n`;
+    }
+    
+    message += `Envío: ${shipping === 0 ? 'Gratis' : '$' + shipping.toFixed(0)}\n`;
+    message += `*Total a pagar:* $${total.toFixed(0)}\n\n`;
+
+    // Datos de pago
+    message += "*Para confirmar el pedido, realizá el pago a:*\n";
+    message += `   - *Alias:* franschlatter.mp\n`;
+    message += `   - *Monto:* $${total.toFixed(0)}\n\n`;
+
+    // Instrucción final
+    message += "*Una vez hecho el pago, envianos el comprobante y te confirmamos el pedido.* \nCuando el paquete esté en camino, te pasaremos el número de seguimiento.\n\n";
+    message += "¡Gracias por elegirnos!";
+
+    return encodeURIComponent(message);
+};
+
+
+  // Función para abrir WhatsApp con el mensaje
+  const handleWhatsAppOrder = () => {
+    const message = createWhatsAppMessage();
+    const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+    window.open(whatsappURL, '_blank');
   };
 
-  const handleCheckout = () => {
-    // Aquí implementarías la lógica de checkout
-    navigate('/checkout', { state: { cartSummary } });
-  };
+  // const handleCheckout = () => {
+  //   // Aquí implementarías la lógica de checkout
+  //   navigate('/checkout', { state: { cartSummary } });
+  // };
 
   // Función auxiliar para obtener el valor de una opción específica del producto
   const getOptionByType = (item, type) => {
@@ -225,7 +308,7 @@ const Cart = () => {
                 <Tag className="w-5 h-5 mr-2 text-green-600" />
                 <div>
                   <p className="font-semibold">{promotionResult.appliedPromotion}</p>
-                  <p className="text-sm">¡Ahorra ${discount.toFixed(2)} en tu compra!</p>
+                  <p className="text-sm">¡Ahorra ${discount.toFixed(0)} en tu compra!</p>
                 </div>
               </div>
             )}
@@ -237,7 +320,7 @@ const Cart = () => {
                 const sizeOption = getOptionByType(item, 'size');
                 const badgeOption = getOptionByType(item, 'badge');
                 const customizeOption = getOptionByType(item, 'customize');
-                const hasCustomText = item.customText && customizeOption && customizeOption.name !== 'Sin dorsal';
+                // const hasCustomText = item.customText && customizeOption && customizeOption.name !== 'Sin dorsal';
 
                 // Encontrar si este item tiene descuento
                 const itemTotalPrice = parseFloat(item.price) * item.quantity;
@@ -312,20 +395,20 @@ const Cart = () => {
                             <p className="text-lg font-bold text-green-600">¡Gratis!</p>
                           ) : (
                             <p className="text-lg font-bold">
-                              ${(itemTotalPrice - itemTotalDiscount).toFixed(2)}
+                              ${(itemTotalPrice - itemTotalDiscount).toFixed(0)}
                             </p>
                           )}
                           <p className="text-sm text-gray-500 line-through">
-                            ${itemTotalPrice.toFixed(2)}
+                            ${itemTotalPrice.toFixed(0)}
                           </p>
                         </>
                       ) : (
                         <>
                           <p className="text-lg font-bold">
-                            ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                            ${(parseFloat(item.price) * item.quantity).toFixed(0)}
                           </p>
                           <p className="text-sm text-gray-500">
-                            ${parseFloat(item.price).toFixed(2)} c/u
+                            ${parseFloat(item.price).toFixed(0)} c/u
                           </p>
                         </>
                       )}
@@ -365,10 +448,10 @@ const Cart = () => {
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
                 <div className="text-right">
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>${subtotal.toFixed(0)}</span>
                   {discount > 0 && (
                     <div className="text-sm text-gray-500 line-through">
-                      ${originalSubtotal.toFixed(2)}
+                      ${originalSubtotal.toFixed(0)}
                     </div>
                   )}
                 </div>
@@ -380,7 +463,7 @@ const Cart = () => {
                     <Tag className="w-4 h-4 mr-1" /> 
                     {promotionResult.appliedPromotion}
                   </span>
-                  <span>-${discount.toFixed(2)}</span>
+                  <span>-${discount.toFixed(0)}</span>
                 </div>
               )}
 
@@ -389,37 +472,37 @@ const Cart = () => {
                 {shipping === 0 ? (
                   <span className="text-green-600 font-medium">¡Gratis!</span>
                 ) : (
-                  <span>${shipping.toFixed(2)}</span>
+                  <span>${shipping.toFixed(0)}</span>
                 )}
               </div>
 
               {subtotal < FREE_SHIPPING_THRESHOLD && (
                 <div className="bg-blue-50 p-3 rounded-lg text-sm">
-                  ¡Agrega ${(FREE_SHIPPING_THRESHOLD - subtotal).toFixed(2)} más
+                  ¡Agrega ${(FREE_SHIPPING_THRESHOLD - subtotal).toFixed(0)} más
                   para obtener envío gratis!
                 </div>
               )}
 
               <div className="border-t pt-4">
+                {discount > 0 && (
+                    <div className="flex justify-between items-center text-green-600 text-sm mt-1">
+                      <span>Ahorro:</span>
+                      <span>${discount.toFixed(0)}</span>
+                    </div>
+                  )}
                 <div className="flex justify-between items-center font-bold text-lg">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>${total.toFixed(0)}</span>
                 </div>
-                {discount > 0 && (
-                  <div className="flex justify-between items-center text-green-600 text-sm mt-1">
-                    <span>Ahorro total:</span>
-                    <span>${discount.toFixed(2)}</span>
-                  </div>
-                )}
               </div>
 
               <button
-                onClick={handleCheckout}
-                className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
-                                     transition-colors flex items-center justify-center gap-2"
+                onClick={handleWhatsAppOrder}
+                className="w-full py-3 font-bold bg-green-600 text-white rounded-lg hover:bg-green-700 
+                          transition-colors flex items-center justify-center gap-2"
               >
-                <CreditCard className="w-5 h-5" />
-                Proceder al Pago
+                <MessageCircle className="w-5 h-5" />
+                Realizar Pedido
               </button>
 
               {/* <p className="text-xs text-gray-500 text-center mt-4">
