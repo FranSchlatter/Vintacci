@@ -177,7 +177,7 @@ const TagFilter = ({ tags, activeTags }) => {
             </div>
             
             {/* Sección de Equipos - Rediseñada */}
-            <FilterSection title="Equipos">
+            <FilterSection title="Equipos" defaultExpanded={false}>
                 <div className="space-y-2">
                     {/* Subsección Clubes */}
                     <div 
@@ -229,7 +229,7 @@ const TagFilter = ({ tags, activeTags }) => {
 
             {/* Otras categorías de tags */}
             {groupedTags.map(([type, typeTags]) => type !== "equipo" && (
-                <FilterSection key={type} title={TYPE_NAMES[type] || type.charAt(0).toUpperCase() + type.slice(1)}>
+                <FilterSection key={type} title={TYPE_NAMES[type] || type.charAt(0).toUpperCase() + type.slice(1)} defaultExpanded={false}>
                     {renderTagList(typeTags)}
                 </FilterSection>
             ))}

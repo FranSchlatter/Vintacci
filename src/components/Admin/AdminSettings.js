@@ -20,8 +20,8 @@ const AdminSettings = () => {
 
   // Estados para cada sección de configuración
   const [generalSettings, setGeneralSettings] = useState({
-    storeName: 'Vintacci',
-    storeEmail: 'info@vintacci.com',
+    storeName: 'Archivo Deportivo',
+    storeEmail: 'info@ArchivoDeportivo.com',
     phoneNumber: '+54 11 1234-5678',
     address: 'Calle Principal 123',
     currency: 'ARS',
@@ -33,8 +33,8 @@ const AdminSettings = () => {
   //   smtpPort: '',
   //   smtpUser: '',
   //   smtpPassword: '',
-  //   senderName: 'Vintacci',
-  //   senderEmail: 'noreply@vintacci.com'
+  //   senderName: 'Archivo Deportivo',
+  //   senderEmail: 'noreply@Archivo Deportivo.com'
   // });
 
   const [paymentSettings, setPaymentSettings] = useState({
