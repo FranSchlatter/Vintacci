@@ -21,8 +21,6 @@ const ProductsMenu = () => {
   const handleCategoryClick = async (category) => {
     const filters = {
       category: [category.id],
-      brand: [],
-      priceRange: { min: 0, max: 999999 }
     };
 
     await dispatch(setActiveFilters(filters));

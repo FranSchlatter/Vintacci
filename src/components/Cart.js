@@ -187,6 +187,7 @@ const Cart = () => {
       const customizeOption = getOptionByType(item, 'customize');
       
       let options = [];
+      if (!sizeOption && !badgeOption && !customizeOption) options.push(`Sin personalizar`);
       if (sizeOption) options.push(`Talla: ${sizeOption.name}`);
       if (badgeOption && (customizeOption?.name !== "Sin parches")) options.push(`Parche: ${badgeOption.name}`);
       if (customizeOption && customizeOption.name !== "Sin dorsal") {
@@ -352,6 +353,11 @@ const Cart = () => {
                     <div className="flex-1">
                       <h6 className="font-semibold text-md mb-1">{item.name || item.productName}</h6>
                       <div className="flex flex-wrap gap-2 text-sm text-gray-500">
+                        {!sizeOption && !badgeOption && !customizeOption && (
+                            <span className="bg-gray-100 px-2 py-1 rounded">
+                              Sin personalizar
+                            </span>
+                        )}
                         {sizeOption && (
                           <span className="bg-gray-100 px-2 py-1 rounded">
                             Talla: {sizeOption.name}

@@ -1,5 +1,6 @@
 // src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css'; 
@@ -17,6 +18,8 @@ import camiseta_test_6 from '../assets/images/test_pagina_6.webp';
 
 const HomePage = () => {
   const [isVisible, setIsVisible] = useState({});
+  const navigate = useNavigate();
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,7 +86,7 @@ const HomePage = () => {
           <h2 className="text-4xl font-bold mb-12">Explora Nuestras Categorías</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {categories.map((category, index) => (
-              <div key={index} className="animate-on-scroll cursor-pointer">
+              <div key={index} className="animate-on-scroll cursor-pointer" onClick={() => {navigate('/products') }}>
                 <div className="relative overflow-hidden rounded-lg shadow-lg">
                   <img src={category.image} alt={category.name} className="w-full h-64 object-cover transition duration-300 hover:scale-105" />
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -124,7 +127,7 @@ const HomePage = () => {
           <Slider {...sliderSettings}>
             {featuredProducts.map(product => (
               <div key={product.id} className="px-2">
-                <div className="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 mb-2">
+                <div className="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 mb-2" onClick={() => {navigate('/products')}}>
                   <div className="relative aspect-square overflow-hidden rounded-t-lg">
                     <Link to={`/products/${product.id}`}>
                       <img src={product.image_url[0]} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200" />

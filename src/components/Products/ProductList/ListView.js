@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addToCart } from '../../../redux/actions/cartActions';
+import { toast } from 'react-toastify';
 // import { addToFavorites } from '../../../redux/actions/favoriteActions';
 
 const ListView = ({ products }) => {
@@ -105,7 +106,23 @@ const ListView = ({ products }) => {
                       <Heart className="h-5 w-5 text-gray-600" />
                     </button> */}
                     <button
-                      onClick={() => dispatch(addToCart({ product, variant: mainVariant, quantity: 1 }))}
+                      onClick={() => {
+                        // Creamos el objeto para el carrito
+                        const cartItem = {
+                              id: mainVariant.id,
+                              productId: product.id,
+                              name: product.name,
+                              description: product.description,
+                              image_url: product.image_url,
+                              price: mainVariant.price,
+                              quantity: 1,
+                              sku: mainVariant.sku,
+                              selectedOptions: null,
+                              customText: null,
+                            };
+                            dispatch(addToCart(cartItem));
+                            toast.success('¡Agregado al carrito!');
+                          }}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       Agregar al carrito

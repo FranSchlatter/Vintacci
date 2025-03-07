@@ -4,6 +4,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addToCart } from '../../../redux/actions/cartActions';
+import { toast } from 'react-toastify';
 // import { addToFavorites } from '../../../redux/actions/favoriteActions';
 
 const GridView = ({ products }) => {
@@ -48,7 +49,23 @@ const GridView = ({ products }) => {
                   <Heart className="h-5 w-5 text-gray-600" />
                 </button> */}
                 <button
-                  onClick={() => dispatch(addToCart({ product, variant: mainVariant, quantity: 1 }))}
+                 onClick={() => {
+                  // Creamos el objeto para el carrito
+                  const cartItem = {
+                        id: mainVariant.id,
+                        productId: product.id,
+                        name: product.name,
+                        description: product.description,
+                        image_url: product.image_url,
+                        price: mainVariant.price,
+                        quantity: 1,
+                        sku: mainVariant.sku,
+                        selectedOptions: null,
+                        customText: null,
+                      };
+                      dispatch(addToCart(cartItem));
+                      toast.success('¡Agregado al carrito!');
+                    }}
                   className="p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors"
                   title="Agregar al carrito"
                 >
