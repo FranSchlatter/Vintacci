@@ -38,19 +38,34 @@ const ActiveFilters = () => {
 
     const hasActiveFilters = () => {
         return (
-            activeFilters.category?.length > 0 ||
-            activeFilters.tags?.length > 0 ||
+            (activeFilters.category?.length > 0) ||
+            (activeFilters.tags?.length > 0) ||
             (activeFilters.priceRange?.min > 0 || 
-             activeFilters.priceRange?.max < 999999)
+             activeFilters.priceRange?.max < 999999) ||
+            (activeFilters.search && activeFilters.search.trim() !== '')
         );
     };
 
     if (!hasActiveFilters()) return null;
 
     return (
-        <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-700">Filtros activos:</h3>
+        <div className="p-3 bg-blue-50 rounded-md space-y-2">
+            <h3 className="text-sm font-medium text-blue-800">Filtros activos:</h3>
             <div className="flex flex-wrap gap-2">
+                {/* Búsqueda */}
+                {activeFilters.search && activeFilters.search.trim() !== '' && (
+                    <button
+                        onClick={() => {
+                            const newFilters = { ...activeFilters, search: '' };
+                            dispatch(setActiveFilters(newFilters));
+                        }}
+                        className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    >
+                        Búsqueda: {activeFilters.search}
+                        <X className="ml-1 h-4 w-4" />
+                    </button>
+                )}
+                
                 {/* Filtros de categoría */}
                 {activeFilters.category?.map(categoryId => {
                     const name = findCategoryName(categoryId);
@@ -59,7 +74,7 @@ const ActiveFilters = () => {
                         <button
                             key={categoryId}
                             onClick={() => removeFilter('category', categoryId)}
-                            className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
                         >
                             {name}
                             <X className="ml-1 h-4 w-4" />
@@ -75,7 +90,7 @@ const ActiveFilters = () => {
                         <button
                             key={tagId}
                             onClick={() => removeFilter('tags', tagId)}
-                            className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
                         >
                             {tag.name}
                             <X className="ml-1 h-4 w-4" />
@@ -83,17 +98,17 @@ const ActiveFilters = () => {
                     );
                 })}
 
-                {/* Filtro de precio */}
+                {/* Filtro de precio
                 {(activeFilters.priceRange?.min > 0 || 
                   activeFilters.priceRange?.max < 999999) && (
                     <button
                         onClick={() => removeFilter('priceRange')}
-                        className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
                     >
                         ${activeFilters.priceRange.min} - ${activeFilters.priceRange.max}
                         <X className="ml-1 h-4 w-4" />
                     </button>
-                )}
+                )} */}
             </div>
         </div>
     );

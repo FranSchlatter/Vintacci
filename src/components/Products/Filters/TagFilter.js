@@ -1,15 +1,26 @@
 import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Search } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp } from 'lucide-react';
 import FilterSection from './FilterSection';
 import { setActiveFilters } from '../../../redux/actions/filterActions';
 
 const ORDERED_TYPES = ["edicion", "version", "equipo", "temporada", "caracteristica", "color"];
+const TYPE_NAMES = {
+  "edicion": "Edición",
+  "version": "Versión",
+  "equipo": "Equipo",
+  "temporada": "Temporada",
+  "caracteristica": "Característica",
+  "color": "Color"
+};
 
 const TagFilter = ({ tags, activeTags }) => {
     const dispatch = useDispatch();
     const activeFilters = useSelector(state => state.filters.activeFilters);
     const [searchTerm, setSearchTerm] = useState('');
+    
+    // Estados para controlar expansión
+    const [expandedSections, setExpandedSections] = useState({});
 
     const handleTagChange = (tagId) => {
         const newTags = activeTags.includes(tagId)
@@ -19,6 +30,13 @@ const TagFilter = ({ tags, activeTags }) => {
         dispatch(setActiveFilters({
             ...activeFilters,
             tags: newTags
+        }));
+    };
+
+    const toggleSection = (sectionId) => {
+        setExpandedSections(prev => ({
+            ...prev,
+            [sectionId]: !prev[sectionId]
         }));
     };
 
@@ -97,6 +115,54 @@ const TagFilter = ({ tags, activeTags }) => {
         return ORDERED_TYPES.map(type => [type, groups[type] || []]).filter(([_, list]) => list.length > 0);
     }, [filteredTags]);
 
+    // Render TagList - Para simplificar el código
+    const renderTagList = (tagList, selectAllOption = false) => (
+        <div className="space-y-1 mt-2">
+            {selectAllOption && tagList.length > 0 && (
+                <button 
+                    onClick={() => handleSelectAll(tagList)} 
+                    className="text-blue-500 text-sm hover:underline mb-2 flex items-center"
+                >
+                    <span className="ml-1">Seleccionar todos</span>
+                </button>
+            )}
+            <div className="grid grid-cols-2 gap-1">
+                {tagList.map(tag => (
+                    <label key={tag.id} className="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={activeTags.includes(tag.id)}
+                            onChange={() => handleTagChange(tag.id)}
+                            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm text-gray-600 truncate">{tag.name}</span>
+                    </label>
+                ))}
+            </div>
+        </div>
+    );
+
+    // Render League Section - Para los equipos
+    const renderLeagueSection = (title, teams) => {
+        const sectionId = `league-${title}`;
+        return (
+            <div key={title} className="border-t border-gray-200 pt-2 pb-1">
+                <button 
+                    onClick={() => toggleSection(sectionId)}
+                    className="flex justify-between items-center w-full text-left py-1"
+                >
+                    <span className="text-sm font-medium text-gray-700">{title}</span>
+                    {expandedSections[sectionId] ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                    ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                    )}
+                </button>
+                {expandedSections[sectionId] && renderTagList(teams, true)}
+            </div>
+        );
+    };
+
     return (
         <div>
             <div className="relative mb-4">
@@ -110,60 +176,61 @@ const TagFilter = ({ tags, activeTags }) => {
                 />
             </div>
             
-            <FilterSection title="Equipo" defaultExpanded={false}>
-                <FilterSection title="Clubes" defaultExpanded={false}>
-                    {Object.entries(groupedTeams.clubes).map(([league, teams]) => (
-                        <FilterSection key={league} title={league} defaultExpanded={false}>
-                            <button onClick={() => handleSelectAll(teams)} className="mb-2 text-blue-500 underline">Seleccionar todos</button>
-                            {teams.map(tag => (
-                                <label key={tag.id} className="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={activeTags.includes(tag.id)}
-                                        onChange={() => handleTagChange(tag.id)}
-                                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                                    />
-                                    <span className="ml-2 text-sm text-gray-600">{tag.name}</span>
-                                </label>
-                            ))}
-                        </FilterSection>
-                    ))}
-                </FilterSection>
-                <FilterSection title="Selecciones" defaultExpanded={false}>
-                    {Object.entries(groupedTeams.selecciones).map(([competition, teams]) => (
-                        <FilterSection key={competition} title={competition} defaultExpanded={false}>
-                            <button onClick={() => handleSelectAll(teams)} className="mb-2 text-blue-500 underline">Seleccionar todos</button>
-                            {teams.map(tag => (
-                                <label key={tag.id} className="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={activeTags.includes(tag.id)}
-                                        onChange={() => handleTagChange(tag.id)}
-                                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                                    />
-                                    <span className="ml-2 text-sm text-gray-600">{tag.name}</span>
-                                </label>
-                            ))}
-                        </FilterSection>
-                    ))}
-                </FilterSection>
+            {/* Sección de Equipos - Rediseñada */}
+            <FilterSection title="Equipos">
+                <div className="space-y-2">
+                    {/* Subsección Clubes */}
+                    <div 
+                        className="bg-gray-50 rounded-md p-2 cursor-pointer"
+                        onClick={() => toggleSection('clubes')}
+                    >
+                        <div className="flex justify-between items-center">
+                            <h4 className="text-sm font-medium text-gray-800">Clubes</h4>
+                            {expandedSections['clubes'] ? (
+                                <ChevronUp className="h-4 w-4 text-gray-500" />
+                            ) : (
+                                <ChevronDown className="h-4 w-4 text-gray-500" />
+                            )}
+                        </div>
+                    </div>
+                    
+                    {expandedSections['clubes'] && (
+                        <div className="pl-2 space-y-1">
+                            {Object.entries(groupedTeams.clubes).map(([league, teams]) => 
+                                renderLeagueSection(league, teams)
+                            )}
+                        </div>
+                    )}
+                    
+                    {/* Subsección Selecciones */}
+                    <div 
+                        className="bg-gray-50 rounded-md p-2 cursor-pointer mt-3"
+                        onClick={() => toggleSection('selecciones')}
+                    >
+                        <div className="flex justify-between items-center">
+                            <h4 className="text-sm font-medium text-gray-800">Selecciones</h4>
+                            {expandedSections['selecciones'] ? (
+                                <ChevronUp className="h-4 w-4 text-gray-500" />
+                            ) : (
+                                <ChevronDown className="h-4 w-4 text-gray-500" />
+                            )}
+                        </div>
+                    </div>
+                    
+                    {expandedSections['selecciones'] && (
+                        <div className="pl-2 space-y-1">
+                            {Object.entries(groupedTeams.selecciones).map(([competition, teams]) => 
+                                renderLeagueSection(competition, teams)
+                            )}
+                        </div>
+                    )}
+                </div>
             </FilterSection>
 
+            {/* Otras categorías de tags */}
             {groupedTags.map(([type, typeTags]) => type !== "equipo" && (
-                <FilterSection key={type} title={type.charAt(0).toUpperCase() + type.slice(1)} defaultExpanded={false}>
-                    <div className="pl-2 space-y-1">
-                        {typeTags.map(tag => (
-                            <label key={tag.id} className="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    checked={activeTags.includes(tag.id)}
-                                    onChange={() => handleTagChange(tag.id)}
-                                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                                />
-                                <span className="ml-2 text-sm text-gray-600">{tag.name}</span>
-                            </label>
-                        ))}
-                    </div>
+                <FilterSection key={type} title={TYPE_NAMES[type] || type.charAt(0).toUpperCase() + type.slice(1)}>
+                    {renderTagList(typeTags)}
                 </FilterSection>
             ))}
         </div>

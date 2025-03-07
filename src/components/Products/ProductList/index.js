@@ -170,7 +170,7 @@ const ProductList = () => {
 
     return (
         <div className="flex flex-col lg:flex-row gap-8">
-            <aside className="lg:w-64 flex-shrink-0">
+            <aside className="lg:w-80 flex-shrink-0">
                 <Filters />
             </aside>
 
