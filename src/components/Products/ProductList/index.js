@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, List } from 'lucide-react';
 import { setSortBy } from '../../../redux/actions/filterActions';
+import { fetchProducts } from '../../../redux/actions/productActions';
 import Filters from '../Filters';
 import GridView from './GridView';
 import ListView from './ListView';
@@ -9,123 +10,27 @@ import Pagination from './Pagination';
 
 const ProductList = () => {
     const dispatch = useDispatch();
-    
-    // Estados y selectores
+
+    // Selectores de Redux
     const { allProducts, loading, error } = useSelector(state => state.products);
     const { activeFilters, sortBy } = useSelector(state => state.filters);
+
+    // Estados locales
     const [viewMode, setViewMode] = useState('grid');
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage] = useState(20);
 
-    const processedProducts = allProducts
-    
-    // Aplicar filtros a los productos
-    const filteredProducts = useMemo(() => {
-        if (!processedProducts?.length) return [];
-
-        return processedProducts.filter(product => {
-            // Filtro por búsqueda
-            if (activeFilters.search) {
-                const searchTerm = activeFilters.search.toLowerCase();
-                const searchMatch = 
-                    product.name.toLowerCase().includes(searchTerm)
-                if (!searchMatch) return false;
-            }
-
-            // Filtro por category
-            if (activeFilters.category?.length > 0) {
-                const productCategoryIds = product?.AssociatedToCat?.map(category => category.id);
-                if (!activeFilters.category.some(categoryId => productCategoryIds.includes(categoryId))) {
-                    return false;
-                }
-            }
-
-            // Filtro por tags
-            if (activeFilters.tags?.length > 0) {
-                const tagsByType = {};
-                product.AssociatedToTag?.forEach(tag => {
-                    if (!tagsByType[tag.type]) tagsByType[tag.type] = [];
-                    tagsByType[tag.type].push(tag.id);
-                });
-
-                const selectedTagsByType = {};
-                activeFilters.tags.forEach(tagId => {
-                    const tag = allProducts.flatMap(p => p.AssociatedToTag).find(t => t.id === tagId);
-                    if (tag) {
-                        if (!selectedTagsByType[tag.type]) selectedTagsByType[tag.type] = [];
-                        selectedTagsByType[tag.type].push(tagId);
-                    }
-                });
-
-                const allTypesMatch = Object.keys(selectedTagsByType).every(type =>
-                    selectedTagsByType[type].some(tagId => tagsByType[type]?.includes(tagId))
-                );
-
-                if (!allTypesMatch) return false;
-            }
-
-            // Filtro por rango de precio
-            if (activeFilters.priceRange) {
-                const minPrice = Number(activeFilters.priceRange.min) || 0;
-                const maxPrice = Number(activeFilters.priceRange.max) || Infinity;
-                
-                // Un producto coincide si alguna de sus variantes está en el rango
-                const priceInRange = product.ProductVariants.some(variant => {
-                    const price = Number(variant.discountPrice || variant.price);
-                    return price >= minPrice && price <= maxPrice;
-                });
-
-                if (!priceInRange) return false;
-            }
-
-            // Filtro por opciones de variante
-            if (activeFilters.variantOptions) {
-                for (const [type, selectedOptions] of Object.entries(activeFilters.variantOptions)) {
-                    if (selectedOptions.length === 0) continue;
-
-                    // Verificar si alguna variante activa tiene la opción seleccionada
-                    const hasMatchingOption = product.activeVariants.some(variant =>
-                        variant.ProductOptions.some(option =>
-                            option.type === type && selectedOptions.includes(option.id)
-                        )
-                    );
-
-                    if (!hasMatchingOption) return false;
-                }
-            }
-
-            return true;
-        });
-    }, [allProducts, processedProducts, activeFilters]);
-
-    // Ordenar productos
-    const sortedProducts = useMemo(() => {
-        if (!filteredProducts.length) return [];
-
-        const sorted = [...filteredProducts];
-        
-        switch (sortBy) {
-            case 'price-low':
-                return sorted.sort((a, b) => a.price - b.price);
-            case 'price-high':
-                return sorted.sort((a, b) => b.price - a.price);
-            case 'newest':
-                return sorted.sort((a, b) => {
-                    const dateA = new Date(a.createdAt);
-                    const dateB = new Date(b.createdAt);
-                    return dateB - dateA;
-                });
-            default:
-                return sorted;
-        }
-    }, [filteredProducts, sortBy]);
-
-    // Paginación
-    const currentProducts = useMemo(() => {
-        const indexOfLastProduct = currentPage * productsPerPage;
-        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-        return sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-    }, [sortedProducts, currentPage, productsPerPage]);
+    // Fetch productos cuando cambian filtros, sort o página
+    useEffect(() => {
+        dispatch(fetchProducts({
+            page: currentPage,
+            limit: productsPerPage,
+            tagIds: activeFilters.tags.join(','),
+            categoryIds: activeFilters.category?.join(','),
+            name: activeFilters.search,
+            sortBy
+        }));
+    }, [dispatch, activeFilters, sortBy, currentPage, productsPerPage]);
 
     // Handlers
     const handlePageChange = (pageNumber) => {
@@ -135,9 +40,14 @@ const ProductList = () => {
 
     const handleSortChange = (option) => {
         dispatch(setSortBy(option));
-        setCurrentPage(1);
+        setCurrentPage(1); // Reiniciar a la primera página al cambiar el orden
     };
 
+    // Productos y total
+    const currentProducts = allProducts.products || [];
+    const totalProducts = allProducts.totalItems || 0;
+
+    // Render cargando
     if (loading) {
         return (
             <div className="flex flex-col lg:flex-row gap-8">
@@ -153,6 +63,7 @@ const ProductList = () => {
         );
     }
 
+    // Render error
     if (error) {
         return (
             <div className="flex flex-col lg:flex-row gap-8">
@@ -168,19 +79,23 @@ const ProductList = () => {
         );
     }
 
+    // Render final
     return (
         <div className="flex flex-col lg:flex-row gap-8">
+            {/* Filtros */}
             <aside className="lg:w-80 flex-shrink-0">
                 <Filters />
             </aside>
 
+            {/* Productos */}
             <main className="flex-1">
                 <div className="flex justify-between items-center mb-6">
                     <div className="text-sm text-gray-500">
-                        {sortedProducts.length} productos encontrados
+                        {totalProducts} productos encontrados
                     </div>
-                    
+
                     <div className="flex items-center gap-4">
+                        {/* Orden */}
                         <select
                             value={sortBy}
                             onChange={(e) => handleSortChange(e.target.value)}
@@ -191,6 +106,7 @@ const ProductList = () => {
                             <option value="price-high">Mayor precio</option>
                         </select>
 
+                        {/* Vista grid/list */}
                         <div className="flex items-center gap-2 border rounded-lg p-1">
                             <button
                                 onClick={() => setViewMode('grid')}
@@ -208,7 +124,8 @@ const ProductList = () => {
                     </div>
                 </div>
 
-                {!sortedProducts.length ? (
+                {/* Lista de productos */}
+                {!currentProducts.length ? (
                     <div className="text-center py-12 text-gray-500">
                         No se encontraron productos que coincidan con los filtros seleccionados
                     </div>
@@ -220,10 +137,11 @@ const ProductList = () => {
                             <ListView products={currentProducts} />
                         )}
 
-                        {sortedProducts.length > productsPerPage && (
+                        {/* Paginación */}
+                        {totalProducts > productsPerPage && (
                             <Pagination
                                 currentPage={currentPage}
-                                totalProducts={sortedProducts.length}
+                                totalProducts={totalProducts}
                                 productsPerPage={productsPerPage}
                                 onPageChange={handlePageChange}
                             />

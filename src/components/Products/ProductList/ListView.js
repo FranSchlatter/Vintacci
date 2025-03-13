@@ -20,6 +20,7 @@ const ListView = ({ products }) => {
     <div className="space-y-4">
       {products.map(product => {
         const mainVariant = product.ProductVariants[0];
+        const [productName, productCategory] = product.name.split(' - ');
 
         return (
           <div 
@@ -53,9 +54,15 @@ const ListView = ({ products }) => {
                     to={`/products/${product.id}`}
                     className="block text-lg font-medium text-gray-800 hover:text-blue-600"
                   >
-                    {product.name}
+                    {productName}
                   </Link>
                 </div>
+
+                {productCategory && (
+                <div className="text-xs text-gray-500 uppercase tracking-wide">
+                  {productCategory}
+                </div>
+              )}
 
                 <p className="text-gray-600 text-sm line-clamp-2">
                   {product.description}

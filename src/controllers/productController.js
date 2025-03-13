@@ -4,24 +4,24 @@ const { Product, Category, Tag, ProductVariant, ProductOption } = require('../mo
 const { Op } = require('sequelize');
 
 // Función auxiliar para generar el siguiente código de producto
-const generateProductCode = async (prefix = 'PROD') => {
-    const lastProduct = await Product.findOne({
-        where: {
-            productCode: {
-                [Op.like]: `${prefix}%`
-            }
-        },
-        order: [['productCode', 'DESC']]
-    });
+// const generateProductCode = async (prefix = 'PROD') => {
+//     const lastProduct = await Product.findOne({
+//         where: {
+//             productCode: {
+//                 [Op.like]: `${prefix}%`
+//             }
+//         },
+//         order: [['productCode', 'DESC']]
+//     });
 
-    if (!lastProduct) {
-        return `${prefix}001`;
-    }
+//     if (!lastProduct) {
+//         return `${prefix}001`;
+//     }
 
-    const lastNumber = parseInt(lastProduct.productCode.replace(prefix, ''));
-    const nextNumber = lastNumber + 1;
-    return `${prefix}${nextNumber.toString().padStart(3, '0')}`;
-};
+//     const lastNumber = parseInt(lastProduct.productCode.replace(prefix, ''));
+//     const nextNumber = lastNumber + 1;
+//     return `${prefix}${nextNumber.toString().padStart(3, '0')}`;
+// };
 
 // Función auxiliar para generar SKU
 const generateSKU = async (productCode, options) => {
@@ -65,31 +65,74 @@ const validateUniqueOptionCombination = (variants) => {
 const productController = {
     getAllProducts: async (req, res) => {
         try {
-            const products = await Product.findAll({
-                include: [
-                    {
-                        model: Category,
+            // ⚙️ 1. Recibir params para paginado y filtros
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 50;
+            const offset = (page - 1) * limit;
+    
+            const { categoryIds, tagIds, name, sortBy } = req.query;
+
+            // ⚙️ 2. Armar el filtro dinámico
+            const where = {};
+    
+            // Filtro por nombre parcial (LIKE)
+            if (name) {
+                where.name = { [Op.iLike]: `%${name}%` }; // Si usás postgres
+            }
+
+            const orderOptions = {
+                'price-low': [['price', 'ASC']],
+                'price-high': [['price', 'DESC']],
+                'newest': [['createdAt', 'DESC']],
+            };
+            
+            const order = orderOptions[sortBy] || [['createdAt', 'DESC']]; // por defecto "newest"
+            
+    
+            // Relación por categoría y tags (solo si vienen)
+            const include = [
+                {
+                    model: Category,
+                    as: 'AssociatedToCat',
+                    through: { attributes: [] },
+                    attributes: ['id', 'name'],
+                    ...(categoryIds && { where: { id: { [Op.in]: categoryIds.split(',') } } })
+                },
+                {
+                    model: Tag,
+                    as: 'AssociatedToTag',
+                    through: { attributes: [] },
+                    attributes: ['id', 'name', 'type'],
+                    ...(tagIds && { where: { id: { [Op.in]: tagIds.split(',') } } })
+                },
+                {
+                    model: ProductVariant,
+                    attributes: ['id', 'sku', 'price'],
+                    include: [{
+                        model: ProductOption,
                         through: { attributes: [] },
-                        as: 'AssociatedToCat',
-                        attributes: ['id', 'name']
-                    },
-                    {
-                        model: Tag,
-                        through: { attributes: [] },
-                        as: 'AssociatedToTag',
-                        attributes: ['id', 'name', 'type']
-                    },
-                    {
-                        model: ProductVariant,
-                        attributes: ['id', 'sku', 'price'],
-                        include: [{
-                            model: ProductOption,
-                            through: { attributes: [] },
-                        }]
-                    }
-                ]
+                    }]
+                }
+            ];
+    
+            // ⚙️ 3. Consulta con paginado y conteo total
+            const { count, rows } = await Product.findAndCountAll({
+                where,
+                include,
+                limit,
+                offset,
+                distinct: true, // ⚠️ IMPORTANTE para que el count no repita por relaciones
+                order
             });
-            res.json(products);
+    
+            // ⚙️ 4. Respuesta con productos paginados + info total
+            res.json({
+                totalItems: count,
+                totalPages: Math.ceil(count / limit),
+                currentPage: page,
+                products: rows
+            });
+    
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Error al obtener productos');

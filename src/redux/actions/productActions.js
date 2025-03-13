@@ -100,16 +100,21 @@ export const updateProduct = (id, productData) => async (dispatch) => {
     }
 };
 
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = ({ page = 1, limit = 20, categoryIds, tagIds, name, sortBy } = {}) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_ACTIONS.FETCH_REQUEST });
-        const response = await axios.get('http://localhost:5000/products');
-        dispatch({ type: PRODUCT_ACTIONS.FETCH_SUCCESS, payload: response.data });
+        const response = await axios.get('http://localhost:5000/products', {
+            params: { page, limit, categoryIds, tagIds, name, sortBy }
+        });
+        dispatch({
+            type: PRODUCT_ACTIONS.FETCH_SUCCESS,
+            payload: response.data
+        });
     } catch (error) {
         console.error("Error fetching products:", error);
-        dispatch({ 
-            type: PRODUCT_ACTIONS.FETCH_FAILURE, 
-            payload: error.response?.data?.message || 'Error al cargar productos' 
+        dispatch({
+            type: PRODUCT_ACTIONS.FETCH_FAILURE,
+            payload: error.response?.data?.message || 'Error al cargar productos'
         });
         toast.error('Error al cargar productos');
     }
