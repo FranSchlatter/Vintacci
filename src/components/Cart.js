@@ -317,6 +317,7 @@ const Cart = () => {
             {/* Items del carrito */}
             <div className="space-y-4">
               {cartItems.map(item => {
+                const [productName, productCategory] = item.name.split(' - ');
                 // Obtenemos las opciones por tipo
                 const sizeOption = getOptionByType(item, 'size');
                 const badgeOption = getOptionByType(item, 'badge');
@@ -345,13 +346,14 @@ const Cart = () => {
                     {/* Imagen */}
                     <img
                       src={Array.isArray(item.image_url) ? item.image_url[0] : item.image_url}
-                      alt={item.name || item.productName}
+                      alt={productName}
                       className="w-24 h-24 object-cover rounded-lg"
                     />
 
                     {/* Información del producto */}
                     <div className="flex-1">
-                      <h6 className="font-semibold text-md mb-1">{item.name || item.productName}</h6>
+                      <h6 className="font-semibold text-lg mb-1">{productName}</h6>
+                      <h6 className="font-semibold text-sm mb-1">{productCategory}</h6>
                       <div className="flex flex-wrap gap-2 text-sm text-gray-500">
                         {!sizeOption && !badgeOption && !customizeOption && (
                             <span className="bg-gray-100 px-2 py-1 rounded">
@@ -376,57 +378,59 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    {/* Controles de cantidad */}
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleQuantityChange(item, -1)}
-                        className="p-1 rounded-full hover:bg-gray-100"
-                      >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="w-8 text-center">{item.quantity}</span>
-                      <button
-                        onClick={() => handleQuantityChange(item, 1)}
-                        className="p-1 rounded-full hover:bg-gray-100"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
-                    </div>
+                    <div className="flex flex-row items-center gap-2 py-2">
+                      {/* Controles de cantidad */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleQuantityChange(item, -1)}
+                          className="p-1 rounded-full hover:bg-gray-100"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="w-8 text-center">{item.quantity}</span>
+                        <button
+                          onClick={() => handleQuantityChange(item, 1)}
+                          className="p-1 rounded-full hover:bg-gray-100"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
 
-                    {/* Precio */}
-                    <div className="text-right">
-                      {hasDiscount ? (
-                        <>
-                          {isFullyDiscounted ? (
-                            <p className="text-lg font-bold text-green-600">¡Gratis!</p>
-                          ) : (
-                            <p className="text-lg font-bold">
-                              ${(itemTotalPrice - itemTotalDiscount).toFixed(0)}
+                      {/* Precio */}
+                      <div className="text-right">
+                        {hasDiscount ? (
+                          <>
+                            {isFullyDiscounted ? (
+                              <p className="text-lg font-bold text-green-600">¡Gratis!</p>
+                            ) : (
+                              <p className="text-lg font-bold">
+                                ${(itemTotalPrice - itemTotalDiscount).toFixed(0)}
+                              </p>
+                            )}
+                            <p className="text-sm text-gray-500 line-through">
+                              ${itemTotalPrice.toFixed(0)}
                             </p>
-                          )}
-                          <p className="text-sm text-gray-500 line-through">
-                            ${itemTotalPrice.toFixed(0)}
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-lg font-bold">
-                            ${(parseFloat(item.price) * item.quantity).toFixed(0)}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            ${parseFloat(item.price).toFixed(0)} c/u
-                          </p>
-                        </>
-                      )}
-                    </div>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-lg font-bold">
+                              ${(parseFloat(item.price) * item.quantity).toFixed(0)}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              ${parseFloat(item.price).toFixed(0)} c/u
+                            </p>
+                          </>
+                        )}
+                      </div>
 
-                    {/* Botón eliminar */}
-                    <button
-                      onClick={() => handleRemove(item.id)}
-                      className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+                      {/* Botón eliminar */}
+                      <button
+                        onClick={() => handleRemove(item.id)}
+                        className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
                   </div>
                 );
               })}

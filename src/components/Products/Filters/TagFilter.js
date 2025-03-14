@@ -4,14 +4,16 @@ import { Search, ChevronDown, ChevronUp } from 'lucide-react';
 import FilterSection from './FilterSection';
 import { setActiveFilters } from '../../../redux/actions/filterActions';
 
-const ORDERED_TYPES = ["edicion", "version", "equipo", "temporada", "caracteristica", "color"];
+const ORDERED_TYPES = ["edicion", "version", "equipo", "temporada", "marca", "color", "caracteristica",];
 const TYPE_NAMES = {
   "edicion": "Edición",
   "version": "Versión",
   "equipo": "Equipo",
   "temporada": "Temporada",
+  "marca": "Marca",
+  "color": "Color",
   "caracteristica": "Característica",
-  "color": "Color"
+
 };
 
 const TagFilter = ({ tags, activeTags }) => {

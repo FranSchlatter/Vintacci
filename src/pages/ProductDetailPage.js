@@ -163,6 +163,8 @@ const ProductDetailPage = () => {
     </div>;
   }
 
+  const [productName, productCategory] = product.name.split(' - ');
+
   return (
     <div className="min-h-screen bg-gray-50 pt-8 pb-16">
       {/* Breadcrumb navigation */}
@@ -178,7 +180,7 @@ const ProductDetailPage = () => {
               <span className="mx-2 text-gray-400">/</span>
             </li>
             <li className="flex items-center">
-              <span className="text-gray-800 font-medium">{product.name}</span>
+              <span className="text-gray-800 font-medium">{productName}</span>
             </li>
           </ol>
         </nav>
@@ -214,7 +216,7 @@ const ProductDetailPage = () => {
                 </div>
                 
                 {/* Thumbnails - horizontal scrolling in all views */}
-                <div className="flex overflow-x-auto gap-3 pb-2 px-1 hide-scrollbar">
+                <div className="flex overflow-x-auto gap-3 pb-2 px-1">
                   {images.map((img, index) => (
                     <button
                       key={index}
@@ -248,7 +250,8 @@ const ProductDetailPage = () => {
               <div className="flex-1">
                 {/* Title and price section */}
                 <div className="border-b border-gray-200 pb-6 mb-6">
-                  <h1 className="text-2xl sm:text-2xl font-bold mb-2 text-gray-900">{product.name}</h1>
+                  <h1 className="text-2xl sm:text-2xl font-bold mb-2 text-gray-900">{productName}</h1>
+                  <h3 className="text-sm font-bold mb-2 text-gray-600">{productCategory}</h3>
                   <div className="flex items-baseline gap-3">
                     <p className="text-2xl font-bold text-gray-900">${Number(product.price).toLocaleString()}</p>
                     {product.compare_at_price && product.compare_at_price > product.price && (

@@ -40,8 +40,8 @@ const Filters = () => {
     dispatch(setActiveFilters({
       category: [],
       tags: [],
-      priceRange: { min: 0, max: 999999 },
-      variantOptions: {},
+      // priceRange: { min: 0, max: 999999 },
+      // variantOptions: {},
       search: ''
     }));
   };
