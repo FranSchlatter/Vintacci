@@ -25,8 +25,8 @@ const ProductList = () => {
         dispatch(fetchProducts({
             page: currentPage,
             limit: productsPerPage,
-            tagIds: activeFilters.tags.join(','),
-            categoryIds: activeFilters.category?.join(','),
+            categoryIds: activeFilters.category,
+            tagIds: activeFilters.tags,
             name: activeFilters.search,
             sortBy
         }));

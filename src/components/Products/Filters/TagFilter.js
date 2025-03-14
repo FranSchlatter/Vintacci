@@ -24,14 +24,24 @@ const TagFilter = ({ tags, activeTags }) => {
     // Estados para controlar expansión
     const [expandedSections, setExpandedSections] = useState({});
 
-    const handleTagChange = (tagId) => {
-        const newTags = activeTags.includes(tagId)
-            ? activeTags.filter(id => id !== tagId)
-            : [...activeTags, tagId];
+    const handleTagChange = (tag) => {
+        const formattedTag = { type: tag.type, id: tag.id };
+    
+        const isTagActive = activeTags.some(activeTag => 
+            activeTag.type === formattedTag.type && activeTag.id === formattedTag.id
+        );
+    
+        let newTags;
+    
+        if (isTagActive) {
+            newTags = activeTags.filter(activeTag => !(activeTag.type === formattedTag.type && activeTag.id === formattedTag.id));
+        } else {
+            newTags = [...activeTags, formattedTag];
+        }
 
         dispatch(setActiveFilters({
             ...activeFilters,
-            tags: newTags
+            tags: Array.isArray(newTags) ? newTags : [] // ✅ Seguridad extra: si no es array, mando array vacío
         }));
     };
 
@@ -42,10 +52,23 @@ const TagFilter = ({ tags, activeTags }) => {
         }));
     };
 
-    const handleSelectAll = (tags) => {
-        const allTagIds = tags.map(tag => tag.id);
-        const newTags = [...new Set([...activeTags, ...allTagIds])];
+    // Función para verificar si un tag está activo
+    const isTagActive = (tag) => {
+        return activeTags.some(activeTag => 
+            activeTag.type === tag.type && activeTag.id === tag.id
+        );
+    };
 
+    const handleSelectAll = (tags) => {
+        // Convertir todos los tags al formato esperado
+        const formattedTags = tags.map(tag => ({ type: tag.type, id: tag.id }));
+        
+        // Combinar los tags actuales con los nuevos, evitando duplicados
+        const existingTagIds = new Set(activeTags.map(tag => tag.id));
+        const newTagsToAdd = formattedTags.filter(tag => !existingTagIds.has(tag.id));
+        
+        const newTags = [...activeTags, ...newTagsToAdd];
+    
         dispatch(setActiveFilters({
             ...activeFilters,
             tags: newTags
@@ -129,17 +152,17 @@ const TagFilter = ({ tags, activeTags }) => {
                 </button>
             )}
             <div className="grid grid-cols-2 gap-1">
-                {tagList.map(tag => (
-                    <label key={tag.id} className="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer">
-                        <input
-                            type="checkbox"
-                            checked={activeTags.includes(tag.id)}
-                            onChange={() => handleTagChange(tag.id)}
-                            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-600 truncate">{tag.name}</span>
-                    </label>
-                ))}
+            {tagList.map(tag => (
+                <label key={tag.id} className="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={isTagActive(tag)}
+                        onChange={() => handleTagChange(tag)}
+                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="ml-2 text-sm text-gray-600 truncate">{tag.name}</span>
+                </label>
+            ))}
             </div>
         </div>
     );

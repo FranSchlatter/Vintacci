@@ -14,11 +14,12 @@ const filterReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_FILTERS':
         return {
-          ...state,
-          activeFilters: {
+            ...state,
+            activeFilters: {
             ...state.activeFilters,
-            ...action.payload
-          }
+            ...action.payload,
+            tags: Array.isArray(action.payload.tags) ? action.payload.tags : state.activeFilters.tags // ✅ si no es array, usa el anterior
+            }
         };
       case 'UPDATE_FILTER':
           const { filterType, value, isChecked } = action.payload;

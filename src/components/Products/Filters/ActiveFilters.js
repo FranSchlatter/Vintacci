@@ -26,13 +26,16 @@ const ActiveFilters = () => {
 
     const removeFilter = (type, value) => {
         const newFilters = { ...activeFilters };
-
+    
         if (type === 'priceRange') {
             newFilters.priceRange = { min: 0, max: 999999 };
+        } else if (type === 'tags') {
+            // Ahora value es un objeto { type, id }
+            newFilters.tags = newFilters.tags.filter(tag => tag.id !== value.id || tag.type !== value.type);
         } else if (Array.isArray(newFilters[type])) {
             newFilters[type] = newFilters[type].filter(item => item !== value);
         }
-
+    
         dispatch(setActiveFilters(newFilters));
     };
 
@@ -40,8 +43,7 @@ const ActiveFilters = () => {
         return (
             (activeFilters.category?.length > 0) ||
             (activeFilters.tags?.length > 0) ||
-            (activeFilters.priceRange?.min > 0 || 
-             activeFilters.priceRange?.max < 999999) ||
+            (activeFilters.priceRange?.min > 0 || activeFilters.priceRange?.max < 999999) ||
             (activeFilters.search && activeFilters.search.trim() !== '')
         );
     };
@@ -83,13 +85,13 @@ const ActiveFilters = () => {
                 })}
 
                 {/* Filtros de tags */}
-                {activeFilters.tags?.map(tagId => {
-                    const tag = tags.find(t => t.id === tagId);
+                {activeFilters.tags?.map(tagObj => {
+                    const tag = tags.find(t => t.id === tagObj.id); // Buscar por id del objeto completo
                     if (!tag) return null;
                     return (
                         <button
-                            key={tagId}
-                            onClick={() => removeFilter('tags', tagId)}
+                            key={tagObj.id}
+                            onClick={() => removeFilter('tags', tagObj)}
                             className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
                         >
                             {tag.name}
@@ -97,18 +99,6 @@ const ActiveFilters = () => {
                         </button>
                     );
                 })}
-
-                {/* Filtro de precio
-                {(activeFilters.priceRange?.min > 0 || 
-                  activeFilters.priceRange?.max < 999999) && (
-                    <button
-                        onClick={() => removeFilter('priceRange')}
-                        className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
-                    >
-                        ${activeFilters.priceRange.min} - ${activeFilters.priceRange.max}
-                        <X className="ml-1 h-4 w-4" />
-                    </button>
-                )} */}
             </div>
         </div>
     );

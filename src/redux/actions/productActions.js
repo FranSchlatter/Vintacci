@@ -100,12 +100,22 @@ export const updateProduct = (id, productData) => async (dispatch) => {
     }
 };
 
-export const fetchProducts = ({ page = 1, limit = 20, categoryIds, tagIds, name, sortBy } = {}) => async (dispatch) => {
+export const fetchProducts = ({ page = 1, limit = 20, categoryIds = '', tagIds = [], name = '', sortBy = 'newest' } = {}) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_ACTIONS.FETCH_REQUEST });
-        const response = await axios.get('http://localhost:5000/products', {
-            params: { page, limit, categoryIds, tagIds, name, sortBy }
-        });
+
+        // Serializar el array de objetos tagIds si existe
+        const params = {
+            page,
+            limit,
+            categoryIds,
+            name,
+            sortBy,
+            ...(tagIds.length > 0 && { tagIds: JSON.stringify(tagIds) }) // Solo agrega tagIds si hay tags
+        };
+
+        const response = await axios.get('http://localhost:5000/products', { params });
+
         dispatch({
             type: PRODUCT_ACTIONS.FETCH_SUCCESS,
             payload: response.data

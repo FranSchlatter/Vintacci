@@ -65,19 +65,29 @@ const validateUniqueOptionCombination = (variants) => {
 const productController = {
     getAllProducts: async (req, res) => {
         try {
-            // ⚙️ 1. Recibir params para paginado y filtros
-            const page = parseInt(req.query.page) || 1;
+            // ⚙️ 1. Recibir params para paginado, filtros, búsqueda, orden
+            let page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 50;
             const offset = (page - 1) * limit;
     
-            const { categoryIds, tagIds, name, sortBy } = req.query;
+            const { categoryIds, name, sortBy } = req.query;
+            
+            // Intentamos parsear tagIds si viene como string JSON
+            let tagIds = [];
+            if (req.query.tagIds) {
+                try {
+                    const decodedTagIds = decodeURIComponent(req.query.tagIds);
+                    tagIds = JSON.parse(decodedTagIds);
+                } catch (e) {
+                    tagIds = req.query.tagIds || [];
+                }
+            }
 
-            // ⚙️ 2. Armar el filtro dinámico
+            const categoryArray = categoryIds
             const where = {};
-    
-            // Filtro por nombre parcial (LIKE)
+
             if (name) {
-                where.name = { [Op.iLike]: `%${name}%` }; // Si usás postgres
+                where.name = { [Op.iLike]: `%${name}%` };
             }
 
             const orderOptions = {
@@ -85,54 +95,97 @@ const productController = {
                 'price-high': [['price', 'DESC']],
                 'newest': [['createdAt', 'DESC']],
             };
+
+            const order = orderOptions[sortBy] || [['createdAt', 'DESC']];
             
-            const order = orderOptions[sortBy] || [['createdAt', 'DESC']]; // por defecto "newest"
-            
-    
-            // Relación por categoría y tags (solo si vienen)
-            const include = [
-                {
-                    model: Category,
-                    as: 'AssociatedToCat',
-                    through: { attributes: [] },
-                    attributes: ['id', 'name'],
-                    ...(categoryIds && { where: { id: { [Op.in]: categoryIds.split(',') } } })
-                },
-                {
-                    model: Tag,
-                    as: 'AssociatedToTag',
-                    through: { attributes: [] },
-                    attributes: ['id', 'name', 'type'],
-                    ...(tagIds && { where: { id: { [Op.in]: tagIds.split(',') } } })
-                },
-                {
-                    model: ProductVariant,
-                    attributes: ['id', 'sku', 'price'],
-                    include: [{
-                        model: ProductOption,
-                        through: { attributes: [] },
-                    }]
+            // Si hay filtros de tags, aplicamos una estrategia diferente
+            let productIds = null;
+
+            // Si hay filtros de tags, primero obtenemos los IDs de producto que cumplen
+            if (tagIds && tagIds.length > 0) {
+                // Agrupar tags por tipo
+                const tagsByType = tagIds.reduce((acc, tag) => {
+                    if (!acc[tag.type]) acc[tag.type] = [];
+                    acc[tag.type].push(tag.id);
+                    return acc;
+                }, {});
+                
+                // Para cada tipo de tag, buscar productos con al menos un tag de ese tipo
+                const typeQueries = await Promise.all(Object.entries(tagsByType).map(async ([type, ids]) => {
+                    const result = await Product.findAll({
+                        attributes: ['id'],
+                        include: [{
+                            model: Tag,
+                            as: 'AssociatedToTag',
+                            attributes: [],
+                            through: { attributes: [] },
+                            where: {
+                                type: type,
+                                id: { [Op.in]: ids }
+                            }
+                        }],
+                        raw: true
+                    });
+                    return result.map(p => p.id);
+                }));
+                
+                // Intersección de todos los arrays de IDs (productos que tienen al menos un tag de cada tipo)
+                productIds = typeQueries.reduce((acc, ids) => 
+                    acc.filter(id => ids.includes(id)), 
+                    typeQueries[0] || []);
+                
+                if (productIds.length === 0) {
+                    return res.json({
+                        totalItems: 0,
+                        totalPages: 0,
+                        currentPage: 1,
+                        products: []
+                    });
                 }
-            ];
-    
-            // ⚙️ 3. Consulta con paginado y conteo total
+                
+                // Agregar filtro por IDs a la consulta principal
+                where.id = { [Op.in]: productIds };
+            }
+
+            // ACTUALIZA LA CONSULTA PRINCIPAL ASÍ
             const { count, rows } = await Product.findAndCountAll({
                 where,
-                include,
+                include: [
+                    {
+                        model: Category,
+                        as: 'AssociatedToCat',
+                        through: { attributes: [] },
+                        attributes: ['id', 'name'],
+                        ...(categoryArray && { where: { id: { [Op.in]: categoryArray } } })
+                    },
+                    {
+                        model: Tag,
+                        as: 'AssociatedToTag',
+                        through: { attributes: [] },
+                        attributes: ['id', 'name', 'type']
+                    },
+                    {
+                        model: ProductVariant,
+                        attributes: ['id', 'sku', 'price'],
+                        include: [{
+                            model: ProductOption,
+                            through: { attributes: [] },
+                        }]
+                    }
+                ],
                 limit,
                 offset,
-                distinct: true, // ⚠️ IMPORTANTE para que el count no repita por relaciones
+                distinct: true,
                 order
             });
-    
-            // ⚙️ 4. Respuesta con productos paginados + info total
+
+            // ⚙️ 11. Devolver resultados paginados
             res.json({
                 totalItems: count,
                 totalPages: Math.ceil(count / limit),
                 currentPage: page,
                 products: rows
             });
-    
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Error al obtener productos');
@@ -209,7 +262,7 @@ const productController = {
                 await newProduct.setAssociatedToCat(categoryIds);
             }
 
-            // Asociar tags
+            // Asociar tagIds
             if (tagIds && tagIds.length > 0) {
                 await newProduct.setAssociatedToTag(tagIds);
             }
