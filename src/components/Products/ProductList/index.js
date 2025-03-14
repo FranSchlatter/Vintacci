@@ -32,6 +32,10 @@ const ProductList = () => {
         }));
     }, [dispatch, activeFilters, sortBy, currentPage, productsPerPage]);
 
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [activeFilters]);
+
     // Handlers
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
