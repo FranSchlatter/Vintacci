@@ -6,7 +6,7 @@ import { setActiveFilters } from '../../../redux/actions/filterActions';
 
 const ORDERED_TYPES = ["equipo", "temporada", "edicion", "feature", "version", "color", "marca", "caracteristica",];
 const TYPE_NAMES = {
-  "edicion": "Edición",
+  "edicion": "Equipación",
   "version": "Versión",
   "equipo": "Equipo",
   "feature": "Manga",
@@ -133,9 +133,18 @@ const TagFilter = ({ tags, activeTags }) => {
             groups[tag.type].push(tag);
         });
     
-        // Ordenar los tags dentro de cada tipo según la cantidad de productos asociados
+        // Ordenar los tags según el criterio específico para cada tipo
         Object.keys(groups).forEach(type => {
-            groups[type].sort((a, b) => (b.AssociatedToProd?.length || 0) - (a.AssociatedToProd?.length || 0));
+            if (type === "temporada") {
+                // Ordenar los tags de temporada alfabéticamente (de menor a mayor)
+                groups[type].sort((a, b) => b.name.localeCompare(a.name));
+            } else if (type === "color") {
+                // Ordenar los tags de temporada alfabéticamente (alfabeticamente)
+                groups[type].sort((a, b) => a.name.localeCompare(b.name));
+            } else {
+                // Mantener el orden original por cantidad de productos para los demás tipos
+                groups[type].sort((a, b) => (b.AssociatedToProd?.length || 0) - (a.AssociatedToProd?.length || 0));
+            }
         });
     
         return ORDERED_TYPES.map(type => [type, groups[type] || []]).filter(([_, list]) => list.length > 0);
